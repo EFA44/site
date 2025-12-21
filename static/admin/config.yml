@@ -1,0 +1,91 @@
+locale: 'fr'
+
+backend:
+  name: github
+  repo: uni-bzh/blog
+  branch: main
+  base_url: https://blog.uni.bzh
+  auth_endpoint: /api/auth
+
+publish_mode: editorial_workflow
+display_url: https://blog.uni.bzh
+site_url: https://blog.uni.bzh
+logo_url: https://blog.uni.bzh/img/efa44-logo.svg
+
+media_folder: "static/uploads"
+public_folder: "/uploads"
+
+media_libraries:
+  stock_assets:
+    providers: []
+  default:
+    config:
+      transformations:
+        raster_image: # original format
+          format: webp # new format, only `webp` is supported
+          quality: 85 # default: 85
+          width: 2048 # default: original size
+          height: 2048 # default: original size
+        svg:
+          optimize: true
+
+i18n:
+  # Required and can be one of multiple_folders, multiple_files or single_file
+  # multiple_folders - persists files in `<folder>/<locale>/<slug>.<extension>`
+  # multiple_files - persists files in `<folder>/<slug>.<locale>.<extension>`
+  # single_file - persists a single file in `<folder>/<slug>.<extension>`
+  structure: multiple_folders
+
+  # Required - a list of locales to show in the editor UI
+  locales: [fr, en]
+
+  # Optional, defaults to the first item in locales.
+  # The locale to be used for fields validation and as a baseline for the entry.
+  default_locale: fr
+
+collections:
+  # Actualités / Infos
+  - name: "events"
+    label: "Évènements"
+    label_singular: "Évènements"
+    folder: "content/fr/events"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "events/{{slug}}"
+    icon: event
+    fields:
+      - { label: "Titre", name: "title", widget: "string" }
+      - { label: "Auteur", name: "author", value: "EFA44", widget: "hidden" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Résumé", name: "description", widget: "text", required: false }
+      - { label: "Illustration", name: "images", widget: "image", required: false }
+      - { label: "Contenu", name: "body", widget: "markdown" }
+
+  # Pages statiques
+  - name: "pages"
+    label: "Pages"
+    label_singular: "Pages"
+    create: true
+    folder: "content/fr/pages"
+    preview_path: "pages/{{slug}}"
+    icon: apps
+    fields:
+      - { label: "Titre", name: "title", widget: "string", required: true }
+      - { label: "Résumé", name: "description", widget: "text", required: true }
+      - { label: "Contenu", name: "body", widget: "markdown" }
+
+  - divider: true
+    name: d1 # d2, d3, etc. Should be unique for each divider
+    files: []
+
+  # Pages statiques
+  - name: "index"
+    label: "Personnalisation"
+    label_singular: "Personnalisation"
+    files:
+      - name: "index"
+        label: "Accueil - Ne pas toucher a moins de savoir ce que vous faites"
+        file: "content/fr/_index.md"
+        fields:
+          - { label: "Titre", name: "title", widget: "string" }
+          - { label: "Contenu", name: "body", widget: "markdown" }

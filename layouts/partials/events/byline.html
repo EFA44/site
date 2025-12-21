@@ -1,0 +1,9 @@
+{{- $date := .Date.Format "January 2, 2006" }}
+
+<div class="blog-item__byline">
+  <p>
+    {{ if $date }}
+      <span class="blog-item__date">{{ $date }}</span>
+    {{ end }}
+  </p>
+</div>

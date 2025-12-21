@@ -1,0 +1,7 @@
+{{ define "main" }}
+{{- $date := .Date.Format "Monday, January 1, 2006" }}
+
+{{- partial "events/byline.html" . }}
+{{ .Content }}
+
+{{ end }}
