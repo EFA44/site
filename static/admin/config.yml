@@ -2,15 +2,15 @@ locale: 'fr'
 
 backend:
   name: github
-  repo: uni-bzh/blog
+  repo: EFA44/site
   branch: main
-  base_url: https://blog.uni.bzh
+  base_url: https://efa44.org
   auth_endpoint: /api/auth
 
 publish_mode: editorial_workflow
-display_url: https://blog.uni.bzh
-site_url: https://blog.uni.bzh
-logo_url: https://blog.uni.bzh/img/efa44-logo.svg
+display_url: https://efa44.org
+site_url: https://efa44.org
+logo_url: https://efa44.org/img/efa44-logo.svg
 
 media_folder: "static/uploads"
 public_folder: "/uploads"
