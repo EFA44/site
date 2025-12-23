@@ -1,0 +1,70 @@
+name: Hugo Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: latest
+          extended: true
+
+      - name: Build Hugo site
+        run: hugo --minify --environment ${{ github.event.inputs.environment || 'production' }}
+
+      - name: Display build output
+        run: |
+          echo "Build completed successfully"
+          du -sh public/
+          find public -type f | wc -l
+
+      - name: Upload to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./public/
+          dangerous-clean-slate: false
+
+      - name: Deployment notification
+        if: success()
+        run: |
+          echo "✓ Site deployed successfully"
+          echo "Event: ${{ github.event_name }}"
+          echo "Timestamp: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+
+      - name: Deployment failed notification
+        if: failure()
+        run: |
+          echo "✗ Deployment failed"
+          exit 1
