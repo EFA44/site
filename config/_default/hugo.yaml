@@ -10,6 +10,7 @@ params:
   logo: /images/efa44-logo-small.svg
   logoAlt: EFA 44 - Enfance & Familles d'Adoption Loire-Atlantique
   favicon: /images/favicon.jpg
+  appleIcon: /images/efa44-logo.png
   contact:
     email: contact@efa44.org
     address:

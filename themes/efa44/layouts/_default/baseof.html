@@ -11,6 +11,11 @@
   <link rel="icon" href="{{ . }}">
   {{ end }}
   
+  {{/* Apple Icon */}}
+  {{ with .Site.Params.appleIcon }}
+  <link rel="apple-touch-icon" href="{{ . }}">
+  {{ end }}
+  
   {{/* CSS principal */}}
   {{ $css := resources.Get "css/main.css" }}
   {{ if $css }}
