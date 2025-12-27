@@ -154,3 +154,13 @@ collections:
     icon: folder_open
     media_folder: "static/files/activites"
     public_folder: "/files/activites"
+
+  # Fichiers médias
+  - name: "images"
+    label: "Images"
+    label_singular: "Image"
+    folder: "static/images"
+    create: false
+    icon: folder_open
+    media_folder: "static/images"
+    public_folder: "/images"
