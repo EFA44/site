@@ -4,7 +4,7 @@ author: EFA 44
 date: 2025-06-15
 description: ''
 tags:
-  - picnics
+  - pique-nique
 ---
 Familles adoptives, enfants, adolescents, adoptés majeurs, candidats à l’adoption : ce rendez-vous est pour vous !
 

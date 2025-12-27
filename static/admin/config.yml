@@ -47,7 +47,7 @@ collections:
     icon: calendar_month
     fields:
       - { label: "Titre", name: "title", widget: "string" }
-      - { label: "Auteur", name: "author", value: "EFA44", widget: "hidden" }
+      - { label: "Auteur", name: "author", widget: "hidden", default: "EFA44" }
       - { label: "Date", name: "date", widget: "datetime", time_format: false }
       - {
           label: "Résumé",
@@ -62,11 +62,15 @@ collections:
           multiple: true,
           options:
             [
-              "conferences",
-              "soirees-conviviale",
-              "temoignages",
-              "assemblees-generales",
-              "picnics",
+              "conference",
+              "visio",
+              "diner",
+              "temoignage",
+              "assemblee-generale",
+              "pique-nique",
+              "projection",
+              "atelier",
+              "partenariat",
               "autres",
             ],
         }
@@ -99,4 +103,31 @@ collections:
         file: "content/_index.md"
         fields:
           - { label: "Titre", name: "title", widget: "string" }
-          - { label: "Contenu", name: "body", widget: "markdown" }
+          - label: "Héros"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Titre principal", name: "title", widget: "string" }
+              - { label: "Texte en surbrillance", name: "highlight", widget: "string" }
+              - { label: "Sous-titre", name: "subtitle", widget: "text" }
+          - label: "Mission"
+            name: "mission"
+            widget: "object"
+            fields:
+              - { label: "Titre", name: "title", widget: "string" }
+          - label: "Cartes de services"
+            name: "cards"
+            widget: "list"
+            fields:
+              - { label: "Titre", name: "title", widget: "string" }
+              - { label: "Icône", name: "icon", widget: "string" }
+              - { label: "Description", name: "content", widget: "text" }
+              - { label: "Lien", name: "link", widget: "string" }
+          - label: "Appel à l'action"
+            name: "cta"
+            widget: "object"
+            fields:
+              - { label: "Titre", name: "title", widget: "string" }
+              - { label: "Texte", name: "text", widget: "text" }
+              - { label: "Lien", name: "link", widget: "string" }
+              - { label: "Libellé du bouton", name: "label", widget: "string" }
