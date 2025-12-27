@@ -44,8 +44,8 @@ try {
         throw new Exception('OAuth failed: ' . json_encode($data));
     }
 
-    // Redirect to CMS with access token
-    $cmsUrl = $origin . '/admin/?access_token=' . $data['access_token'];
+    // Redirect to CMS with access token (use 'token' parameter for SvetliaCMS)
+    $cmsUrl = $origin . '/admin/?token=' . urlencode($data['access_token']);
     header('Location: ' . $cmsUrl);
     exit;
 
