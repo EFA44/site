@@ -1,7 +1,9 @@
 <?php
 
-function getEnv($key, $default = null) {
-    return $_ENV[$key] ?? getenv($key) ?: $default;
+if (!function_exists('getEnv')) {
+    function getEnv($key, $default = null) {
+        return $_ENV[$key] ?? getenv($key) ?: $default;
+    }
 }
 
 function getGithubClientId() {
