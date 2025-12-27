@@ -1,8 +1,7 @@
 ---
 title: Les engagements et le bureau EFA 44
-description:
+description: Depuis 1958, Enfance & Familles d'Adoption de Loire-Atlantique, plus couramment appelée EFA 44, accompagne les familles adoptives, les candidats à l'adoption et les adoptés devenus adultes dans le respect de leur parcours et de leurs besoins. Association départementale loi 1901, EFA 44 rassemble près de 300 adhérents, avec un Conseil d’Administration et un bureau composé de parents adoptifs et d’adoptés majeurs, tous bénévoles, qui partagent avec conviction leur expérience et leurs connaissances.
 ---
-
 ## Enfance & Familles d'Adoption de Loire-Atlantique : une association engagée au service de l’enfant et de sa famille adoptive
 
 Depuis 1958, Enfance & Familles d'Adoption de Loire-Atlantique, plus couramment appelée EFA 44, accompagne les familles adoptives, les candidats à l'adoption et les adoptés devenus adultes dans le respect de leur parcours et de leurs besoins. Association départementale loi 1901, EFA 44 rassemble près de 300 adhérents, avec un Conseil d’Administration et un bureau composé de parents adoptifs et d’adoptés majeurs, tous bénévoles, qui partagent avec conviction leur expérience et leurs connaissances.
@@ -15,10 +14,10 @@ Pour EFA 44, l’adoption est avant tout une réponse aux besoins uniques de cha
 
 De septembre à juin, EFA 44 organise un éventail d’activités pour soutenir les familles et les postulants à l’adoption :
 
-* réunions d'information pour les futurs adoptants ;  
-* cafés-rencontres pour les candidats et les parents adoptifs ;  
-* conférences sur des sujets clés comme la scolarité, l’attachement, ou les enfants à besoins spécifiques ;  
-* ateliers de parentalité adoptive, ciné-débats, et groupes de parole ;  
+* réunions d'information pour les futurs adoptants ;
+* cafés-rencontres pour les candidats et les parents adoptifs ;
+* conférences sur des sujets clés comme la scolarité, l’attachement, ou les enfants à besoins spécifiques ;
+* ateliers de parentalité adoptive, ciné-débats, et groupes de parole ;
 * séances d’équithérapie et de musicothérapie pour les enfants, permettant de renforcer le lien parent-enfant dans un cadre apaisant et bienveillant.
 
 Chaque année, deux moments forts permettent aux membres de se retrouver et d’échanger de manière conviviale : un dîner en janvier et un pique-nique en juin.
@@ -27,8 +26,8 @@ Chaque année, deux moments forts permettent aux membres de se retrouver et d’
 
 EFA 44 est membre de la [fédération](https://www.adoptionefa.org/) Enfance & Familles d’Adoption, qui œuvre à l’échelle nationale pour :
 
-* informer sur l’adoption et ses réalités ;  
-* préparer et guider les candidats à l’adoption ;  
+* informer sur l’adoption et ses réalités ;
+* préparer et guider les candidats à l’adoption ;
 * accompagner les familles adoptives et répondre aux interrogations des adoptés.
 
 L’association est également affiliée à l'UDAF de Loire-Atlantique et bénéficie du soutien de l’Espace départemental adoption pour l’organisation de ses activités. Le siège d’EFA 44 est situé au Pôle associatif Désiré Colombe, 8 rue Arsène Leloup à Nantes, où un bureau est mis à disposition pour entreposer du matériel et recevoir les adhérents sur rendez-vous. EFA 44 est cependant totalement indépendant des services de l’Enfance et ne confie pas d’enfants à l’adoption.
@@ -41,14 +40,14 @@ Indépendante et engagée, EFA 44 se tient aux côtés des familles adoptives, d
 
 ## Le conseil d'administration
 
-Les membres du bureau sont : 
+Les membres du bureau sont :
 
 * Aurélie SABATIER - Présidente - Communication-sensibilisation à la parentalité adoptive, accompagnement des familles
 * Catherine CANTIN - Trésorière, réunions d'information, sensibilisation à la parentalité adoptive, accompagnement des familles
 * Monique AUGER - Secrétaire, réunions d'information, sensibilisation à la parentalité adoptive, accompagnement des familles
 * Céline JOSSE - Secrétaire adjointe - Réunions d'information, sensibilisation à la parentalité adoptive
 
-Assistées par les membres du Conseil d'administration : 
+Assistées par les membres du Conseil d'administration :
 
 * Geneviève MIRAL (rédactrice en chef de la revue Accueil, secrétaire nationale du service Enfant en Recherche de Familles)
 * Angélique HERBRETEAU
