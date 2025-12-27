@@ -5,11 +5,11 @@ backend:
   name: github
   repo: EFA44/site
   branch: main
-  base_url: https://efa44.uni.bzh
+  base_url: https://efa44.org
   auth_endpoint: /api/auth
 
-display_url: https://efa44.uni.bzh
-site_url: https://efa44.uni.bzh
+display_url: https://efa44.org
+site_url: https://efa44.org
 logo:
   src: https://efa44.uni.bzh/img/efa44-logo.svg
 
