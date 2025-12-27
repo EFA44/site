@@ -2,7 +2,7 @@ locale: "fr"
 
 backend:
   name: github
-  repo: uni-bzh/blog
+  repo: EFA44/site
   branch: main
   base_url: https://efa44.uni.bzh
   auth_endpoint: /api/auth
