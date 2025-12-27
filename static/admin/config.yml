@@ -147,8 +147,8 @@ collections:
   - name: "activities"
     label: "Activités"
     label_singular: "Activité"
-    folder: "static/files/activities"
+    folder: "static/files/activites"
     create: false
     icon: folder_open
-    media_folder: "static/files/activities"
-    public_folder: "/files/activities"
+    media_folder: "static/files/activites"
+    public_folder: "/files/activites"
