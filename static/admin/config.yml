@@ -90,7 +90,6 @@ collections:
       - { label: "Contenu", name: "body", widget: "markdown" }
 
   - divider: true
-    name: divider_customization
 
   # Configuration du site
   - name: "index"
@@ -144,6 +143,9 @@ collections:
               - { label: "Lien", name: "link", widget: "string" }
               - { label: "Libellé du bouton", name: "label", widget: "string" }
 
+  - divider: true
+
+  # Fichiers médias
   - name: "activities"
     label: "Activités"
     label_singular: "Activité"
