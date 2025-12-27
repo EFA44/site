@@ -2,9 +2,7 @@
 require_once 'config.php';
 
 if (!isset($_GET['code'])) {
-    $origin = getCmsOrigin();
-    header('Location: ' . $origin . '/admin/?error=missing_code');
-    exit;
+    die('Error: missing authorization code');
 }
 
 $code = $_GET['code'];
@@ -44,14 +42,49 @@ try {
         throw new Exception('OAuth failed: ' . json_encode($data));
     }
 
-    // Redirect to CMS with access token (use 'token' parameter for SvetliaCMS)
-    $cmsUrl = $origin . '/admin/?token=' . urlencode($data['access_token']);
-    header('Location: ' . $cmsUrl);
-    exit;
+    // Return HTML that posts message back to CMS window
+    $token = htmlspecialchars($data['access_token']);
+    $originUrl = htmlspecialchars($origin);
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>OAuth Callback</title>
+    </head>
+    <body>
+        <script>
+            // Send token back to the CMS window using postMessage
+            const message = {
+                token: "<?php echo $token; ?>"
+            };
+            window.opener.postMessage(message, "<?php echo $originUrl; ?>");
+            window.close();
+        </script>
+        <p>Authenticating... If this page doesn't close, please <a href="<?php echo $originUrl; ?>/admin/">click here</a>.</p>
+    </body>
+    </html>
+    <?php
 
 } catch (Exception $e) {
     error_log('OAuth Error: ' . $e->getMessage());
-    header('Location: ' . $origin . '/admin/?error=' . urlencode($e->getMessage()));
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>OAuth Error</title>
+    </head>
+    <body>
+        <script>
+            const message = {
+                error: "<?php echo htmlspecialchars($e->getMessage()); ?>"
+            };
+            window.opener.postMessage(message, "<?php echo htmlspecialchars($origin); ?>");
+            window.close();
+        </script>
+        <p>Authentication failed. If this page doesn't close, please <a href="<?php echo htmlspecialchars($origin); ?>/admin/">click here</a>.</p>
+    </body>
+    </html>
+    <?php
     exit;
 }
 ?>
