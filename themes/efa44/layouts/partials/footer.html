@@ -1,0 +1,57 @@
+{{ $site := .Site.Params }}
+
+{{ with .Site.Home.Params.cta }}
+<section class="footer-cta">
+  <div class="container">
+    <div class="footer-cta__inner">
+      <div class="footer-cta__text">
+        <h2 class="footer-cta__title">{{ .title }}</h2>
+        <p>{{ .text }}</p>
+      </div>
+      <a href="{{ .link | relURL }}" class="btn btn--highlight">{{ .label }}</a>
+    </div>
+  </div>
+</section>
+{{ end }}
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__section">
+        <h3 class="footer__title">{{ .Site.Title }}</h3>
+        {{ with $site.description }}
+        <p class="footer__text">{{ . }}</p>
+        {{ end }}
+      </div>
+      
+      {{ with $site.contact }}
+      <div class="footer__section">
+        <h3 class="footer__title">Contact</h3>
+        <p class="footer__text">
+          {{ with .email }}<a href="mailto:{{ . }}" class="footer__link">{{ . }}</a><br>{{ end }}
+          {{ with .address }}
+            {{ with .name }}{{ . }}<br>{{ end }}
+            {{ with .street }}{{ . }}<br>{{ end }}
+            {{ with .city }}{{ . }}{{ end }}
+          {{ end }}
+        </p>
+      </div>
+      {{ end }}
+      
+      {{ if .Site.Menus.footer }}
+      <div class="footer__section">
+        <h3 class="footer__title">Liens</h3>
+        <p class="footer__text">
+          {{ range .Site.Menus.footer }}
+            <a href="{{ .URL }}" class="footer__link"{{ if .Params.external }} target="_blank" rel="noopener"{{ end }}>{{ .Name }}</a><br>
+          {{ end }}
+        </p>
+      </div>
+      {{ end }}
+    </div>
+    
+    <div class="footer__bottom">
+      <p>&copy; {{ now.Year }} {{ .Site.Title }} - Tous droits réservés</p>
+    </div>
+  </div>
+</footer>

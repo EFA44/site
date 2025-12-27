@@ -1,32 +1,22 @@
-######################## default configuration ####################
-# Your theme name
-theme: "dot-org-hugo-theme"
-# Title of your website (required).
-title: "EFA44"
-# Default time zone for time stamps; use any valid tz database name: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
-timeZone: "Europe/Paris"
-# Defines the minimum amount of words to reddened in a summary
-summaryLength: 50
+baseURL: https://efa44.org/
+languageCode: fr-fr
+title: EFA44
+theme: efa44
+buildFuture: true
 
-######################## i18n ####################
-# Auto-detect Chinese/Japanese/Korean Languages in the content. see: https://gohugo.io/getting-started/configuration/#hascjklanguage
-hasCJKLanguage: true
-# Set default content directory for multilingual
-contentDir: content/fr/
-# Set fallback if international version is not available
-defaultContentLanguage: fr
-# Set the default language as the root rather than in folder i.e. don't use /en/
-defaultContentLanguageInSubdir: false
-
-######################## privacy & speed ####################
-# Enable do not track, no cookies on Video embeds
-privacy:
-  youtube:
-    privacyEnhanced: true
-  vimeo:
-    enableDNT: true
-
-markup:
-  goldmark:
-    renderer:
-      unsafe: true
+params:
+  description: Enfance & Familles d'Adoption de Loire-Atlantique
+  tagline: Accompagner les familles adoptives depuis 1958
+  logo: /images/efa44-logo-small.svg
+  logoAlt: EFA 44 - Enfance & Familles d'Adoption Loire-Atlantique
+  favicon: /images/favicon.jpg
+  contact:
+    email: contact@efa44.org
+    address:
+      name: Pôle associatif Désiré Colombe
+      street: 8 rue Arsène Leloup
+      city: 44100 Nantes
+  social:
+    federation:
+      name: Fédération EFA
+      url: https://www.adoptionefa.org/

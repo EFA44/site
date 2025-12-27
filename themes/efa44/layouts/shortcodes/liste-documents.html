@@ -1,0 +1,67 @@
+{{/*
+  Shortcode dynamique pour lister des fichiers d'un répertoire
+  Usage: liste-documents dossier="files/activites" titre="Rapports d'activités"
+  Options: 
+    - dossier: chemin relatif dans /static (requis)
+    - titre: titre de la section (optionnel)
+    - description: description sous le titre (optionnel)
+    - icone: emoji pour le titre (optionnel, défaut: 📄)
+*/}}
+
+{{ $dossier := .Get "dossier" }}
+{{ $titre := .Get "titre" }}
+{{ $description := .Get "description" }}
+{{ $icone := .Get "icone" | default "📄" }}
+
+{{ if not $dossier }}
+  {{ errorf "Le paramètre 'dossier' est requis pour le shortcode liste-documents" }}
+{{ end }}
+
+{{ $cheminComplet := printf "static/%s" $dossier }}
+{{ $fichiers := readDir $cheminComplet }}
+
+{{ if $fichiers }}
+<section class="documents-liste">
+  {{ with $titre }}
+  <h2>{{ $icone }} {{ . }}</h2>
+  {{ end }}
+  {{ with $description }}<p>{{ . }} :</p>{{ end }}
+  
+  <ul class="documents-list">
+    {{/* Créer une liste avec les infos extraites des noms de fichiers */}}
+    {{ $items := slice }}
+    {{ range $fichiers }}
+      {{ if not .IsDir }}
+        {{ $nom := .Name }}
+        {{ $ext := path.Ext $nom }}
+        {{ $nomSansExt := strings.TrimSuffix $ext $nom }}
+        
+        {{/* Extraire l'année du nom de fichier (ex: rapport-activite-2024.pdf -> 2024) */}}
+        {{ $annee := "" }}
+        {{ if findRE `\d{4}` $nom }}
+          {{ $annee = index (findRE `\d{4}` $nom) 0 }}
+        {{ end }}
+        
+        {{/* Créer un titre lisible à partir du nom de fichier */}}
+        {{ $titreDoc := replace $nomSansExt "-" " " }}
+        {{ $titreDoc = strings.Title $titreDoc }}
+        
+        {{ $item := dict "nom" $nom "titre" $titreDoc "annee" $annee "chemin" (printf "/%s/%s" $dossier $nom) }}
+        {{ $items = $items | append $item }}
+      {{ end }}
+    {{ end }}
+    
+    {{/* Trier par année décroissante */}}
+    {{ range sort $items "annee" "desc" }}
+    <li class="document-item">
+      <a href="{{ .chemin }}" target="_blank" rel="noopener">
+        <span class="document-icon">📥</span>
+        <span class="document-titre">{{ .titre }}</span>
+      </a>
+    </li>
+    {{ end }}
+  </ul>
+</section>
+{{ else }}
+<p><em>Aucun document trouvé dans le dossier {{ $dossier }}</em></p>
+{{ end }}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "fr" }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+  
+  {{/* Favicon */}}
+  {{ with .Site.Params.favicon }}
+  <link rel="icon" href="{{ . }}">
+  {{ end }}
+  
+  {{/* CSS principal */}}
+  {{ $css := resources.Get "css/main.css" }}
+  {{ if $css }}
+    {{ $style := $css | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
+  {{ end }}
+  
+  {{/* Canonical URL */}}
+  <link rel="canonical" href="{{ .Permalink }}">
+  
+  {{/* RSS */}}
+  {{ with .OutputFormats.Get "rss" -}}
+    {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+  {{ end -}}
+</head>
+<body>
+  {{/* Header */}}
+  {{ partial "header.html" . }}
+  
+  {{/* Main Content */}}
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+  
+  {{/* Footer */}}
+  {{ partial "footer.html" . }}
+  
+  {{/* JavaScript */}}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mobile navigation toggle
+      const toggle = document.querySelector('.nav__toggle');
+      const navList = document.querySelector('.nav__list');
+      
+      if (toggle && navList) {
+        toggle.addEventListener('click', function() {
+          navList.classList.toggle('nav__list--open');
+          const isOpen = navList.classList.contains('nav__list--open');
+          toggle.setAttribute('aria-expanded', isOpen);
+        });
+      }
+      
+      // Dropdown menus (mobile)
+      const dropdownButtons = document.querySelectorAll('.nav__link--parent');
+      dropdownButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const submenu = this.nextElementSibling;
+          const isExpanded = this.getAttribute('aria-expanded') === 'true';
+          
+          this.setAttribute('aria-expanded', !isExpanded);
+          submenu.classList.toggle('nav__submenu--open');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+name = "EFA44"
+license = "MIT"
+licenselink = "https://github.com/efa44/efa44-theme/blob/main/LICENSE"
+description = "Thème Hugo minimaliste pour EFA44"
+homepage = "https://efa44.org"
+min_version = "0.80.0"
+
+[author]
+  name = "EFA44"
+  homepage = "https://efa44.org"
+
+[params]
+  primaryColor = "#345cac"
+  highlightColor = "#fbc32c"

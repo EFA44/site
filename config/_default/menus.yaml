@@ -1,0 +1,63 @@
+main:
+  # À propos de nous
+  - identifier: about
+    name: À propos de nous
+    weight: 1
+  - identifier: about-efa44
+    name: Le bureau
+    url: /pages/bureau/
+    parent: about
+    weight: 1
+  - identifier: about-efa
+    name: La fédération EFA
+    url: /pages/federation/
+    parent: about
+    weight: 2
+
+  # À propos de vous
+  - identifier: situation
+    name: À propos de vous
+    weight: 2
+  - identifier: situation-adoptes
+    name: Adopté ?
+    url: /pages/adoptes/
+    parent: situation
+    weight: 1
+  - identifier: situation-postulants
+    name: Candidats à l'adoption
+    url: /pages/postulants/
+    parent: situation
+    weight: 2
+  - identifier: situation-familles
+    name: Famille adoptive
+    url: /pages/familles/
+    parent: situation
+    weight: 3
+
+  # Actions
+  - identifier: donate
+    name: Dons
+    url: https://www.helloasso.com/associations/efa-44
+    weight: 3
+    params:
+      highlight: true
+      style: secondary
+      external: true
+      icon: heart
+  - identifier: join
+    name: Nous rejoindre
+    url: /pages/nous-rejoindre/
+    weight: 4
+    params:
+      highlight: true
+      icon: users
+
+footer:
+  - name: Fédération EFA
+    url: https://www.adoptionefa.org/
+    params:
+      external: true
+  - name: Notre fédération
+    url: /pages/federation/
+  - name: Événements
+    url: /events/
