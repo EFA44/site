@@ -1,0 +1,9 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Disallow specific bot patterns if needed
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://efa44.fr/sitemap.xml
