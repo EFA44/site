@@ -93,16 +93,27 @@ collections:
         widget: "list"
         required: false
         fields:
-          - label: "Dossier"
+          - label: "Dossier des documents"
             name: "dossier"
             widget: "select"
             options:
-              - { label: "Rapports d'activités", value: "files/activites" }
-              - { label: "Statuts", value: "files/statuts" }
-              - { label: "Règlement", value: "files/reglement" }
-              - { label: "Autres documents", value: "files/documents" }
+              - { label: "Rapports d'activités", value: "activites" }
+              - { label: "Statuts", value: "statuts" }
+              - { label: "Règlement", value: "reglement" }
+              - { label: "Autres documents", value: "documents" }
           - { label: "Titre de la section", name: "titre", widget: "string" }
           - { label: "Description", name: "description", widget: "text" }
+          - label: "Documents à afficher"
+            name: "files"
+            widget: "list"
+            required: false
+            field: 
+              label: "Fichier"
+              name: "file"
+              widget: "file"
+              media_library:
+                config:
+                  max_file_size: 10737418240
 
   - divider: true
     name: divider_customization
