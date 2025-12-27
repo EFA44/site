@@ -89,15 +89,6 @@ collections:
       - { label: "Résumé", name: "description", widget: "text", required: true }
       - { label: "Contenu", name: "body", widget: "markdown" }
 
-  - name: "documents"
-    label: "Documents"
-    label_singular: "Document"
-    folder: "static/files"
-    create: false
-    icon: folder_open
-    media_folder: ""
-    public_folder: ""
-
   - divider: true
     name: divider_customization
 
@@ -152,3 +143,12 @@ collections:
               - { label: "Texte", name: "text", widget: "text" }
               - { label: "Lien", name: "link", widget: "string" }
               - { label: "Libellé du bouton", name: "label", widget: "string" }
+
+  - name: "activities"
+    label: "Activités"
+    label_singular: "Activité"
+    folder: "static/files/activities"
+    create: false
+    icon: folder_open
+    media_folder: "static/files/activities"
+    public_folder: "/files/activities"
