@@ -1,4 +1,5 @@
-locale: "fr"
+# Sveltia CMS Configuration
+# For more information, see: https://sveltia-cms-docs.netlify.app/
 
 backend:
   name: github
@@ -7,10 +8,10 @@ backend:
   base_url: https://efa44.uni.bzh
   auth_endpoint: /api/auth
 
-publish_mode: editorial_workflow
 display_url: https://efa44.uni.bzh
 site_url: https://efa44.uni.bzh
-logo_url: https://efa44.uni.bzh/img/efa44-logo.svg
+logo:
+  src: https://efa44.uni.bzh/img/efa44-logo.svg
 
 media_folder: "static/files"
 public_folder: "/files"
@@ -21,38 +22,29 @@ media_libraries:
   default:
     config:
       transformations:
-        raster_image: # original format
-          format: webp # new format, only `webp` is supported
-          quality: 85 # default: 85
-          width: 2048 # default: original size
-          height: 2048 # default: original size
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2048
+          height: 2048
         svg:
           optimize: true
 
 i18n:
-  # Required and can be one of multiple_folders, multiple_files or single_file
-  # multiple_folders - persists files in `<folder>/<locale>/<slug>.<extension>`
-  # multiple_files - persists files in `<folder>/<slug>.<locale>.<extension>`
-  # single_file - persists a single file in `<folder>/<slug>.<extension>`
   structure: single_file
-
-  # Required - a list of locales to show in the editor UI
   locales: [fr]
-
-  # Optional, defaults to the first item in locales.
-  # The locale to be used for fields validation and as a baseline for the entry.
   default_locale: fr
 
 collections:
-  # Actualités / Infos
+  # Contenu du site
   - name: "events"
     label: "Évènements"
-    label_singular: "Évènements"
+    label_singular: "Évènement"
     folder: "content/events"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     preview_path: "events/{{slug}}"
-    icon: event
+    icon: calendar_month
     fields:
       - { label: "Titre", name: "title", widget: "string" }
       - { label: "Auteur", name: "author", value: "EFA44", widget: "hidden" }
@@ -80,30 +72,30 @@ collections:
         }
       - { label: "Contenu", name: "body", widget: "markdown" }
 
-  # Pages statiques
   - name: "pages"
     label: "Pages"
-    label_singular: "Pages"
-    create: true
+    label_singular: "Page"
     folder: "content/pages"
+    create: true
+    slug: "{{slug}}"
     preview_path: "pages/{{slug}}"
-    icon: apps
+    icon: description
     fields:
       - { label: "Titre", name: "title", widget: "string", required: true }
       - { label: "Résumé", name: "description", widget: "text", required: true }
       - { label: "Contenu", name: "body", widget: "markdown" }
 
   - divider: true
-    name: d1 # d2, d3, etc. Should be unique for each divider
-    files: []
+    name: divider_customization
 
-  # Pages statiques
+  # Configuration du site
   - name: "index"
-    label: "Personnalisation"
-    label_singular: "Personnalisation"
+    label: "Accueil"
+    label_singular: "Accueil"
+    icon: home
     files:
       - name: "index"
-        label: "Accueil - Ne pas toucher a moins de savoir ce que vous faites"
+        label: "Configuration de la page d'accueil"
         file: "content/_index.md"
         fields:
           - { label: "Titre", name: "title", widget: "string" }
