@@ -50,11 +50,11 @@ function getCmsOrigin() {
     
     // 4. Last resort
     return 'http://localhost:4000';
-}**
+}
+
+/**
  * Validate if the origin is in the allowed list
  */
-
-// ✅ Vérification stricte des origines autorisées
 function isAllowedOrigin($origin) {
     if (!$origin || !filter_var($origin, FILTER_VALIDATE_URL)) {
         return false;
