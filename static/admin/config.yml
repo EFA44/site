@@ -88,6 +88,21 @@ collections:
       - { label: "Titre", name: "title", widget: "string", required: true }
       - { label: "Résumé", name: "description", widget: "text", required: true }
       - { label: "Contenu", name: "body", widget: "markdown" }
+      - label: "Sections de documents"
+        name: "documents"
+        widget: "list"
+        required: false
+        fields:
+          - label: "Dossier"
+            name: "dossier"
+            widget: "select"
+            options:
+              - { label: "Rapports d'activités", value: "files/activites" }
+              - { label: "Statuts", value: "files/statuts" }
+              - { label: "Règlement", value: "files/reglement" }
+              - { label: "Autres documents", value: "files/documents" }
+          - { label: "Titre de la section", name: "titre", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
 
   - divider: true
     name: divider_customization
@@ -120,7 +135,19 @@ collections:
             widget: "list"
             fields:
               - { label: "Titre", name: "title", widget: "string" }
-              - { label: "Icône", name: "icon", widget: "string" }
+              - label: "Icône"
+                name: "icon"
+                widget: "select"
+                options:
+                  - { label: "Compas", value: "compass" }
+                  - { label: "Diplôme", value: "graduation-cap" }
+                  - { label: "Utilisateurs", value: "users" }
+                  - { label: "Microphone", value: "microphone" }
+                  - { label: "Commentaires", value: "comments" }
+                  - { label: "Palette", value: "palette" }
+                  - { label: "Enfant", value: "child" }
+                  - { label: "Livre", value: "book" }
+                  - { label: "Téléphone", value: "phone" }
               - { label: "Description", name: "content", widget: "text" }
               - { label: "Lien", name: "link", widget: "string" }
           - label: "Appel à l'action"
