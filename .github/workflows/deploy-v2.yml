@@ -37,9 +37,6 @@ jobs:
           hugo-version: latest
           extended: true
 
-      - name: Install dependencies
-        run: npm install
-
       - name: Build Hugo site
         run: hugo --minify --environment ${{ github.event.inputs.environment || 'production' }}
 
