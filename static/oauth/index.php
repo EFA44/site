@@ -331,25 +331,74 @@ class SveltiaCMSAuthHandler
 
     private function isDomainAllowed($domain)
     {
+        // Fail-closed: if no allowed domains configured, reject by default
         if (empty($this->allowed_domains)) {
-            $this->debugLog("WARNING: ALLOWED_DOMAINS not configured. All domains allowed.");
-            return true;
+            $this->debugLog("ERROR: ALLOWED_DOMAINS not set - rejecting all domains by default.");
+            return false;
+        }
+
+        if (!is_string($domain) || $domain === '') {
+            return false;
+        }
+
+        // Normalize to ASCII (punycode) for accurate comparison
+        if (function_exists('idn_to_ascii')) {
+            $domain_ascii = @idn_to_ascii($domain, IDNA_DEFAULT, defined('INTL_IDNA_VARIANT_UTS46') ? INTL_IDNA_VARIANT_UTS46 : IDNA_DEFAULT);
+            if ($domain_ascii === false) {
+                $this->debugLog("Invalid domain (IDNA conversion failed): " . $domain);
+                return false;
+            }
+        } else {
+            $domain_ascii = $domain;
+        }
+
+        if (!filter_var($domain_ascii, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+            $this->debugLog("Invalid domain (not hostname): " . $domain_ascii);
+            return false;
         }
 
         $allowed_list = array_map('trim', explode(',', $this->allowed_domains));
         foreach ($allowed_list as $pattern) {
-            // Only accept valid hostnames for the domain check
-            if (!is_string($domain) || !filter_var($domain, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+            if ($pattern === '') {
                 continue;
             }
-            $escaped = $this->escapeRegExp($pattern);
-            // Replace wildcard with a restricted subdomain pattern
-            $regex_pattern = str_replace('\\*', '[A-Za-z0-9-]+', $escaped);
-            if (preg_match("/^{$regex_pattern}$/", $domain)) {
+
+            // Only support exact matches or left-wildcard patterns like "*.example.com"
+            if (strpos($pattern, '*') !== false && strpos($pattern, '*.') !== 0) {
+                $this->debugLog("Skipping unsupported domain pattern: " . $pattern);
+                continue;
+            }
+
+            // Normalize pattern
+            if (function_exists('idn_to_ascii')) {
+                $pattern_ascii = @idn_to_ascii($pattern, IDNA_DEFAULT, defined('INTL_IDNA_VARIANT_UTS46') ? INTL_IDNA_VARIANT_UTS46 : IDNA_DEFAULT);
+                if ($pattern_ascii === false) {
+                    $this->debugLog("Skipping invalid pattern (IDNA conversion failed): " . $pattern);
+                    continue;
+                }
+            } else {
+                $pattern_ascii = $pattern;
+            }
+
+            if (strpos($pattern_ascii, '*.') === 0) {
+                $rest = substr($pattern_ascii, 2);
+                if (!filter_var($rest, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+                    $this->debugLog("Skipping invalid wildcard base domain: " . $rest);
+                    continue;
+                }
+                $rest_quoted = preg_quote($rest, '/');
+                $regex = "/^([A-Za-z0-9-]+\\.)*{$rest_quoted}$/i";
+            } else {
+                $quoted = preg_quote($pattern_ascii, '/');
+                $regex = "/^{$quoted}$/i";
+            }
+
+            if (preg_match($regex, $domain_ascii)) {
                 return true;
             }
         }
 
+        $this->debugLog("Domain not allowed: " . $domain_ascii);
         return false;
     }
 

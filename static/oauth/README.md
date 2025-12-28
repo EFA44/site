@@ -132,21 +132,28 @@ The handler implements the standard OAuth authorization code flow for GitHub and
 
 ## Optional: Domain Whitelisting
 
-The `ALLOWED_DOMAINS` variable supports wildcard patterns:
+The `ALLOWED_DOMAINS` variable supports wildcard patterns; the handler uses a strict, "fail-closed" policy by default (if `ALLOWED_DOMAINS` is empty, all domains are rejected).
+
+Supported patterns:
 
 ```
-# Single domain
+# Single domain (exact match)
 ALLOWED_DOMAINS="your-site.com"
 
 # Multiple domains
 ALLOWED_DOMAINS="your-site.com,www.your-site.com,docs.your-site.com"
 
-# Wildcard (matches any subdomain)
+# Wildcard (left-anchored only; matches subdomains but not the apex)
 ALLOWED_DOMAINS="*.your-site.com,your-site.com"
 
 # Complex pattern
 ALLOWED_DOMAINS="*.example.com,another.com"
 ```
+
+Notes:
+- Only exact domains and leading wildcard patterns (`*.domain.tld`) are supported. Other wildcard forms are ignored to avoid accidental overbroad matching.
+- Patterns and domains are normalized using IDNA (punycode) for consistent matching of internationalized domains.
+- If `ALLOWED_DOMAINS` is not configured in production, the handler will reject requests by default to avoid accidental open access.
 
 ## Troubleshooting
 
