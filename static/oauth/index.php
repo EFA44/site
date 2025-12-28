@@ -632,6 +632,23 @@ HTML;
         $this->debugLog("OAuth Debug - Fetching token from: " . $token_url);
         $this->debugLog(['event' => 'FetchTokenRequest', 'body' => $request_body]);
 
+        // Prefer cURL path which supports IP pinning to mitigate SSRF/DNS rebinding
+        if (function_exists('curl_init')) {
+            return $this->fetchTokenWithCurl($token_url, $request_body);
+        }
+
+        // Fallback to stream context only if host resolves to public IPs
+        $u = parse_url($token_url);
+        $host = $u['host'] ?? null;
+        if ($host) {
+            $ips = $this->resolvePublicIps($host);
+            if (empty($ips)) {
+                $this->debugLog("No public IP addresses found for token host: " . $host);
+                return false;
+            }
+        }
+
+
         $json_body = json_encode($request_body);
 
         $context_options = [
@@ -656,11 +673,6 @@ HTML;
         $context = stream_context_create($context_options);
         $response = @file_get_contents($token_url, false, $context);
 
-        if ($response === false && function_exists('curl_init')) {
-            $this->debugLog("OAuth Debug - Attempting with cURL as fallback");
-            return $this->fetchTokenWithCurl($token_url, $request_body);
-        }
-
         if ($response !== false) {
             $this->debugLog("OAuth Debug - Token response: " . $response);
         }
@@ -668,9 +680,74 @@ HTML;
         return $response;
     }
 
+    /**
+     * Resolve public IP addresses for a hostname using DNS A/AAAA records and filter private/reserved ranges.
+     * Returns array of IP strings (IPv4/IPv6) or empty array if none found.
+     */
+    private function resolvePublicIps($host)
+    {
+        $ips = [];
+        // Use dns_get_record to get A and AAAA records
+        $a_records = @dns_get_record($host, DNS_A) ?: [];
+        $aaaa_records = @dns_get_record($host, DNS_AAAA) ?: [];
+
+        foreach ($a_records as $r) {
+            if (!empty($r['ip']) && $this->isIpPublic($r['ip'])) {
+                $ips[] = $r['ip'];
+            }
+        }
+        foreach ($aaaa_records as $r) {
+            $ip = $r['ipv6'] ?? ($r['ip'] ?? null);
+            if ($ip && $this->isIpPublic($ip)) {
+                $ips[] = $ip;
+            }
+        }
+
+        // As a fallback, try gethostbynamel (may return multiple IPs)
+        if (empty($ips)) {
+            $host_ips = @gethostbynamel($host) ?: [];
+            foreach ($host_ips as $ip) {
+                if ($this->isIpPublic($ip)) {
+                    $ips[] = $ip;
+                }
+            }
+        }
+
+        return array_values(array_unique($ips));
+    }
+
+    private function isIpPublic($ip)
+    {
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+            return false;
+        }
+        return true;
+    }
+
     private function fetchTokenWithCurl($token_url, $request_body)
     {
         $ch = curl_init();
+
+        // Resolve host and ensure we have public IP(s)
+        $parts = parse_url($token_url);
+        $host = $parts['host'] ?? null;
+        $port = $parts['port'] ?? ($parts['scheme'] === 'https' ? 443 : 80);
+        if (!$host) {
+            $this->debugLog("Invalid token URL, missing host: " . $token_url);
+            return false;
+        }
+
+        $ips = $this->resolvePublicIps($host);
+        if (empty($ips)) {
+            $this->debugLog("No public IPs found for host: " . $host);
+            return false;
+        }
+
+        // Build CURLOPT_RESOLVE entries to pin hostname to specific IPs
+        $resolve = [];
+        foreach ($ips as $ip) {
+            $resolve[] = sprintf("%s:%d:%s", $host, $port, $ip);
+        }
 
         curl_setopt($ch, CURLOPT_URL, $token_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -685,6 +762,9 @@ HTML;
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+
+        // Pin the host to resolved public IPs to mitigate DNS rebinding
+        curl_setopt($ch, CURLOPT_RESOLVE, $resolve);
 
         $response = curl_exec($ch);
         $curl_errno = curl_errno($ch);
