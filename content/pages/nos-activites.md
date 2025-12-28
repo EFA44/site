@@ -2,7 +2,6 @@
 title: Nos activités
 description: EFA 44 propose tout au long de l'année une programmation riche et variée d'activités destinées à accompagner les familles adoptives, les candidats à l'adoption et les adoptés majeurs. Notre association organise des événements conviviaux, informatifs et de soutien qui créent du lien et favorisent les échanges d'expériences au sein de notre communauté.
 ---
-
 ## Les Soirées Témoignages
 
 Nos soirées témoignages constituent un moment privilégié d'échange et de partage d'expériences entre familles adoptives et candidats à l'adoption. Ces rencontres permettent de créer des liens authentiques et d'aborder les réalités de l'adoption dans un cadre bienveillant.
