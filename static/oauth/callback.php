@@ -112,19 +112,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $userData = json_decode($userResponse, true);
 
-    // Return user data and token
-    http_response_code(200);
-    echo json_encode([
-        'success' => true,
-        'access_token' => $accessToken,
-        'user' => [
-            'id' => $userData['id'],
-            'login' => $userData['login'],
-            'name' => $userData['name'],
-            'avatar_url' => $userData['avatar_url'],
-            'email' => $userData['email'],
-        ],
-    ]);
+    // Store token in session
+    session_start();
+    $_SESSION['github_token'] = $accessToken;
+    $_SESSION['github_user'] = [
+        'id' => $userData['id'],
+        'login' => $userData['login'],
+        'name' => $userData['name'],
+        'avatar_url' => $userData['avatar_url'],
+        'email' => $userData['email'],
+    ];
+
+    // Redirect to admin page
+    header('Location: ' . $cmsOrigin . '/admin/');
     exit;
 }
 
