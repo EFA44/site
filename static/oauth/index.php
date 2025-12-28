@@ -454,7 +454,6 @@ HTML;
         // 404 response
         $this->debugLog("OAuth Debug - No route matched! Path: " . $path . ", Method: " . $_SERVER['REQUEST_METHOD']);
         http_response_code(404);
-        echo '';
     }
 }
 
