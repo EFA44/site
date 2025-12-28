@@ -6,7 +6,7 @@ backend:
   repo: EFA44/site
   branch: main
   base_url: https://efa44.org
-  auth_endpoint: /oauth/authorize.php
+  auth_endpoint: /oauth/authorize
 
 display_url: https://efa44.org
 site_url: https://efa44.org
