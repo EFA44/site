@@ -1,11 +1,9 @@
 ---
 title: La revue Accueil
-description: A demo page for the various markup elements in the Dot Org theme.
+description: Revue nationale publiée par Enfance & Familles d’Adoption depuis près de 50 ans, Accueil est la seule revue en langue française spécialisée sur l’adoption. Une revue spécialisée, mais écrite dans un style clair, proposant témoignages et articles dans un format aéré où un graphisme créatif accompagne et prolonge les écrits.
 images:
   - /img/214_couv-730x1030.jpg
 ---
-
-
 Vous trouverez dans cette revue des témoignages d’adoptés et d’adoptants, qui apportent un éclairage complémentaire et indispensable à des articles émanant de travailleurs sociaux, psychologues, sociologues, juristes, écrivains, chercheurs. Outre l’intérêt qu’ils présentent pour les thématiques abordées dans la revue, ces témoignages – vos témoignages – permettent d’être au plus près des réalités et des questions de l’adoption vécue au quotidien. Novatrice, la revue apporte à ses lecteurs des informations, des analyses, des retours d’études, dans un style clair, qui n’ont bien souvent pas été abordés auparavant dans d’autres publications françaises.
 
 - Une revue qui accompagne, informe, et invite à aller plus loin.
@@ -17,4 +15,3 @@ Pour vous en faire une idée, vous pouvez [feuilleter un extrait du numéro de d
 [Abonnement](https://www.adoptionefa.org/efa-qui-sommes-nous/la-revue-accueil/#efa-0)
 
 ![](/uploads/accueil-2025-12.svgz)
-
