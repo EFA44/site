@@ -142,8 +142,8 @@ collections:
               - { label: "Texte", name: "text", widget: "text" }
               - { label: "Lien", name: "link", widget: "string" }
               - { label: "Libellé du bouton", name: "label", widget: "string" }
-      - name: "main_menu"
-        label: "Menu principal"
+      - name: "main_menu_footer"
+        label: "Menu principal et Pied de page"
         file: "config/_default/menu.yaml"
         fields:
           - label: "Navigation principale"
