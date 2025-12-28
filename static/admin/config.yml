@@ -97,6 +97,42 @@ collections:
     label_singular: "Configuration du site"
     icon: settings
     files:
+      - name: "site_config"
+        label: "Configuration générale du site"
+        file: "config/_default/hugo.yaml"
+        fields:
+          - { label: "URL de base", name: "baseURL", widget: "string" }
+          - { label: "Code langue", name: "languageCode", widget: "string" }
+          - { label: "Titre du site", name: "title", widget: "string" }
+          - { label: "Thème", name: "theme", widget: "string", required: false }
+          - { label: "Description", name: "params.description", widget: "string" }
+          - { label: "Slogan", name: "params.tagline", widget: "string" }
+          - { label: "Logo (chemin)", name: "params.logo", widget: "string", required: false }
+          - { label: "Alt du logo", name: "params.logoAlt", widget: "string", required: false }
+          - { label: "Favicon", name: "params.favicon", widget: "string", required: false }
+          - { label: "Apple icon", name: "params.appleIcon", widget: "string", required: false }
+          - label: "Contact"
+            name: "params.contact"
+            widget: "object"
+            fields:
+              - { label: "Email de contact", name: "email", widget: "string" }
+              - label: "Adresse"
+                name: "address"
+                widget: "object"
+                fields:
+                  - { label: "Nom", name: "name", widget: "string", required: false }
+                  - { label: "Rue", name: "street", widget: "string", required: false }
+                  - { label: "Ville", name: "city", widget: "string", required: false }
+          - label: "Réseaux sociaux"
+            name: "params.social"
+            widget: "object"
+            fields:
+              - label: "Fédération"
+                name: "federation"
+                widget: "object"
+                fields:
+                  - { label: "Nom", name: "name", widget: "string", required: false }
+                  - { label: "URL", name: "url", widget: "string", required: false }
       - name: "index"
         label: "Configuration de la page d'accueil"
         file: "content/_index.md"
