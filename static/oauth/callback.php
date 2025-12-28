@@ -23,7 +23,7 @@ if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], array_ma
     header('Access-Control-Allow-Credentials: true');
 }
 
-header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 // Handle preflight
@@ -32,7 +32,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-// Validate request method
+// Handle GET request from GitHub redirect
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $code = $_GET['code'] ?? null;
+    $state = $_GET['state'] ?? null;
+    $error = $_GET['error'] ?? null;
+    $errorDescription = $_GET['error_description'] ?? null;
+    
+    // Check for GitHub authorization errors
+    if ($error) {
+        $redirectUrl = $cmsOrigin . '?oauth_error=' . urlencode($error);
+        if ($errorDescription) {
+            $redirectUrl .= '&error_description=' . urlencode($errorDescription);
+        }
+        header('Location: ' . $redirectUrl);
+        exit;
+    }
+    
+    // Validate code and state
+    if (!$code || !$state) {
+        header('Location: ' . $cmsOrigin . '?oauth_error=missing_parameters');
+        exit;
+    }
+    
+    // Redirect back to CMS with code and state
+    $redirectUrl = $cmsOrigin . '?oauth_code=' . urlencode($code) . '&oauth_state=' . urlencode($state);
+    header('Location: ' . $redirectUrl);
+    exit;
+}
+
+// Handle POST request for token exchange
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     die(json_encode(['error' => 'Method not allowed']));
