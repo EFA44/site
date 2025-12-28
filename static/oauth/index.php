@@ -648,7 +648,6 @@ HTML;
             }
         }
 
-
         $json_body = json_encode($request_body);
 
         $context_options = [
@@ -758,8 +757,14 @@ HTML;
             'Content-Type: application/json',
             'User-Agent: Sveltia-CMS-Auth-PHP'
         ]);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        // Connection and total timeouts
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
+        // Enforce TLS/HTTPS only and verify host
+        if (defined('CURLPROTO_HTTPS')) {
+            curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+        }
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 
@@ -768,14 +773,14 @@ HTML;
 
         $response = curl_exec($ch);
         $curl_errno = curl_errno($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         $this->debugLog("OAuth Debug cURL - Response: " . ($response ? 'received' : 'false'));
         if ($response) {
             $this->debugLog("OAuth Debug cURL - Response: " . $response);
         }
+        $this->debugLog("OAuth Debug cURL - HTTP code: " . $http_code);
         $this->debugLog("OAuth Debug cURL - Error number: " . $curl_errno);
-
-        curl_close($ch);
 
         return $response;
     }

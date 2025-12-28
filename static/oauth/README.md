@@ -129,7 +129,6 @@ The handler implements the standard OAuth authorization code flow for GitHub and
 - **Secure Cookies**: CSRF cookie uses `HttpOnly` and `SameSite=Lax` by default; use `SameSite=None; Secure` only when HTTPS is guaranteed for cross-site contexts
 - **Token Expiration**: CSRF tokens expire after 10 minutes
 - **Redacted Debug Logging**: If `DEBUG_OAUTH` is enabled, debug messages are written to `debug.log` but are automatically sanitized — common secrets (access_token, refresh_token, client_secret, client_id, codes and Authorization Bearer tokens) are redacted to avoid accidental leakage.
-- **SSRF Mitigation**: Token exchange uses DNS resolution to enumerate A/AAAA records and only proceeds if public IPs are returned. When using cURL the client pins the hostname to the resolved public IPs via `CURLOPT_RESOLVE` to mitigate DNS rebinding and reduce time-of-check/time-of-use windows.
 
 ## Optional: Domain Whitelisting
 
@@ -155,6 +154,11 @@ Notes:
 - Only exact domains and leading wildcard patterns (`*.domain.tld`) are supported. Other wildcard forms are ignored to avoid accidental overbroad matching.
 - Patterns and domains are normalized using IDNA (punycode) for consistent matching of internationalized domains.
 - If `ALLOWED_DOMAINS` is not configured in production, the handler will reject requests by default to avoid accidental open access.
+
+### SSRF Protections
+- The handler validates that OAuth token URLs resolve to *public* IP addresses before performing token exchange requests.
+- cURL is used for token exchange and the resolved public IPs are pinned using `CURLOPT_RESOLVE` to guard against DNS rebinding attacks.
+- If no public IPs are found or cURL is unavailable, the token exchange is refused to reduce SSRF risk.
 
 ## Troubleshooting
 
