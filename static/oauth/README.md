@@ -4,6 +4,18 @@ PHP implementation of the Sveltia CMS OAuth authenticator for GitHub.
 
 Based on: https://github.com/sveltia/sveltia-cms-auth
 
+## When to Use This Handler
+
+### Use this if:
+- You have **multiple editors** who need GitHub authentication (not just you)
+- Your users are **non-technical** and prefer a login button over personal access tokens
+- You want a **seamless user experience** without managing PATs
+
+### Alternatives:
+- **GitHub PKCE (Recommended for single user)**: Sveltia CMS now supports client-side authentication directly with GitHub using PKCE. No backend needed! Just configure your GitHub OAuth app with PKCE enabled and use it directly in Sveltia CMS config.
+- **Personal Access Token (Simplest for developers)**: If you're the only user, generate a [GitHub PAT](https://github.com/settings/tokens) and use it directly in Sveltia CMS config. Much simpler than setting up this authenticator.
+- **GitLab OAuth**: Possible with backend implementation (not currently supported in PHP version, but could be added)
+
 ## Setup Instructions
 
 ### 1. Register OAuth App on GitHub
@@ -14,6 +26,7 @@ Based on: https://github.com/sveltia/sveltia-cms-auth
    - **Homepage URL**: https://your-site.com (your site URL)
    - **Application description**: (optional)
    - **Authorization callback URL**: `https://your-site.com/oauth/callback`
+   - **Enable Device Flow**: (optional)
 
 3. After creation, you'll see:
    - **Client ID**: Copy this value
@@ -133,6 +146,17 @@ static/oauth/
 | `GITHUB_CLIENT_SECRET` | Yes | OAuth app Client Secret from GitHub |
 | `GITHUB_HOSTNAME` | No | Default: `github.com` (for GitHub Enterprise) |
 | `ALLOWED_DOMAINS` | No | Comma-separated list of allowed domains with wildcard support |
+| `DEBUG_OAUTH` | No | Enable debug logging to `debug.log` |
+
+## Future Enhancements
+
+### GitLab Support
+This handler currently supports **GitHub only**. GitLab support could be added (the original [JavaScript version](https://github.com/sveltia/sveltia-cms-auth) supports both GitHub and GitLab). 
+
+To add GitLab support, extend the `handleAuth()` and `handleCallback()` methods to handle `provider: 'gitlab'` similar to the JavaScript reference implementation.
+
+### PKCE Support (GitHub)
+GitHub now supports client-side PKCE authentication for SPAs. For new projects, consider using [Sveltia CMS with PKCE](https://github.com/sveltia/sveltia-cms) instead of this backend authenticator.
 
 ## References
 
