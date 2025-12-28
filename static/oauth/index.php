@@ -18,7 +18,7 @@
 /**
  * Abstract OAuth Provider
  */
-abstract class CustomOAuthProvider {
+abstract class SveltiaCMSOAuthProvider {
     protected $debug_callback;
     
     public function setDebugCallback($callback) {
@@ -49,7 +49,7 @@ abstract class CustomOAuthProvider {
 /**
  * GitHub OAuth Provider
  */
-class GitHubProvider extends CustomOAuthProvider {
+class GitHubProvider extends SveltiaCMSOAuthProvider {
     private $client_id;
     private $client_secret;
     private $hostname;
@@ -100,7 +100,7 @@ class GitHubProvider extends CustomOAuthProvider {
 /**
  * GitLab OAuth Provider
  */
-class GitLabProvider extends CustomOAuthProvider {
+class GitLabProvider extends SveltiaCMSOAuthProvider {
     private $client_id;
     private $client_secret;
     private $hostname;
@@ -155,7 +155,7 @@ class GitLabProvider extends CustomOAuthProvider {
 /**
  * OAuth Provider Factory
  */
-class OAuthProviderFactory {
+class SveltiaCMSOAuthProviderFactory {
     private $providers = [];
     
     public function __construct($config = []) {
@@ -202,7 +202,7 @@ class SveltiaCMSAuthHandler {
     private $debug_enabled;
     
     public function __construct() {
-        $this->provider_factory = new OAuthProviderFactory([
+        $this->provider_factory = new SveltiaCMSOAuthProviderFactory([
             'github_client_id' => $_ENV['GITHUB_CLIENT_ID'] ?? $_SERVER['GITHUB_CLIENT_ID'] ?? '',
             'github_client_secret' => $_ENV['GITHUB_CLIENT_SECRET'] ?? $_SERVER['GITHUB_CLIENT_SECRET'] ?? '',
             'github_hostname' => $_ENV['GITHUB_HOSTNAME'] ?? $_SERVER['GITHUB_HOSTNAME'] ?? 'github.com',
