@@ -16,12 +16,33 @@ class SveltiaCMSAuthHandler {
     private $github_client_secret;
     private $allowed_domains;
     private $github_hostname;
+    private $debug_log_file;
+    private $debug_enabled;
     
     public function __construct() {
         $this->github_client_id = $_ENV['GITHUB_CLIENT_ID'] ?? $_SERVER['GITHUB_CLIENT_ID'] ?? '';
         $this->github_client_secret = $_ENV['GITHUB_CLIENT_SECRET'] ?? $_SERVER['GITHUB_CLIENT_SECRET'] ?? '';
         $this->allowed_domains = $_ENV['ALLOWED_DOMAINS'] ?? $_SERVER['ALLOWED_DOMAINS'] ?? '';
         $this->github_hostname = $_ENV['GITHUB_HOSTNAME'] ?? $_SERVER['GITHUB_HOSTNAME'] ?? 'github.com';
+        
+        // Debug logging enabled via DEBUG_OAUTH environment variable
+        $this->debug_enabled = !empty($_ENV['DEBUG_OAUTH'] ?? $_SERVER['DEBUG_OAUTH'] ?? false);
+        
+        // Set debug log file in same directory as this script
+        $this->debug_log_file = __DIR__ . '/debug.log';
+    }
+    
+    /**
+     * Write debug message to log file (only if DEBUG_OAUTH is enabled)
+     */
+    private function debugLog($message) {
+        if (!$this->debug_enabled) {
+            return;
+        }
+        $timestamp = date('Y-m-d H:i:s');
+        $log_message = "[{$timestamp}] {$message}\n";
+        @file_put_contents($this->debug_log_file, $log_message, FILE_APPEND);
+        error_log($message);
     }
     
     /**
@@ -168,6 +189,10 @@ HTML;
         $code = $_GET['code'] ?? null;
         $state = $_GET['state'] ?? null;
         
+        $this->debugLog("OAuth Debug Callback - Code: " . ($code ? 'received' : 'missing'));
+        $this->debugLog("OAuth Debug Callback - State: " . ($state ? 'received' : 'missing'));
+        $this->debugLog("OAuth Debug Callback - Cookies: " . json_encode($_COOKIE));
+        
         // Get CSRF token from cookie
         $csrf_cookie = $_COOKIE['csrf-token'] ?? null;
         
@@ -180,6 +205,7 @@ HTML;
         
         // Parse cookie: format is "github_<token>"
         if (!preg_match('/^github_([0-9a-f]{32})$/', $csrf_cookie, $matches)) {
+            $this->debugLog("OAuth Debug Callback - Invalid CSRF cookie format: " . $csrf_cookie);
             return $this->outputHTML([
                 'provider' => 'github',
                 'error' => 'Potential CSRF attack detected. Authentication flow aborted.',
@@ -201,6 +227,7 @@ HTML;
         
         // Verify CSRF token matches state parameter
         if ($state !== $csrf_token) {
+            $this->debugLog("OAuth Debug Callback - CSRF mismatch! State: $state, Token: $csrf_token");
             return $this->outputHTML([
                 'provider' => $provider,
                 'error' => 'Potential CSRF attack detected. Authentication flow aborted.',
@@ -220,6 +247,7 @@ HTML;
         $response = $this->fetchToken($token_url, $request_body);
         
         if ($response === false) {
+            $this->debugLog("OAuth Debug Callback - fetchToken returned false");
             return $this->outputHTML([
                 'provider' => $provider,
                 'error' => 'Failed to request an access token. Please try again later.',
@@ -230,6 +258,7 @@ HTML;
         $data = @json_decode($response, true);
         
         if (!$data) {
+            $this->debugLog("OAuth Debug Callback - JSON decode failed. Response: " . $response);
             return $this->outputHTML([
                 'provider' => $provider,
                 'error' => 'Server responded with malformed data. Please try again later.',
@@ -244,6 +273,7 @@ HTML;
         header("Set-Cookie: csrf-token=deleted; HttpOnly; Max-Age=0; Path=/; SameSite=Lax; Secure", false);
         
         if ($error || !$token) {
+            $this->debugLog("OAuth Debug Callback - Token error: " . $error);
             return $this->outputHTML([
                 'provider' => $provider,
                 'error' => $error ?: 'Failed to obtain access token.',
@@ -261,7 +291,12 @@ HTML;
      * Fetch access token from GitHub
      */
     private function fetchToken($token_url, $request_body) {
-        $context = stream_context_create([
+        $this->debugLog("OAuth Debug - Fetching token from: " . $token_url);
+        $this->debugLog("OAuth Debug - Request body: " . json_encode($request_body));
+        
+        $json_body = json_encode($request_body);
+        
+        $context_options = [
             'http' => [
                 'method' => 'POST',
                 'header' => [
@@ -269,12 +304,68 @@ HTML;
                     'Content-Type: application/json',
                     'User-Agent: Sveltia-CMS-Auth-PHP'
                 ],
-                'content' => json_encode($request_body),
-                'timeout' => 10
+                'content' => $json_body,
+                'timeout' => 10,
+                'ignore_errors' => true
+            ],
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
             ]
-        ]);
+        ];
+        
+        $context = stream_context_create($context_options);
+        
+        $this->debugLog("OAuth Debug - Stream context created");
         
         $response = @file_get_contents($token_url, false, $context);
+        
+        if ($response === false) {
+            $this->debugLog("OAuth Debug - Token request failed! (file_get_contents returned false)");
+            $this->debugLog("OAuth Debug - HTTP response headers: " . json_encode($http_response_header ?? []));
+            
+            // Try alternative: use cURL if available
+            if (function_exists('curl_init')) {
+                $this->debugLog("OAuth Debug - Attempting with cURL as fallback");
+                return $this->fetchTokenWithCurl($token_url, $request_body);
+            }
+        } else {
+            $this->debugLog("OAuth Debug - Token response: " . $response);
+        }
+        
+        return $response;
+    }
+    
+    /**
+     * Fallback: Fetch access token using cURL
+     */
+    private function fetchTokenWithCurl($token_url, $request_body) {
+        $ch = curl_init();
+        
+        curl_setopt($ch, CURLOPT_URL, $token_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request_body));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Accept: application/json',
+            'Content-Type: application/json',
+            'User-Agent: Sveltia-CMS-Auth-PHP'
+        ]);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        
+        $response = curl_exec($ch);
+        $curl_errno = curl_errno($ch);
+        $curl_error = curl_error($ch);
+        
+        $this->debugLog("OAuth Debug cURL - Response: " . ($response ? 'received' : 'false'));
+        $this->debugLog("OAuth Debug cURL - Error number: " . $curl_errno);
+        $this->debugLog("OAuth Debug cURL - Error message: " . $curl_error);
+        
+        curl_close($ch);
+        
         return $response;
     }
     
@@ -339,19 +430,29 @@ HTML;
     public function route() {
         $path = $this->getRequestPath();
         
+        // Debug output
+        $this->debugLog("OAuth Debug - REQUEST_URI: " . ($_SERVER['REQUEST_URI'] ?? 'N/A'));
+        $this->debugLog("OAuth Debug - PATH_INFO: " . ($_SERVER['PATH_INFO'] ?? 'N/A'));
+        $this->debugLog("OAuth Debug - Parsed path: " . $path);
+        $this->debugLog("OAuth Debug - REQUEST_METHOD: " . $_SERVER['REQUEST_METHOD']);
+        $this->debugLog("OAuth Debug - GET params: " . json_encode($_GET));
+        
         // Route to handlers
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            // Match /auth or /oauth/authorize
-            if (in_array($path, ['/auth', '/oauth/authorize'])) {
+            // Match /auth or /authorize (path has /oauth/ stripped)
+            if (in_array($path, ['/auth', '/authorize'])) {
+                $this->debugLog("OAuth Debug - Routing to handleAuth");
                 return $this->handleAuth();
             }
-            // Match /callback or /oauth/redirect
-            elseif (in_array($path, ['/callback', '/oauth/redirect'])) {
+            // Match /callback or /redirect (path has /oauth/ stripped)
+            elseif (in_array($path, ['/callback', '/redirect'])) {
+                $this->debugLog("OAuth Debug - Routing to handleCallback");
                 return $this->handleCallback();
             }
         }
         
         // 404 response
+        $this->debugLog("OAuth Debug - No route matched! Path: " . $path . ", Method: " . $_SERVER['REQUEST_METHOD']);
         http_response_code(404);
         echo '';
     }
