@@ -297,24 +297,54 @@ HTML;
     }
     
     /**
+     * Get the request path, handling various server configurations
+     */
+    private function getRequestPath() {
+        // Try REQUEST_URI first
+        if (!empty($_SERVER['REQUEST_URI'])) {
+            $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        } elseif (!empty($_SERVER['PATH_INFO'])) {
+            $path = $_SERVER['PATH_INFO'];
+        } elseif (!empty($_SERVER['ORIG_PATH_INFO'])) {
+            $path = $_SERVER['ORIG_PATH_INFO'];
+        } else {
+            return '/';
+        }
+        
+        // Remove base path (static/oauth/)
+        $base = '/oauth/';
+        if (strpos($path, $base) === 0) {
+            $path = substr($path, strlen($base) - 1); // Keep the leading /
+        }
+        
+        // Remove index.php if present
+        if (strpos($path, '/index.php') === 0) {
+            $path = substr($path, 10);
+            if (empty($path)) {
+                $path = '/';
+            }
+        }
+        
+        // Normalize: ensure single leading slash, no trailing slash
+        $path = '/' . trim($path, '/');
+        
+        return $path;
+    }
+    
+    /**
      * Route request to appropriate handler
      */
     public function route() {
-        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        
-        // Normalize path
-        if (strpos($path, '/index.php') === 0) {
-            $path = substr($path, 10);
-        }
-        
-        // Remove trailing slashes for matching
-        $path = '/' . trim($path, '/');
+        $path = $this->getRequestPath();
         
         // Route to handlers
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            if (in_array($path, ['/auth', '/oauth/authorize'])) {
+            // Match /auth or /oauth/authorize or just /authorize
+            if (in_array($path, ['/', '/auth', '/authorize', '/oauth/authorize'])) {
                 return $this->handleAuth();
-            } elseif (in_array($path, ['/callback', '/oauth/redirect'])) {
+            }
+            // Match /callback or /oauth/callback or /redirect or /oauth/redirect
+            elseif (in_array($path, ['/callback', '/oauth/callback', '/redirect', '/oauth/redirect'])) {
                 return $this->handleCallback();
             }
         }

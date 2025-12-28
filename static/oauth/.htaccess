@@ -1,10 +1,16 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    RewriteBase /oauth/
     
-    # If the requested file does not exist
+    # If the requested file or directory does not exist
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     
-    # Rewrite requests to index.php
+    # Rewrite all requests to index.php, preserving the path and query string
     RewriteRule ^(.*)$ index.php [L,QSA]
+</IfModule>
+
+# Ensure PHP handles all requests
+<IfModule mod_dir.c>
+    DirectoryIndex index.php
 </IfModule>
