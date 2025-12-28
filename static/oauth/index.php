@@ -147,7 +147,6 @@ HTML;
         // Build authorization URL
         $auth_params = [
             'client_id' => $this->github_client_id,
-            'redirect_uri' => $this->getBaseUrl() . '/callback',
             'scope' => 'repo,user',
             'state' => $csrf_token
         ];
@@ -339,12 +338,12 @@ HTML;
         
         // Route to handlers
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            // Match /auth or /oauth/authorize or just /authorize
-            if (in_array($path, ['/', '/auth', '/authorize', '/oauth/authorize'])) {
+            // Match /auth or /oauth/authorize
+            if (in_array($path, ['/auth', '/oauth/authorize'])) {
                 return $this->handleAuth();
             }
-            // Match /callback or /oauth/callback or /redirect or /oauth/redirect
-            elseif (in_array($path, ['/callback', '/oauth/callback', '/redirect', '/oauth/redirect'])) {
+            // Match /callback or /oauth/redirect
+            elseif (in_array($path, ['/callback', '/oauth/redirect'])) {
                 return $this->handleCallback();
             }
         }
