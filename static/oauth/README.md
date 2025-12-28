@@ -1,6 +1,6 @@
 # Sveltia CMS OAuth Handler (PHP)
 
-PHP implementation of the Sveltia CMS OAuth authenticator for GitHub.
+PHP implementation of the Sveltia CMS OAuth authenticator for GitHub and GitLab.
 
 Based on: https://github.com/sveltia/sveltia-cms-auth
 
@@ -14,11 +14,13 @@ Based on: https://github.com/sveltia/sveltia-cms-auth
 ### Alternatives:
 - **GitHub PKCE (Recommended for single user)**: Sveltia CMS now supports client-side authentication directly with GitHub using PKCE. No backend needed! Just configure your GitHub OAuth app with PKCE enabled and use it directly in Sveltia CMS config.
 - **Personal Access Token (Simplest for developers)**: If you're the only user, generate a [GitHub PAT](https://github.com/settings/tokens) and use it directly in Sveltia CMS config. Much simpler than setting up this authenticator.
-- **GitLab OAuth**: Possible with backend implementation (not currently supported in PHP version, but could be added)
+- **GitLab OAuth**: Supported! Configure with GitLab OAuth application
 
 ## Setup Instructions
 
-### 1. Register OAuth App on GitHub
+### 1. Register OAuth App on GitHub or GitLab
+
+#### For GitHub:
 
 1. Go to https://github.com/settings/applications/new
 2. Create a new OAuth Application with these settings:
@@ -32,14 +34,39 @@ Based on: https://github.com/sveltia/sveltia-cms-auth
    - **Client ID**: Copy this value
    - **Client Secret**: Click "Generate a new client secret" and copy it
 
+#### For GitLab:
+
+1. Go to https://gitlab.com/-/user_settings/applications (or your GitLab instance)
+2. Create a new Application with these settings:
+   - **Name**: Sveltia CMS Authenticator
+   - **Redirect URI**: `https://your-site.com/oauth/callback`
+   - **Scopes**: Select `api` (for repository access)
+
+3. After creation, you'll see:
+   - **Application ID**: Copy this value
+   - **Secret**: Copy this value
+
 ### 2. Configure Environment Variables
 
 The OAuth handler reads these environment variables:
 
+#### For GitHub:
 ```bash
 export GITHUB_CLIENT_ID="your-client-id"
 export GITHUB_CLIENT_SECRET="your-client-secret"
+```
+
+#### For GitLab:
+```bash
+export GITLAB_CLIENT_ID="your-application-id"
+export GITLAB_CLIENT_SECRET="your-secret"
+export GITLAB_HOSTNAME="gitlab.com"  # optional, for self-hosted GitLab
+```
+
+#### Common (both):
+```bash
 export ALLOWED_DOMAINS="your-site.com,www.your-site.com"  # optional, comma-separated
+export DEBUG_OAUTH="0"  # optional, set to 1 to enable debug logging
 ```
 
 **For PHP Server:**
@@ -53,9 +80,19 @@ Make sure these variables are set in your PHP server environment. Common locatio
 
 In `static/admin/config.yml`, add the `base_url` to your backend configuration:
 
+#### For GitHub:
 ```yaml
 backend:
   name: github
+  repo: your-username/your-repo
+  branch: main
+  base_url: https://your-site.com/oauth
+```
+
+#### For GitLab:
+```yaml
+backend:
+  name: gitlab
   repo: your-username/your-repo
   branch: main
   base_url: https://your-site.com/oauth
@@ -70,17 +107,17 @@ backend:
 
 ## OAuth Flow
 
-The handler implements the standard GitHub OAuth authorization code flow:
+The handler implements the standard OAuth authorization code flow for GitHub and GitLab:
 
 1. **`GET /auth`** or **`GET /oauth/authorize`**
    - Initiates OAuth flow
    - Parameters:
-     - `provider`: Must be `github`
+     - `provider`: Must be `github` or `gitlab`
      - `site_id`: Your site domain (checked against ALLOWED_DOMAINS)
-   - Redirects user to GitHub authorization page
+   - Redirects user to GitHub/GitLab authorization page
 
 2. **`GET /callback`** or **`GET /oauth/redirect`**
-   - GitHub redirects here after user authorizes
+   - GitHub/GitLab redirects here after user authorizes
    - Exchanges authorization code for access token
    - Returns HTML that posts token back to Sveltia CMS
 
@@ -142,18 +179,18 @@ static/oauth/
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `GITHUB_CLIENT_ID` | Yes | OAuth app Client ID from GitHub |
-| `GITHUB_CLIENT_SECRET` | Yes | OAuth app Client Secret from GitHub |
+| `GITHUB_CLIENT_ID` | No* | OAuth app Client ID from GitHub |
+| `GITHUB_CLIENT_SECRET` | No* | OAuth app Client Secret from GitHub |
 | `GITHUB_HOSTNAME` | No | Default: `github.com` (for GitHub Enterprise) |
+| `GITLAB_CLIENT_ID` | No* | OAuth app Application ID from GitLab |
+| `GITLAB_CLIENT_SECRET` | No* | OAuth app Secret from GitLab |
+| `GITLAB_HOSTNAME` | No | Default: `gitlab.com` (for self-hosted GitLab) |
 | `ALLOWED_DOMAINS` | No | Comma-separated list of allowed domains with wildcard support |
 | `DEBUG_OAUTH` | No | Enable debug logging to `debug.log` |
 
+*At least one provider (GitHub or GitLab) must be configured
+
 ## Future Enhancements
-
-### GitLab Support
-This handler currently supports **GitHub only**. GitLab support could be added (the original [JavaScript version](https://github.com/sveltia/sveltia-cms-auth) supports both GitHub and GitLab). 
-
-To add GitLab support, extend the `handleAuth()` and `handleCallback()` methods to handle `provider: 'gitlab'` similar to the JavaScript reference implementation.
 
 ### PKCE Support (GitHub)
 GitHub now supports client-side PKCE authentication for SPAs. For new projects, consider using [Sveltia CMS with PKCE](https://github.com/sveltia/sveltia-cms) instead of this backend authenticator.
@@ -164,6 +201,8 @@ GitHub now supports client-side PKCE authentication for SPAs. For new projects, 
 - [Sveltia CMS Auth](https://github.com/sveltia/sveltia-cms-auth)
 - [GitHub OAuth Apps Documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps)
 - [GitHub OAuth Authorization Flow](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)
+- [GitLab OAuth Documentation](https://docs.gitlab.com/ee/api/oauth2.html)
+- [GitLab OAuth Authorization Code Flow](https://docs.gitlab.com/ee/api/oauth2.html#authorization-code-flow)
 
 ## License
 

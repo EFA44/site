@@ -2,40 +2,225 @@
 /**
  * Sveltia CMS OAuth Handler for PHP
  * 
- * Handles GitHub OAuth authentication for Sveltia CMS
+ * Handles OAuth authentication for Sveltia CMS (GitHub, GitLab, extensible for more providers)
  * Based on: https://github.com/sveltia/sveltia-cms-auth
  * 
  * Environment variables required:
- * - GITHUB_CLIENT_ID
- * - GITHUB_CLIENT_SECRET
+ * - GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET (for GitHub)
+ * - GITLAB_CLIENT_ID and GITLAB_CLIENT_SECRET (for GitLab)
  * - ALLOWED_DOMAINS (optional, comma-separated)
  */
 
+// ============================================================================
+// OAUTH PROVIDER INTERFACE & IMPLEMENTATIONS
+// ============================================================================
+
+/**
+ * Abstract OAuth Provider
+ */
+abstract class CustomOAuthProvider {
+    protected $debug_callback;
+    
+    public function setDebugCallback($callback) {
+        $this->debug_callback = $callback;
+    }
+    
+    protected function debugLog($message) {
+        if (is_callable($this->debug_callback)) {
+            call_user_func($this->debug_callback, $message);
+        }
+    }
+    
+    abstract public function getProviderName();
+    abstract public function isConfigured();
+    abstract public function getAuthorizationUrl($csrf_token, $base_url = null);
+    abstract public function getCsrfCookieName();
+    abstract public function getTokenExchangeData($code, $base_url = null);
+    
+    public function validateScope($scope) {
+        return true;
+    }
+    
+    public function extractToken($response_data) {
+        return $response_data['access_token'] ?? '';
+    }
+}
+
+/**
+ * GitHub OAuth Provider
+ */
+class GitHubProvider extends CustomOAuthProvider {
+    private $client_id;
+    private $client_secret;
+    private $hostname;
+    
+    public function __construct($client_id = '', $client_secret = '', $hostname = 'github.com') {
+        $this->client_id = $client_id;
+        $this->client_secret = $client_secret;
+        $this->hostname = $hostname;
+    }
+    
+    public function getProviderName() {
+        return 'github';
+    }
+    
+    public function isConfigured() {
+        return !empty($this->client_id) && !empty($this->client_secret);
+    }
+    
+    public function getAuthorizationUrl($csrf_token, $base_url = null) {
+        $auth_params = [
+            'client_id' => $this->client_id,
+            'scope' => 'repo',
+            'state' => $csrf_token
+        ];
+        return 'https://' . $this->hostname . '/login/oauth/authorize?' . http_build_query($auth_params);
+    }
+    
+    public function getCsrfCookieName() {
+        return 'github_';
+    }
+    
+    public function getTokenExchangeData($code, $base_url = null) {
+        return [
+            'url' => 'https://' . $this->hostname . '/login/oauth/access_token',
+            'body' => [
+                'code' => $code,
+                'client_id' => $this->client_id,
+                'client_secret' => $this->client_secret
+            ]
+        ];
+    }
+    
+    public function validateScope($scope) {
+        return empty($scope) || strpos($scope, 'repo') !== false;
+    }
+}
+
+/**
+ * GitLab OAuth Provider
+ */
+class GitLabProvider extends CustomOAuthProvider {
+    private $client_id;
+    private $client_secret;
+    private $hostname;
+    
+    public function __construct($client_id = '', $client_secret = '', $hostname = 'gitlab.com') {
+        $this->client_id = $client_id;
+        $this->client_secret = $client_secret;
+        $this->hostname = $hostname;
+    }
+    
+    public function getProviderName() {
+        return 'gitlab';
+    }
+    
+    public function isConfigured() {
+        return !empty($this->client_id) && !empty($this->client_secret);
+    }
+    
+    public function getAuthorizationUrl($csrf_token, $base_url = null) {
+        $auth_params = [
+            'client_id' => $this->client_id,
+            'redirect_uri' => $base_url . '/callback',
+            'response_type' => 'code',
+            'scope' => 'api',
+            'state' => $csrf_token
+        ];
+        return 'https://' . $this->hostname . '/oauth/authorize?' . http_build_query($auth_params);
+    }
+    
+    public function getCsrfCookieName() {
+        return 'gitlab_';
+    }
+    
+    public function getTokenExchangeData($code, $base_url = null) {
+        return [
+            'url' => 'https://' . $this->hostname . '/oauth/token',
+            'body' => [
+                'code' => $code,
+                'client_id' => $this->client_id,
+                'client_secret' => $this->client_secret,
+                'grant_type' => 'authorization_code',
+                'redirect_uri' => $base_url . '/callback'
+            ]
+        ];
+    }
+    
+    public function validateScope($scope) {
+        return empty($scope) || strpos($scope, 'api') !== false;
+    }
+}
+
+/**
+ * OAuth Provider Factory
+ */
+class OAuthProviderFactory {
+    private $providers = [];
+    
+    public function __construct($config = []) {
+        if (!empty($config['github_client_id'])) {
+            $this->providers['github'] = new GitHubProvider(
+                $config['github_client_id'],
+                $config['github_client_secret'],
+                $config['github_hostname'] ?? 'github.com'
+            );
+        }
+        
+        if (!empty($config['gitlab_client_id'])) {
+            $this->providers['gitlab'] = new GitLabProvider(
+                $config['gitlab_client_id'],
+                $config['gitlab_client_secret'],
+                $config['gitlab_hostname'] ?? 'gitlab.com'
+            );
+        }
+    }
+    
+    public function getProvider($name) {
+        return $this->providers[$name] ?? null;
+    }
+    
+    public function hasProvider($name) {
+        return isset($this->providers[$name]);
+    }
+    
+    public function setDebugCallback($callback) {
+        foreach ($this->providers as $provider) {
+            $provider->setDebugCallback($callback);
+        }
+    }
+}
+
+// ============================================================================
+// MAIN HANDLER
+// ============================================================================
+
 class SveltiaCMSAuthHandler {
-    private $github_client_id;
-    private $github_client_secret;
+    private $provider_factory;
     private $allowed_domains;
-    private $github_hostname;
     private $debug_log_file;
     private $debug_enabled;
     
     public function __construct() {
-        $this->github_client_id = $_ENV['GITHUB_CLIENT_ID'] ?? $_SERVER['GITHUB_CLIENT_ID'] ?? '';
-        $this->github_client_secret = $_ENV['GITHUB_CLIENT_SECRET'] ?? $_SERVER['GITHUB_CLIENT_SECRET'] ?? '';
+        $this->provider_factory = new OAuthProviderFactory([
+            'github_client_id' => $_ENV['GITHUB_CLIENT_ID'] ?? $_SERVER['GITHUB_CLIENT_ID'] ?? '',
+            'github_client_secret' => $_ENV['GITHUB_CLIENT_SECRET'] ?? $_SERVER['GITHUB_CLIENT_SECRET'] ?? '',
+            'github_hostname' => $_ENV['GITHUB_HOSTNAME'] ?? $_SERVER['GITHUB_HOSTNAME'] ?? 'github.com',
+            'gitlab_client_id' => $_ENV['GITLAB_CLIENT_ID'] ?? $_SERVER['GITLAB_CLIENT_ID'] ?? '',
+            'gitlab_client_secret' => $_ENV['GITLAB_CLIENT_SECRET'] ?? $_SERVER['GITLAB_CLIENT_SECRET'] ?? '',
+            'gitlab_hostname' => $_ENV['GITLAB_HOSTNAME'] ?? $_SERVER['GITLAB_HOSTNAME'] ?? 'gitlab.com',
+        ]);
+        
         $this->allowed_domains = $_ENV['ALLOWED_DOMAINS'] ?? $_SERVER['ALLOWED_DOMAINS'] ?? '';
-        $this->github_hostname = $_ENV['GITHUB_HOSTNAME'] ?? $_SERVER['GITHUB_HOSTNAME'] ?? 'github.com';
-        
-        // Debug logging enabled via DEBUG_OAUTH environment variable
         $this->debug_enabled = !empty($_ENV['DEBUG_OAUTH'] ?? $_SERVER['DEBUG_OAUTH'] ?? false);
-        
-        // Set debug log file in same directory as this script
         $this->debug_log_file = __DIR__ . '/debug.log';
+        
+        if ($this->debug_enabled) {
+            $this->provider_factory->setDebugCallback([$this, 'debugLog']);
+        }
     }
     
-    /**
-     * Write debug message to log file (only if DEBUG_OAUTH is enabled)
-     */
-    private function debugLog($message) {
+    public function debugLog($message) {
         if (!$this->debug_enabled) {
             return;
         }
@@ -45,29 +230,18 @@ class SveltiaCMSAuthHandler {
         error_log($message);
     }
     
-    /**
-     * Escape string for use in regex pattern
-     */
     private function escapeRegExp($str) {
         return preg_quote($str, '/');
     }
     
-    /**
-     * Check if domain is allowed
-     */
     private function isDomainAllowed($domain) {
-        // Default to deny if ALLOWED_DOMAINS is not configured for security
         if (empty($this->allowed_domains)) {
-            $this->debugLog("WARNING: ALLOWED_DOMAINS not configured. All domains allowed. Set ALLOWED_DOMAINS env var for security.");
-            // For now, we allow empty config for backward compatibility
-            // In production, consider requiring this setting
+            $this->debugLog("WARNING: ALLOWED_DOMAINS not configured. All domains allowed.");
             return true;
         }
         
         $allowed_list = array_map('trim', explode(',', $this->allowed_domains));
-        
         foreach ($allowed_list as $pattern) {
-            // Convert wildcard pattern to regex
             $regex_pattern = str_replace('\\*', '.+', $this->escapeRegExp($pattern));
             if (preg_match("/^{$regex_pattern}$/", $domain ?? '')) {
                 return true;
@@ -77,16 +251,10 @@ class SveltiaCMSAuthHandler {
         return false;
     }
     
-    /**
-     * Generate CSRF token (32 random hex chars)
-     */
     private function generateCsrfToken() {
         return bin2hex(random_bytes(16));
     }
     
-    /**
-     * Output HTML response that communicates with window opener
-     */
     private function outputHTML($args = []) {
         $provider = $args['provider'] ?? 'unknown';
         $token = $args['token'] ?? null;
@@ -94,30 +262,16 @@ class SveltiaCMSAuthHandler {
         $errorCode = $args['errorCode'] ?? null;
         
         $state = $error ? 'error' : 'success';
+        $content = $error 
+            ? json_encode(['provider' => $provider, 'error' => $error, 'errorCode' => $errorCode])
+            : json_encode(['provider' => $provider, 'token' => $token]);
         
-        if ($error) {
-            $content = json_encode([
-                'provider' => $provider,
-                'error' => $error,
-                'errorCode' => $errorCode
-            ]);
-        } else {
-            $content = json_encode([
-                'provider' => $provider,
-                'token' => $token
-            ]);
-        }
-        
-        // Clear CSRF token
         header("Set-Cookie: csrf-token=deleted; HttpOnly; Max-Age=0; Path=/; SameSite=Lax; Secure", false);
         header('Content-Type: text/html; charset=UTF-8');
-        
-        // Set security headers
         header('X-Content-Type-Options: nosniff');
         header('X-Frame-Options: SAMEORIGIN');
         header('Referrer-Policy: no-referrer');
         
-        // Set appropriate HTTP status for errors
         if ($error) {
             http_response_code(400);
         }
@@ -130,7 +284,6 @@ class SveltiaCMSAuthHandler {
 (() => {
   window.addEventListener('message', ({ data, origin }) => {
     if (data === 'authorizing:$provider') {
-      // Only send token to same origin
       if (origin === window.location.origin) {
         window.opener?.postMessage(
           'authorization:$provider:$state:$content',
@@ -147,70 +300,51 @@ class SveltiaCMSAuthHandler {
 HTML;
     }
     
-    /**
-     * Handle the auth request (first step of OAuth flow)
-     */
     private function handleAuth() {
-        $provider = $_GET['provider'] ?? null;
-        $site_id = $_GET['site_id'] ?? null; // domain
+        $provider_name = $_GET['provider'] ?? null;
+        $site_id = $_GET['site_id'] ?? null;
         
-        if (!$provider || $provider !== 'github') {
+        $provider = $this->provider_factory->getProvider($provider_name);
+        
+        if (!$provider) {
             return $this->outputHTML([
                 'error' => 'Your Git backend is not supported by the authenticator.',
                 'errorCode' => 'UNSUPPORTED_BACKEND'
             ]);
         }
         
-        // Check if domain is allowed
         if (!$this->isDomainAllowed($site_id)) {
             return $this->outputHTML([
-                'provider' => $provider,
+                'provider' => $provider_name,
                 'error' => 'Your domain is not allowed to use the authenticator.',
                 'errorCode' => 'UNSUPPORTED_DOMAIN'
             ]);
         }
         
-        // Check if credentials are configured
-        if (!$this->github_client_id || !$this->github_client_secret) {
+        if (!$provider->isConfigured()) {
             return $this->outputHTML([
-                'provider' => $provider,
+                'provider' => $provider_name,
                 'error' => 'OAuth app client ID or secret is not configured.',
                 'errorCode' => 'MISCONFIGURED_CLIENT'
             ]);
         }
         
-        // Generate CSRF token
         $csrf_token = $this->generateCsrfToken();
+        $auth_url = $provider->getAuthorizationUrl($csrf_token, $this->getBaseUrl());
+        $cookie_name = $provider->getCsrfCookieName();
         
-        // Build authorization URL
-        $auth_params = [
-            'client_id' => $this->github_client_id,
-            'scope' => 'repo',  // Reduced scope - only repo access needed, removed user scope
-            'state' => $csrf_token
-        ];
-        
-        $auth_url = 'https://' . $this->github_hostname . '/login/oauth/authorize?' . http_build_query($auth_params);
-        
-        // Set CSRF token cookie (expires in 10 minutes)
-        header("Set-Cookie: csrf-token=github_{$csrf_token}; HttpOnly; Path=/; Max-Age=600; SameSite=Lax; Secure", false);
-        
-        // Redirect to GitHub authorization
+        header("Set-Cookie: csrf-token={$cookie_name}{$csrf_token}; HttpOnly; Path=/; Max-Age=600; SameSite=Lax; Secure", false);
         header('Location: ' . $auth_url);
         exit;
     }
     
-    /**
-     * Handle the callback request (second step of OAuth flow)
-     */
     private function handleCallback() {
         $code = $_GET['code'] ?? null;
         $state = $_GET['state'] ?? null;
         
         $this->debugLog("OAuth Debug Callback - Code: " . ($code ? 'received' : 'missing'));
         $this->debugLog("OAuth Debug Callback - State: " . ($state ? 'received' : 'missing'));
-        $this->debugLog("OAuth Debug Callback - Cookies: " . json_encode($_COOKIE));
         
-        // Get CSRF token from cookie
         $csrf_cookie = $_COOKIE['csrf-token'] ?? null;
         
         if (!$csrf_cookie) {
@@ -220,53 +354,49 @@ HTML;
             ]);
         }
         
-        // Parse cookie: format is "github_<token>"
-        if (!preg_match('/^github_([0-9a-f]{32})$/', $csrf_cookie, $matches)) {
+        if (!preg_match('/^(github|gitlab)_([0-9a-f]{32})$/', $csrf_cookie, $matches)) {
             $this->debugLog("OAuth Debug Callback - Invalid CSRF cookie format: " . $csrf_cookie);
             return $this->outputHTML([
-                'provider' => 'github',
                 'error' => 'Potential CSRF attack detected. Authentication flow aborted.',
                 'errorCode' => 'CSRF_DETECTED'
             ]);
         }
         
-        $provider = 'github';
-        $csrf_token = $matches[1];
+        $provider_name = $matches[1];
+        $csrf_token = $matches[2];
         
-        // Validate authorization code and state
+        $provider = $this->provider_factory->getProvider($provider_name);
+        if (!$provider) {
+            return $this->outputHTML([
+                'error' => 'Unknown provider.',
+                'errorCode' => 'INVALID_PROVIDER'
+            ]);
+        }
+        
         if (!$code || !$state) {
             return $this->outputHTML([
-                'provider' => $provider,
+                'provider' => $provider_name,
                 'error' => 'Failed to receive an authorization code. Please try again later.',
                 'errorCode' => 'AUTH_CODE_REQUEST_FAILED'
             ]);
         }
         
-        // Verify CSRF token matches state parameter
         if ($state !== $csrf_token) {
             $this->debugLog("OAuth Debug Callback - CSRF mismatch! State: $state, Token: $csrf_token");
             return $this->outputHTML([
-                'provider' => $provider,
+                'provider' => $provider_name,
                 'error' => 'Potential CSRF attack detected. Authentication flow aborted.',
                 'errorCode' => 'CSRF_DETECTED'
             ]);
         }
         
-        // Exchange authorization code for access token
-        $token_url = 'https://' . $this->github_hostname . '/login/oauth/access_token';
-        
-        $request_body = [
-            'code' => $code,
-            'client_id' => $this->github_client_id,
-            'client_secret' => $this->github_client_secret
-        ];
-        
-        $response = $this->fetchToken($token_url, $request_body);
+        $exchange_data = $provider->getTokenExchangeData($code, $this->getBaseUrl());
+        $response = $this->fetchToken($exchange_data['url'], $exchange_data['body']);
         
         if ($response === false) {
             $this->debugLog("OAuth Debug Callback - fetchToken returned false");
             return $this->outputHTML([
-                'provider' => $provider,
+                'provider' => $provider_name,
                 'error' => 'Failed to request an access token. Please try again later.',
                 'errorCode' => 'TOKEN_REQUEST_FAILED'
             ]);
@@ -277,47 +407,42 @@ HTML;
         if (!$data) {
             $this->debugLog("OAuth Debug Callback - JSON decode failed. Response: " . $response);
             return $this->outputHTML([
-                'provider' => $provider,
+                'provider' => $provider_name,
                 'error' => 'Server responded with malformed data. Please try again later.',
                 'errorCode' => 'MALFORMED_RESPONSE'
             ]);
         }
         
-        $token = $data['access_token'] ?? '';
+        $token = $provider->extractToken($data);
         $error = $data['error'] ?? '';
         $scope = $data['scope'] ?? '';
         
-        // Validate that requested scope was granted
-        if ($token && $scope && strpos($scope, 'repo') === false) {
-            $this->debugLog("OAuth Debug Callback - Scope validation failed. Requested: repo, Got: " . $scope);
+        if ($token && $scope && !$provider->validateScope($scope)) {
+            $this->debugLog("OAuth Debug Callback - Scope validation failed. Got: " . $scope);
             return $this->outputHTML([
-                'provider' => $provider,
+                'provider' => $provider_name,
                 'error' => 'Insufficient permissions granted. Please ensure you grant repository access.',
                 'errorCode' => 'INSUFFICIENT_SCOPE'
             ]);
         }
         
-        // Clear CSRF token
         header("Set-Cookie: csrf-token=deleted; HttpOnly; Max-Age=0; Path=/; SameSite=Lax; Secure", false);
         
         if ($error || !$token) {
             $this->debugLog("OAuth Debug Callback - Token error: " . $error);
             return $this->outputHTML([
-                'provider' => $provider,
+                'provider' => $provider_name,
                 'error' => $error ?: 'Failed to obtain access token.',
                 'errorCode' => 'TOKEN_REQUEST_FAILED'
             ]);
         }
         
         return $this->outputHTML([
-            'provider' => $provider,
+            'provider' => $provider_name,
             'token' => $token
         ]);
     }
     
-    /**
-     * Fetch access token from GitHub
-     */
     private function fetchToken($token_url, $request_body) {
         $this->debugLog("OAuth Debug - Fetching token from: " . $token_url);
         $this->debugLog("OAuth Debug - Request body: " . json_encode($request_body));
@@ -344,30 +469,20 @@ HTML;
         ];
         
         $context = stream_context_create($context_options);
-        
-        $this->debugLog("OAuth Debug - Stream context created");
-        
         $response = @file_get_contents($token_url, false, $context);
         
-        if ($response === false) {
-            $this->debugLog("OAuth Debug - Token request failed! (file_get_contents returned false)");
-            $this->debugLog("OAuth Debug - HTTP response headers: " . json_encode($http_response_header ?? []));
-            
-            // Try alternative: use cURL if available
-            if (function_exists('curl_init')) {
-                $this->debugLog("OAuth Debug - Attempting with cURL as fallback");
-                return $this->fetchTokenWithCurl($token_url, $request_body);
-            }
-        } else {
+        if ($response === false && function_exists('curl_init')) {
+            $this->debugLog("OAuth Debug - Attempting with cURL as fallback");
+            return $this->fetchTokenWithCurl($token_url, $request_body);
+        }
+        
+        if ($response !== false) {
             $this->debugLog("OAuth Debug - Token response: " . $response);
         }
         
         return $response;
     }
     
-    /**
-     * Fallback: Fetch access token using cURL
-     */
     private function fetchTokenWithCurl($token_url, $request_body) {
         $ch = curl_init();
         
@@ -386,26 +501,20 @@ HTML;
         
         $response = curl_exec($ch);
         $curl_errno = curl_errno($ch);
-        $curl_error = curl_error($ch);
         
         $this->debugLog("OAuth Debug cURL - Response: " . ($response ? 'received' : 'false'));
         $this->debugLog("OAuth Debug cURL - Error number: " . $curl_errno);
-        $this->debugLog("OAuth Debug cURL - Error message: " . $curl_error);
         
         curl_close($ch);
         
         return $response;
     }
     
-    /**
-     * Get base URL of the OAuth handler
-     */
     private function getBaseUrl() {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'];
         $base_path = dirname($_SERVER['REQUEST_URI']);
         
-        // Remove /index.php from path if present
         $base_path = str_replace('/index.php', '', $base_path);
         if (substr($base_path, -1) === '/') {
             $base_path = rtrim($base_path, '/');
@@ -414,11 +523,7 @@ HTML;
         return $protocol . '://' . $host . $base_path;
     }
     
-    /**
-     * Get the request path, handling various server configurations
-     */
     private function getRequestPath() {
-        // Try REQUEST_URI first
         if (!empty($_SERVER['REQUEST_URI'])) {
             $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         } elseif (!empty($_SERVER['PATH_INFO'])) {
@@ -429,18 +534,15 @@ HTML;
             return '/';
         }
         
-        // Remove base path (/oauth/)
         $base = '/oauth/';
         if (strpos($path, $base) === 0) {
-            $path = '/' . substr($path, strlen($base)); // Extract path after /oauth/
+            $path = '/' . substr($path, strlen($base));
         }
         
-        // Remove index.php if present
         if (strpos($path, '/index.php') === 0) {
             $path = substr($path, 10);
         }
         
-        // Normalize: ensure single leading slash, no trailing slash (but keep single /)
         if (empty($path) || $path === '/') {
             return '/';
         }
@@ -452,35 +554,25 @@ HTML;
         return $path;
     }
     
-    /**
-     * Route request to appropriate handler
-     */
     public function route() {
         $path = $this->getRequestPath();
         
-        // Debug output
         $this->debugLog("OAuth Debug - REQUEST_URI: " . ($_SERVER['REQUEST_URI'] ?? 'N/A'));
-        $this->debugLog("OAuth Debug - PATH_INFO: " . ($_SERVER['PATH_INFO'] ?? 'N/A'));
         $this->debugLog("OAuth Debug - Parsed path: " . $path);
         $this->debugLog("OAuth Debug - REQUEST_METHOD: " . $_SERVER['REQUEST_METHOD']);
         $this->debugLog("OAuth Debug - GET params: " . json_encode($_GET));
         
-        // Route to handlers
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            // Match /auth or /authorize (path has /oauth/ stripped)
             if (in_array($path, ['/auth', '/authorize'])) {
                 $this->debugLog("OAuth Debug - Routing to handleAuth");
                 return $this->handleAuth();
-            }
-            // Match /callback or /redirect (path has /oauth/ stripped)
-            elseif (in_array($path, ['/callback', '/redirect'])) {
+            } elseif (in_array($path, ['/callback', '/redirect'])) {
                 $this->debugLog("OAuth Debug - Routing to handleCallback");
                 return $this->handleCallback();
             }
         }
         
-        // 404 response
-        $this->debugLog("OAuth Debug - No route matched! Path: " . $path . ", Method: " . $_SERVER['REQUEST_METHOD']);
+        $this->debugLog("OAuth Debug - No route matched! Path: " . $path);
         http_response_code(404);
     }
 }
