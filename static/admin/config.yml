@@ -45,6 +45,7 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     preview_path: "events/{{slug}}"
     icon: calendar_month
+    sort: "date:desc"
     fields:
       - { label: "Titre", name: "title", widget: "string" }
       - { label: "Auteur", name: "author", widget: "hidden", default: "EFA44" }
