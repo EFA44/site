@@ -146,8 +146,8 @@ collections:
         label: "Menu principal"
         file: "config/_default/menu.yaml"
         fields:
-          - label: "Items"
-            name: "main"
+          - label: "Navigation principale"
+            name: "navbar"
             widget: "list"
             fields:
               - { label: "Identifiant", name: "identifier", widget: "string" }
@@ -164,17 +164,13 @@ collections:
                   - { label: "Style", name: "style", widget: "string", required: false }
                   - { label: "Externe", name: "external", widget: "boolean", required: false }
                   - { label: "Icône", name: "icon", widget: "string", required: false }
-
-      - name: "footer_menu"
-        label: "Pied de page"
-        file: "config/_default/footer.yaml"
-        fields:
-          - label: "Liens"
+          - label: "Pied de page"
             name: "footer"
             widget: "list"
             fields:
               - { label: "Nom", name: "name", widget: "string" }
               - { label: "URL", name: "url", widget: "string" }
+              - { label: "Poids", name: "weight", widget: "number", required: false }
               - label: "Params"
                 name: "params"
                 widget: "object"

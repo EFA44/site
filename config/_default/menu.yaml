@@ -1,4 +1,4 @@
-main:
+navbar:
   # À propos de nous
   - identifier: about
     name: À propos de nous
@@ -51,3 +51,16 @@ main:
     params:
       highlight: true
       icon: users
+
+footer:
+  - name: Fédération EFA
+    url: https://www.adoptionefa.org/
+    params:
+      external: true
+    weight: 1
+  - name: Notre fédération
+    url: /pages/federation/
+    weight: 2
+  - name: Événements
+    url: /events/
+    weight: 3
