@@ -41,23 +41,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     
     // Check for GitHub authorization errors
     if ($error) {
-        $redirectUrl = $cmsOrigin . '?oauth_error=' . urlencode($error);
-        if ($errorDescription) {
-            $redirectUrl .= '&error_description=' . urlencode($errorDescription);
-        }
-        header('Location: ' . $redirectUrl);
-        exit;
+        http_response_code(400);
+        die(json_encode([
+            'error' => $error,
+            'error_description' => $errorDescription,
+        ]));
     }
     
     // Validate code and state
     if (!$code || !$state) {
-        header('Location: ' . $cmsOrigin . '?oauth_error=missing_parameters');
-        exit;
+        http_response_code(400);
+        die(json_encode(['error' => 'Missing authorization code or state']));
     }
     
-    // Redirect back to CMS with code and state
-    $redirectUrl = $cmsOrigin . '?oauth_code=' . urlencode($code) . '&oauth_state=' . urlencode($state);
-    header('Location: ' . $redirectUrl);
+    // Exchange code for access token
+    $tokenUrl = 'https://github.com/login/oauth/access_token';
+    $postData = [
+        'client_id' => $clientId,
+        'client_secret' => $clientSecret,
+        'code' => $code,
+        'redirect_uri' => getenv('REDIRECT_URI'),
+    ];
+
+    $ch = curl_init($tokenUrl);
+    curl_setopt_array($ch, [
+        CURLOPT_POSTFIELDS => http_build_query($postData),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => ['Accept: application/json'],
+        CURLOPT_TIMEOUT => 10,
+    ]);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($httpCode !== 200) {
+        http_response_code(400);
+        die(json_encode(['error' => 'Failed to exchange code for token']));
+    }
+
+    $tokenData = json_decode($response, true);
+
+    if (!isset($tokenData['access_token'])) {
+        http_response_code(400);
+        die(json_encode(['error' => 'Invalid token response from GitHub']));
+    }
+
+    $accessToken = $tokenData['access_token'];
+
+    // Get user info from GitHub
+    $ch = curl_init('https://api.github.com/user');
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Authorization: Bearer ' . $accessToken,
+            'Accept: application/vnd.github.v3+json',
+            'User-Agent: efa44-oauth',
+        ],
+        CURLOPT_TIMEOUT => 10,
+    ]);
+
+    $userResponse = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($httpCode !== 200) {
+        http_response_code(400);
+        die(json_encode(['error' => 'Failed to fetch user information']));
+    }
+
+    $userData = json_decode($userResponse, true);
+
+    // Return user data and token
+    http_response_code(200);
+    echo json_encode([
+        'success' => true,
+        'access_token' => $accessToken,
+        'user' => [
+            'id' => $userData['id'],
+            'login' => $userData['login'],
+            'name' => $userData['name'],
+            'avatar_url' => $userData['avatar_url'],
+            'email' => $userData['email'],
+        ],
+    ]);
     exit;
 }
 
