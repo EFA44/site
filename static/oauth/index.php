@@ -310,22 +310,25 @@ HTML;
             return '/';
         }
         
-        // Remove base path (static/oauth/)
+        // Remove base path (/oauth/)
         $base = '/oauth/';
         if (strpos($path, $base) === 0) {
-            $path = substr($path, strlen($base) - 1); // Keep the leading /
+            $path = '/' . substr($path, strlen($base)); // Extract path after /oauth/
         }
         
         // Remove index.php if present
         if (strpos($path, '/index.php') === 0) {
             $path = substr($path, 10);
-            if (empty($path)) {
-                $path = '/';
-            }
         }
         
-        // Normalize: ensure single leading slash, no trailing slash
-        $path = '/' . trim($path, '/');
+        // Normalize: ensure single leading slash, no trailing slash (but keep single /)
+        if (empty($path) || $path === '/') {
+            return '/';
+        }
+        $path = '/' . ltrim($path, '/');
+        if ($path !== '/' && substr($path, -1) === '/') {
+            $path = rtrim($path, '/');
+        }
         
         return $path;
     }
