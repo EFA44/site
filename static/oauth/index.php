@@ -1,323 +1,330 @@
 <?php
 /**
- * Sveltia CMS OAuth Handler for GitHub
- * Handles the OAuth authorization and callback flow
+ * Sveltia CMS OAuth Handler for PHP
+ * 
+ * Handles GitHub OAuth authentication for Sveltia CMS
+ * Based on: https://github.com/sveltia/sveltia-cms-auth
+ * 
+ * Environment variables required:
+ * - GITHUB_CLIENT_ID
+ * - GITHUB_CLIENT_SECRET
+ * - ALLOWED_DOMAINS (optional, comma-separated)
  */
 
-// Get request path and method
-$method = $_SERVER['REQUEST_METHOD'];
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$path = str_replace('/oauth', '', $path);
-
-// Route requests
-if ($method === 'GET') {
-    if ($path === '/auth' || $path === '/authorize') {
-        handleAuth();
-    } elseif ($path === '/callback' || $path === '/redirect') {
-        handleCallback();
-    } else {
-        http_response_code(404);
-        exit;
-    }
-} else {
-    http_response_code(404);
-    exit;
-}
-
-/**
- * Output HTML response that communicates with the window opener
- */
-function outputHTML($data = []) {
-    $provider = $data['provider'] ?? 'unknown';
-    $token = $data['token'] ?? null;
-    $error = $data['error'] ?? null;
-    $errorCode = $data['errorCode'] ?? null;
-
-    $state = $error ? 'error' : 'success';
+class SveltiaCMSAuthHandler {
+    private $github_client_id;
+    private $github_client_secret;
+    private $allowed_domains;
+    private $github_hostname;
     
-    if ($error) {
-        $content = [
-            'provider' => $provider,
-            'error' => $error,
-            'errorCode' => $errorCode
-        ];
-    } else {
-        $content = [
-            'provider' => $provider,
-            'token' => $token
-        ];
+    public function __construct() {
+        $this->github_client_id = $_ENV['GITHUB_CLIENT_ID'] ?? $_SERVER['GITHUB_CLIENT_ID'] ?? '';
+        $this->github_client_secret = $_ENV['GITHUB_CLIENT_SECRET'] ?? $_SERVER['GITHUB_CLIENT_SECRET'] ?? '';
+        $this->allowed_domains = $_ENV['ALLOWED_DOMAINS'] ?? $_SERVER['ALLOWED_DOMAINS'] ?? '';
+        $this->github_hostname = $_ENV['GITHUB_HOSTNAME'] ?? $_SERVER['GITHUB_HOSTNAME'] ?? 'github.com';
     }
-
-    $contentJson = json_encode($content);
-
-    header('Content-Type: text/html;charset=UTF-8');
-    // Delete CSRF token
-    header('Set-Cookie: csrf-token=deleted; HttpOnly; Max-Age=0; Path=/; SameSite=Lax; Secure', false);
-
-    echo <<<HTML
+    
+    /**
+     * Escape string for use in regex pattern
+     */
+    private function escapeRegExp($str) {
+        return preg_quote($str, '/');
+    }
+    
+    /**
+     * Check if domain is allowed
+     */
+    private function isDomainAllowed($domain) {
+        if (empty($this->allowed_domains)) {
+            return true;
+        }
+        
+        $allowed_list = array_map('trim', explode(',', $this->allowed_domains));
+        
+        foreach ($allowed_list as $pattern) {
+            // Convert wildcard pattern to regex
+            $regex_pattern = str_replace('\\*', '.+', $this->escapeRegExp($pattern));
+            if (preg_match("/^{$regex_pattern}$/", $domain ?? '')) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Generate CSRF token (32 random hex chars)
+     */
+    private function generateCsrfToken() {
+        return bin2hex(random_bytes(16));
+    }
+    
+    /**
+     * Output HTML response that communicates with window opener
+     */
+    private function outputHTML($args = []) {
+        $provider = $args['provider'] ?? 'unknown';
+        $token = $args['token'] ?? null;
+        $error = $args['error'] ?? null;
+        $errorCode = $args['errorCode'] ?? null;
+        
+        $state = $error ? 'error' : 'success';
+        
+        if ($error) {
+            $content = json_encode([
+                'provider' => $provider,
+                'error' => $error,
+                'errorCode' => $errorCode
+            ]);
+        } else {
+            $content = json_encode([
+                'provider' => $provider,
+                'token' => $token
+            ]);
+        }
+        
+        // Clear CSRF token
+        header("Set-Cookie: csrf-token=deleted; HttpOnly; Max-Age=0; Path=/; SameSite=Lax; Secure", false);
+        header('Content-Type: text/html; charset=UTF-8');
+        
+        echo <<<HTML
 <!doctype html>
 <html>
 <body>
 <script>
 (() => {
-    window.addEventListener('message', ({ data, origin }) => {
-        if (data === 'authorizing:{$provider}') {
-            window.opener?.postMessage(
-                'authorization:{$provider}:{$state}:{$contentJson}',
-                origin
-            );
-        }
-    });
-    window.opener?.postMessage('authorizing:{$provider}', '*');
+  window.addEventListener('message', ({ data, origin }) => {
+    if (data === 'authorizing:$provider') {
+      window.opener?.postMessage(
+        'authorization:$provider:$state:$content',
+        origin
+      );
+    }
+  });
+  window.opener?.postMessage('authorizing:$provider', '*');
 })();
 </script>
 </body>
 </html>
 HTML;
-    exit;
-}
-
-/**
- * Escape string for use in regex
- */
-function escapeRegExp($str) {
-    return preg_quote($str, '/');
-}
-
-/**
- * Check if domain matches allowed domains pattern
- */
-function isDomainAllowed($domain, $allowedDomains) {
-    if (empty($allowedDomains)) {
-        return true;
     }
-
-    $domains = array_map('trim', explode(',', $allowedDomains));
     
-    foreach ($domains as $pattern) {
-        // Convert wildcard to regex
-        $pattern = escapeRegExp($pattern);
-        $pattern = str_replace('\\*', '.+', $pattern);
-        $pattern = "/^{$pattern}$/";
+    /**
+     * Handle the auth request (first step of OAuth flow)
+     */
+    private function handleAuth() {
+        $provider = $_GET['provider'] ?? null;
+        $site_id = $_GET['site_id'] ?? null; // domain
         
-        if (preg_match($pattern, $domain ?? '')) {
-            return true;
+        if (!$provider || $provider !== 'github') {
+            return $this->outputHTML([
+                'error' => 'Your Git backend is not supported by the authenticator.',
+                'errorCode' => 'UNSUPPORTED_BACKEND'
+            ]);
         }
-    }
-
-    return false;
-}
-
-/**
- * Generate random CSRF token
- */
-function generateCSRFToken() {
-    return bin2hex(random_bytes(16));
-}
-
-/**
- * Handle the auth method (first request in authorization flow)
- */
-function handleAuth() {
-    $provider = $_GET['provider'] ?? null;
-    $domain = $_GET['site_id'] ?? null;
-
-    // Get environment variables
-    $githubClientId = getenv('GITHUB_CLIENT_ID');
-    $githubClientSecret = getenv('GITHUB_CLIENT_SECRET');
-    $allowedOrigins = getenv('ALLOWED_ORIGINS');
-    $cmsOrigin = getenv('CMS_ORIGIN');
-
-    // Check provider
-    $supportedProviders = ['github', 'gitlab'];
-    if (!$provider || !in_array($provider, $supportedProviders)) {
-        outputHTML([
-            'error' => 'Your Git backend is not supported by the authenticator.',
-            'errorCode' => 'UNSUPPORTED_BACKEND'
-        ]);
-    }
-
-    // Check if domain is allowed (optional validation)
-    if (!empty($allowedOrigins) && !isDomainAllowed($domain, $allowedOrigins)) {
-        outputHTML([
-            'provider' => $provider,
-            'error' => 'Your domain is not allowed to use the authenticator.',
-            'errorCode' => 'UNSUPPORTED_DOMAIN'
-        ]);
-    }
-
-    // GitHub OAuth
-    if ($provider === 'github') {
-        if (empty($githubClientId) || empty($githubClientSecret)) {
-            outputHTML([
-                'provider' => 'github',
+        
+        // Check if domain is allowed
+        if (!$this->isDomainAllowed($site_id)) {
+            return $this->outputHTML([
+                'provider' => $provider,
+                'error' => 'Your domain is not allowed to use the authenticator.',
+                'errorCode' => 'UNSUPPORTED_DOMAIN'
+            ]);
+        }
+        
+        // Check if credentials are configured
+        if (!$this->github_client_id || !$this->github_client_secret) {
+            return $this->outputHTML([
+                'provider' => $provider,
                 'error' => 'OAuth app client ID or secret is not configured.',
                 'errorCode' => 'MISCONFIGURED_CLIENT'
             ]);
         }
-
+        
         // Generate CSRF token
-        $csrfToken = generateCSRFToken();
-
+        $csrf_token = $this->generateCsrfToken();
+        
         // Build authorization URL
-        $params = [
-            'client_id' => $githubClientId,
-            'redirect_uri' => $cmsOrigin . '/oauth/callback',
-            'response_type' => 'code',
+        $auth_params = [
+            'client_id' => $this->github_client_id,
+            'redirect_uri' => $this->getBaseUrl() . '/callback',
             'scope' => 'repo,user',
-            'state' => $csrfToken
+            'state' => $csrf_token
         ];
-
-        $authUrl = 'https://github.com/login/oauth/authorize?' . http_build_query($params);
-
-        // Set CSRF token cookie
-        setcookie(
-            'csrf-token',
-            'github_' . $csrfToken,
-            [
-                'expires' => time() + 600, // 10 minutes
-                'path' => '/',
-                'httponly' => true,
-                'samesite' => 'Lax',
-                'secure' => true
-            ]
-        );
-
-        // Redirect to authorization server
-        header('Location: ' . $authUrl);
+        
+        $auth_url = 'https://' . $this->github_hostname . '/login/oauth/authorize?' . http_build_query($auth_params);
+        
+        // Set CSRF token cookie (expires in 10 minutes)
+        header("Set-Cookie: csrf-token=github_{$csrf_token}; HttpOnly; Path=/; Max-Age=600; SameSite=Lax; Secure", false);
+        
+        // Redirect to GitHub authorization
+        header('Location: ' . $auth_url);
         exit;
     }
-
-    // Unsupported provider
-    outputHTML([
-        'provider' => $provider,
-        'error' => 'Your Git backend is not supported by the authenticator.',
-        'errorCode' => 'UNSUPPORTED_BACKEND'
-    ]);
-}
-
-/**
- * Handle the callback method (second request in authorization flow)
- */
-function handleCallback() {
-    $code = $_GET['code'] ?? null;
-    $state = $_GET['state'] ?? null;
-
-    // Get environment variables
-    $githubClientId = getenv('GITHUB_CLIENT_ID');
-    $githubClientSecret = getenv('GITHUB_CLIENT_SECRET');
-    $cmsOrigin = getenv('CMS_ORIGIN');
-
-    // Extract CSRF token from cookie
-    $csrfCookie = $_COOKIE['csrf-token'] ?? null;
-    $provider = null;
-    $csrfToken = null;
-
-    if ($csrfCookie && preg_match('/^([a-z-]+?)_([0-9a-f]{32})$/', $csrfCookie, $matches)) {
-        $provider = $matches[1];
-        $csrfToken = $matches[2];
-    }
-
-    // Validate provider
-    $supportedProviders = ['github', 'gitlab'];
-    if (!$provider || !in_array($provider, $supportedProviders)) {
-        outputHTML([
-            'error' => 'Your Git backend is not supported by the authenticator.',
-            'errorCode' => 'UNSUPPORTED_BACKEND'
-        ]);
-    }
-
-    // Validate authorization code and state
-    if (empty($code) || empty($state)) {
-        outputHTML([
-            'provider' => $provider,
-            'error' => 'Failed to receive an authorization code. Please try again later.',
-            'errorCode' => 'AUTH_CODE_REQUEST_FAILED'
-        ]);
-    }
-
-    // Validate CSRF token
-    if (empty($csrfToken) || $state !== $csrfToken) {
-        outputHTML([
-            'provider' => $provider,
-            'error' => 'Potential CSRF attack detected. Authentication flow aborted.',
-            'errorCode' => 'CSRF_DETECTED'
-        ]);
-    }
-
-    // GitHub token exchange
-    if ($provider === 'github') {
-        if (empty($githubClientId) || empty($githubClientSecret)) {
-            outputHTML([
-                'provider' => 'github',
-                'error' => 'OAuth app client ID or secret is not configured.',
-                'errorCode' => 'MISCONFIGURED_CLIENT'
+    
+    /**
+     * Handle the callback request (second step of OAuth flow)
+     */
+    private function handleCallback() {
+        $code = $_GET['code'] ?? null;
+        $state = $_GET['state'] ?? null;
+        
+        // Get CSRF token from cookie
+        $csrf_cookie = $_COOKIE['csrf-token'] ?? null;
+        
+        if (!$csrf_cookie) {
+            return $this->outputHTML([
+                'error' => 'Potential CSRF attack detected. Authentication flow aborted.',
+                'errorCode' => 'CSRF_DETECTED'
             ]);
         }
-
-        $tokenUrl = 'https://github.com/login/oauth/access_token';
-        $requestBody = [
-            'code' => $code,
-            'client_id' => $githubClientId,
-            'client_secret' => $githubClientSecret
-        ];
-
-        // Make request to GitHub API
-        $response = null;
-        $token = '';
-        $error = '';
-
-        try {
-            $ch = curl_init($tokenUrl);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestBody));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Accept: application/json',
-                'Content-Type: application/json'
+        
+        // Parse cookie: format is "github_<token>"
+        if (!preg_match('/^github_([0-9a-f]{32})$/', $csrf_cookie, $matches)) {
+            return $this->outputHTML([
+                'provider' => 'github',
+                'error' => 'Potential CSRF attack detected. Authentication flow aborted.',
+                'errorCode' => 'CSRF_DETECTED'
             ]);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-
-            $response = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-
-            if ($response === false) {
-                throw new Exception('cURL error');
-            }
-
-            $data = json_decode($response, true);
-
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                outputHTML([
-                    'provider' => $provider,
-                    'error' => 'Server responded with malformed data. Please try again later.',
-                    'errorCode' => 'MALFORMED_RESPONSE'
-                ]);
-            }
-
-            $token = $data['access_token'] ?? '';
-            $error = $data['error'] ?? '';
-
-        } catch (Exception $e) {
-            outputHTML([
+        }
+        
+        $provider = 'github';
+        $csrf_token = $matches[1];
+        
+        // Validate authorization code and state
+        if (!$code || !$state) {
+            return $this->outputHTML([
+                'provider' => $provider,
+                'error' => 'Failed to receive an authorization code. Please try again later.',
+                'errorCode' => 'AUTH_CODE_REQUEST_FAILED'
+            ]);
+        }
+        
+        // Verify CSRF token matches state parameter
+        if ($state !== $csrf_token) {
+            return $this->outputHTML([
+                'provider' => $provider,
+                'error' => 'Potential CSRF attack detected. Authentication flow aborted.',
+                'errorCode' => 'CSRF_DETECTED'
+            ]);
+        }
+        
+        // Exchange authorization code for access token
+        $token_url = 'https://' . $this->github_hostname . '/login/oauth/access_token';
+        
+        $request_body = [
+            'code' => $code,
+            'client_id' => $this->github_client_id,
+            'client_secret' => $this->github_client_secret
+        ];
+        
+        $response = $this->fetchToken($token_url, $request_body);
+        
+        if ($response === false) {
+            return $this->outputHTML([
                 'provider' => $provider,
                 'error' => 'Failed to request an access token. Please try again later.',
                 'errorCode' => 'TOKEN_REQUEST_FAILED'
             ]);
         }
-
-        outputHTML([
+        
+        $data = @json_decode($response, true);
+        
+        if (!$data) {
+            return $this->outputHTML([
+                'provider' => $provider,
+                'error' => 'Server responded with malformed data. Please try again later.',
+                'errorCode' => 'MALFORMED_RESPONSE'
+            ]);
+        }
+        
+        $token = $data['access_token'] ?? '';
+        $error = $data['error'] ?? '';
+        
+        // Clear CSRF token
+        header("Set-Cookie: csrf-token=deleted; HttpOnly; Max-Age=0; Path=/; SameSite=Lax; Secure", false);
+        
+        if ($error || !$token) {
+            return $this->outputHTML([
+                'provider' => $provider,
+                'error' => $error ?: 'Failed to obtain access token.',
+                'errorCode' => 'TOKEN_REQUEST_FAILED'
+            ]);
+        }
+        
+        return $this->outputHTML([
             'provider' => $provider,
-            'token' => $token,
-            'error' => $error
+            'token' => $token
         ]);
     }
-
-    // Unsupported provider
-    outputHTML([
-        'provider' => $provider,
-        'error' => 'Your Git backend is not supported by the authenticator.',
-        'errorCode' => 'UNSUPPORTED_BACKEND'
-    ]);
+    
+    /**
+     * Fetch access token from GitHub
+     */
+    private function fetchToken($token_url, $request_body) {
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'POST',
+                'header' => [
+                    'Accept: application/json',
+                    'Content-Type: application/json',
+                    'User-Agent: Sveltia-CMS-Auth-PHP'
+                ],
+                'content' => json_encode($request_body),
+                'timeout' => 10
+            ]
+        ]);
+        
+        $response = @file_get_contents($token_url, false, $context);
+        return $response;
+    }
+    
+    /**
+     * Get base URL of the OAuth handler
+     */
+    private function getBaseUrl() {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'];
+        $base_path = dirname($_SERVER['REQUEST_URI']);
+        
+        // Remove /index.php from path if present
+        $base_path = str_replace('/index.php', '', $base_path);
+        if (substr($base_path, -1) === '/') {
+            $base_path = rtrim($base_path, '/');
+        }
+        
+        return $protocol . '://' . $host . $base_path;
+    }
+    
+    /**
+     * Route request to appropriate handler
+     */
+    public function route() {
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        
+        // Normalize path
+        if (strpos($path, '/index.php') === 0) {
+            $path = substr($path, 10);
+        }
+        
+        // Remove trailing slashes for matching
+        $path = '/' . trim($path, '/');
+        
+        // Route to handlers
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            if (in_array($path, ['/auth', '/oauth/authorize'])) {
+                return $this->handleAuth();
+            } elseif (in_array($path, ['/callback', '/oauth/redirect'])) {
+                return $this->handleCallback();
+            }
+        }
+        
+        // 404 response
+        http_response_code(404);
+        echo '';
+    }
 }
+
+// Initialize and route request
+$handler = new SveltiaCMSAuthHandler();
+$handler->route();

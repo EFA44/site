@@ -1,95 +1,146 @@
-# Sveltia CMS OAuth Handler
+# Sveltia CMS OAuth Handler (PHP)
 
-This is a PHP-based OAuth authentication handler for connecting Sveltia CMS to GitHub.
+PHP implementation of the Sveltia CMS OAuth authenticator for GitHub.
 
-## Setup
+Based on: https://github.com/sveltia/sveltia-cms-auth
 
-### Environment Variables
+## Setup Instructions
 
-The following environment variables must be configured in your PHP server:
+### 1. Register OAuth App on GitHub
 
-- `GITHUB_CLIENT_ID` - Your GitHub OAuth App Client ID
-- `GITHUB_CLIENT_SECRET` - Your GitHub OAuth App Client Secret
-- `REDIRECT_URI` - The callback URI (e.g., `https://efa44.org/oauth/callback`)
-- `CMS_ORIGIN` - The origin of your CMS (e.g., `https://efa44.org`)
-- `ALLOWED_ORIGINS` - Comma-separated list of allowed origins (optional, supports wildcards with `*`)
-
-### GitHub OAuth App Configuration
-
-1. Go to GitHub Settings → Developer settings → OAuth Apps → New OAuth App
-2. Configure the application:
+1. Go to https://github.com/settings/applications/new
+2. Create a new OAuth Application with these settings:
+   - **Application name**: Sveltia CMS Authenticator (or your preferred name)
+   - **Homepage URL**: https://efa44.org (or your site URL)
+   - **Application description**: (optional)
    - **Authorization callback URL**: `https://efa44.org/oauth/callback`
-3. Copy the Client ID and Client Secret
-4. Set them as environment variables in your PHP server
 
-## How It Works
+3. After creation, you'll see:
+   - **Client ID**: Copy this value
+   - **Client Secret**: Click "Generate a new client secret" and copy it
 
-The OAuth flow has two main steps:
+### 2. Configure Environment Variables
 
-### 1. Authorization Request (`/oauth/auth` or `/oauth/authorize`)
+The OAuth handler reads these environment variables:
 
-- Sveltia CMS initiates the flow by opening a popup window to `/oauth/auth`
-- Query parameters:
-  - `provider` - `github` (required)
-  - `site_id` - The site identifier (optional)
-- The handler:
-  - Validates the provider and domain
-  - Generates a CSRF token
-  - Redirects to GitHub's OAuth authorization endpoint
-  - Stores the CSRF token in an HttpOnly cookie (expires in 10 minutes)
-
-### 2. Callback Handler (`/oauth/callback` or `/oauth/redirect`)
-
-- GitHub redirects back to this endpoint with:
-  - `code` - Authorization code
-  - `state` - CSRF token for validation
-- The handler:
-  - Validates the CSRF token
-  - Exchanges the code for an access token with GitHub API
-  - Returns the token to Sveltia CMS via postMessage
-  - Clears the CSRF token cookie
-
-## Response Format
-
-The handler communicates with Sveltia CMS using HTML/JavaScript postMessage:
-
-### Success Response
-```json
-{
-  "provider": "github",
-  "token": "gho_xxxxxxxxxxxxx"
-}
+```bash
+export GITHUB_CLIENT_ID="your-client-id"
+export GITHUB_CLIENT_SECRET="your-client-secret"
+export ALLOWED_DOMAINS="efa44.org,www.efa44.org"  # optional, comma-separated
 ```
 
-### Error Response
-```json
-{
-  "provider": "github",
-  "error": "Error message",
-  "errorCode": "ERROR_CODE"
-}
+**For PHP Server:**
+Make sure these variables are set in your PHP server environment. Common locations:
+- `.env` file (if using php-dotenv)
+- Apache VirtualHost configuration
+- PHP-FPM pool configuration
+- System environment variables
+
+### 3. Update Sveltia CMS Configuration
+
+In `static/admin/config.yml`, add the `base_url` to your backend configuration:
+
+```yaml
+backend:
+  name: github
+  repo: EFA44/site
+  branch: main
+  base_url: https://efa44.org/oauth
 ```
 
-## Error Codes
+### 4. Test the Setup
 
-- `UNSUPPORTED_BACKEND` - Provider is not supported
-- `UNSUPPORTED_DOMAIN` - Domain is not allowed
-- `MISCONFIGURED_CLIENT` - Client ID or secret not configured
-- `AUTH_CODE_REQUEST_FAILED` - Failed to receive authorization code
-- `CSRF_DETECTED` - CSRF validation failed
-- `TOKEN_REQUEST_FAILED` - Failed to exchange code for token
-- `MALFORMED_RESPONSE` - Server returned invalid data
+1. Visit your Sveltia CMS admin panel
+2. Click login with GitHub
+3. You should be redirected to GitHub's OAuth authorization page
+4. After authorizing, you should receive an access token and be logged in
+
+## OAuth Flow
+
+The handler implements the standard GitHub OAuth authorization code flow:
+
+1. **`GET /auth`** or **`GET /oauth/authorize`**
+   - Initiates OAuth flow
+   - Parameters:
+     - `provider`: Must be `github`
+     - `site_id`: Your site domain (checked against ALLOWED_DOMAINS)
+   - Redirects user to GitHub authorization page
+
+2. **`GET /callback`** or **`GET /oauth/redirect`**
+   - GitHub redirects here after user authorizes
+   - Exchanges authorization code for access token
+   - Returns HTML that posts token back to Sveltia CMS
 
 ## Security Features
 
-- **CSRF Protection**: Uses random tokens stored in HttpOnly cookies
-- **Cookie Security**: Tokens marked as HttpOnly, Secure, and SameSite=Lax
-- **Domain Validation**: Optional validation against allowed origins
-- **Token Isolation**: Tokens are scoped to provider and expiration time
-- **Secure Communication**: Uses postMessage for secure window communication
+- **CSRF Protection**: Uses CSRF tokens stored in HttpOnly cookies
+- **Domain Validation**: Validates site domain against whitelist
+- **Token Verification**: Validates state parameter matches stored token
+- **Secure Cookies**: All cookies use `Secure`, `HttpOnly`, and `SameSite=Lax` flags
+- **Token Expiration**: CSRF tokens expire after 10 minutes
 
-## Sveltia CMS Configuration
+## Optional: Domain Whitelisting
 
-In your Sveltia CMS configuration, set the backend to GitHub and ensure the OAuth handler URL points to your `/oauth` endpoint.
+The `ALLOWED_DOMAINS` variable supports wildcard patterns:
 
-For local development, you may need to use a tunnel service like ngrok to provide an HTTPS URL for GitHub's redirect URI.
+```
+# Single domain
+ALLOWED_DOMAINS="efa44.org"
+
+# Multiple domains
+ALLOWED_DOMAINS="efa44.org,www.efa44.org,docs.efa44.org"
+
+# Wildcard (matches any subdomain)
+ALLOWED_DOMAINS="*.efa44.org,efa44.org"
+
+# Complex pattern
+ALLOWED_DOMAINS="*.example.com,another.com"
+```
+
+## Troubleshooting
+
+### "Your domain is not allowed"
+- Check ALLOWED_DOMAINS environment variable is set correctly
+- Verify the domain in your Sveltia CMS config matches ALLOWED_DOMAINS
+
+### "OAuth app client ID or secret is not configured"
+- Verify GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET are set
+- Check they're set in the PHP server's environment, not just shell
+
+### "Failed to receive an authorization code"
+- Ensure Authorization callback URL is set correctly in GitHub OAuth app settings
+- Check that the callback URL matches your actual domain
+
+### HTTPS Required
+- OAuth over HTTP is not supported
+- Ensure your site uses HTTPS
+- Set secure cookies appropriately for your environment
+
+## File Structure
+
+```
+static/oauth/
+├── index.php          # Main OAuth handler
+├── .htaccess          # URL rewriting rules
+└── README.md          # This file
+```
+
+## Environment Variables Reference
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GITHUB_CLIENT_ID` | Yes | OAuth app Client ID from GitHub |
+| `GITHUB_CLIENT_SECRET` | Yes | OAuth app Client Secret from GitHub |
+| `GITHUB_HOSTNAME` | No | Default: `github.com` (for GitHub Enterprise) |
+| `ALLOWED_DOMAINS` | No | Comma-separated list of allowed domains with wildcard support |
+
+## References
+
+- [Sveltia CMS Documentation](https://github.com/sveltia/sveltia-cms)
+- [Sveltia CMS Auth](https://github.com/sveltia/sveltia-cms-auth)
+- [GitHub OAuth Apps Documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps)
+- [GitHub OAuth Authorization Flow](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)
+
+## License
+
+Same as Sveltia CMS (MIT)
