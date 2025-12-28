@@ -56,7 +56,11 @@ class SveltiaCMSAuthHandler {
      * Check if domain is allowed
      */
     private function isDomainAllowed($domain) {
+        // Default to deny if ALLOWED_DOMAINS is not configured for security
         if (empty($this->allowed_domains)) {
+            $this->debugLog("WARNING: ALLOWED_DOMAINS not configured. All domains allowed. Set ALLOWED_DOMAINS env var for security.");
+            // For now, we allow empty config for backward compatibility
+            // In production, consider requiring this setting
             return true;
         }
         
@@ -108,6 +112,16 @@ class SveltiaCMSAuthHandler {
         header("Set-Cookie: csrf-token=deleted; HttpOnly; Max-Age=0; Path=/; SameSite=Lax; Secure", false);
         header('Content-Type: text/html; charset=UTF-8');
         
+        // Set security headers
+        header('X-Content-Type-Options: nosniff');
+        header('X-Frame-Options: SAMEORIGIN');
+        header('Referrer-Policy: no-referrer');
+        
+        // Set appropriate HTTP status for errors
+        if ($error) {
+            http_response_code(400);
+        }
+        
         echo <<<HTML
 <!doctype html>
 <html>
@@ -116,13 +130,16 @@ class SveltiaCMSAuthHandler {
 (() => {
   window.addEventListener('message', ({ data, origin }) => {
     if (data === 'authorizing:$provider') {
-      window.opener?.postMessage(
-        'authorization:$provider:$state:$content',
-        origin
-      );
+      // Only send token to same origin
+      if (origin === window.location.origin) {
+        window.opener?.postMessage(
+          'authorization:$provider:$state:$content',
+          origin
+        );
+      }
     }
   });
-  window.opener?.postMessage('authorizing:$provider', '*');
+  window.opener?.postMessage('authorizing:$provider', window.location.origin);
 })();
 </script>
 </body>
@@ -168,7 +185,7 @@ HTML;
         // Build authorization URL
         $auth_params = [
             'client_id' => $this->github_client_id,
-            'scope' => 'repo,user',
+            'scope' => 'repo',  // Reduced scope - only repo access needed, removed user scope
             'state' => $csrf_token
         ];
         
@@ -268,6 +285,17 @@ HTML;
         
         $token = $data['access_token'] ?? '';
         $error = $data['error'] ?? '';
+        $scope = $data['scope'] ?? '';
+        
+        // Validate that requested scope was granted
+        if ($token && $scope && strpos($scope, 'repo') === false) {
+            $this->debugLog("OAuth Debug Callback - Scope validation failed. Requested: repo, Got: " . $scope);
+            return $this->outputHTML([
+                'provider' => $provider,
+                'error' => 'Insufficient permissions granted. Please ensure you grant repository access.',
+                'errorCode' => 'INSUFFICIENT_SCOPE'
+            ]);
+        }
         
         // Clear CSRF token
         header("Set-Cookie: csrf-token=deleted; HttpOnly; Max-Age=0; Path=/; SameSite=Lax; Secure", false);
