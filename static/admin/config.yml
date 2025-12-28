@@ -93,9 +93,9 @@ collections:
 
   # Configuration du site
   - name: "index"
-    label: "Accueil"
-    label_singular: "Accueil"
-    icon: home
+    label: "Configuration du site"
+    label_singular: "Configuration du site"
+    icon: settings
     files:
       - name: "index"
         label: "Configuration de la page d'accueil"
@@ -142,6 +142,45 @@ collections:
               - { label: "Texte", name: "text", widget: "text" }
               - { label: "Lien", name: "link", widget: "string" }
               - { label: "Libellé du bouton", name: "label", widget: "string" }
+      - name: "main_menu"
+        label: "Menu principal"
+        file: "config/_default/menu.yaml"
+        fields:
+          - label: "Items"
+            name: "main"
+            widget: "list"
+            fields:
+              - { label: "Identifiant", name: "identifier", widget: "string" }
+              - { label: "Nom", name: "name", widget: "string" }
+              - { label: "URL", name: "url", widget: "string", required: false }
+              - { label: "Parent", name: "parent", widget: "string", required: false }
+              - { label: "Poids", name: "weight", widget: "number", required: false }
+              - label: "Params"
+                name: "params"
+                widget: "object"
+                required: false
+                fields:
+                  - { label: "Mettre en avant", name: "highlight", widget: "boolean", required: false }
+                  - { label: "Style", name: "style", widget: "string", required: false }
+                  - { label: "Externe", name: "external", widget: "boolean", required: false }
+                  - { label: "Icône", name: "icon", widget: "string", required: false }
+
+      - name: "footer_menu"
+        label: "Pied de page"
+        file: "config/_default/footer.yaml"
+        fields:
+          - label: "Liens"
+            name: "footer"
+            widget: "list"
+            fields:
+              - { label: "Nom", name: "name", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+              - label: "Params"
+                name: "params"
+                widget: "object"
+                required: false
+                fields:
+                  - { label: "Externe", name: "external", widget: "boolean", required: false }
 
   - divider: true
 

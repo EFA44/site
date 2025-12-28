@@ -1,0 +1,9 @@
+footer:
+  - name: Fédération EFA
+    url: https://www.adoptionefa.org/
+    params:
+      external: true
+  - name: Notre fédération
+    url: /pages/federation/
+  - name: Événements
+    url: /events/
