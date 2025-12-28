@@ -1,187 +1,95 @@
-# GitHub OAuth Integration
+# Sveltia CMS OAuth Handler
 
-OAuth mechanism for connecting svetliacms to GitHub authentication.
+This is a PHP-based OAuth authentication handler for connecting Sveltia CMS to GitHub.
 
-## Endpoints
+## Setup
 
-All endpoints are accessible at `https://efa44.org/oauth/`
+### Environment Variables
 
-### 1. **authorize.php** - Start OAuth Flow
-Redirects user to GitHub login.
+The following environment variables must be configured in your PHP server:
 
-**Method:** `GET`
-**Parameters:**
-- `scope` (optional): OAuth scopes (default: `user:email`)
+- `GITHUB_CLIENT_ID` - Your GitHub OAuth App Client ID
+- `GITHUB_CLIENT_SECRET` - Your GitHub OAuth App Client Secret
+- `REDIRECT_URI` - The callback URI (e.g., `https://efa44.org/oauth/callback`)
+- `CMS_ORIGIN` - The origin of your CMS (e.g., `https://efa44.org`)
+- `ALLOWED_ORIGINS` - Comma-separated list of allowed origins (optional, supports wildcards with `*`)
 
-**Example:**
-```
-https://efa44.org/oauth/authorize.php?scope=user:email
-```
+### GitHub OAuth App Configuration
 
-### 2. **callback.php** - Handle GitHub Redirect
-Exchanges authorization code for access token. This endpoint receives the redirect from GitHub after user authorization.
+1. Go to GitHub Settings → Developer settings → OAuth Apps → New OAuth App
+2. Configure the application:
+   - **Authorization callback URL**: `https://efa44.org/oauth/callback`
+3. Copy the Client ID and Client Secret
+4. Set them as environment variables in your PHP server
 
-**Method:** `POST`
-**Body:**
+## How It Works
+
+The OAuth flow has two main steps:
+
+### 1. Authorization Request (`/oauth/auth` or `/oauth/authorize`)
+
+- Sveltia CMS initiates the flow by opening a popup window to `/oauth/auth`
+- Query parameters:
+  - `provider` - `github` (required)
+  - `site_id` - The site identifier (optional)
+- The handler:
+  - Validates the provider and domain
+  - Generates a CSRF token
+  - Redirects to GitHub's OAuth authorization endpoint
+  - Stores the CSRF token in an HttpOnly cookie (expires in 10 minutes)
+
+### 2. Callback Handler (`/oauth/callback` or `/oauth/redirect`)
+
+- GitHub redirects back to this endpoint with:
+  - `code` - Authorization code
+  - `state` - CSRF token for validation
+- The handler:
+  - Validates the CSRF token
+  - Exchanges the code for an access token with GitHub API
+  - Returns the token to Sveltia CMS via postMessage
+  - Clears the CSRF token cookie
+
+## Response Format
+
+The handler communicates with Sveltia CMS using HTML/JavaScript postMessage:
+
+### Success Response
 ```json
 {
-    "code": "github_authorization_code",
-    "state": "state_token"
+  "provider": "github",
+  "token": "gho_xxxxxxxxxxxxx"
 }
 ```
 
-**Response:**
+### Error Response
 ```json
 {
-    "success": true,
-    "access_token": "gho_xxxxx",
-    "user": {
-        "id": 123456,
-        "login": "username",
-        "name": "User Name",
-        "avatar_url": "https://...",
-        "email": "user@example.com"
-    }
+  "provider": "github",
+  "error": "Error message",
+  "errorCode": "ERROR_CODE"
 }
 ```
 
-### 3. **verify.php** - Verify Token
-Validates an existing access token and returns user information.
+## Error Codes
 
-**Method:** `POST`
-**Headers:**
-- `Authorization: Bearer <access_token>` OR
-- `Content-Type: application/json`
+- `UNSUPPORTED_BACKEND` - Provider is not supported
+- `UNSUPPORTED_DOMAIN` - Domain is not allowed
+- `MISCONFIGURED_CLIENT` - Client ID or secret not configured
+- `AUTH_CODE_REQUEST_FAILED` - Failed to receive authorization code
+- `CSRF_DETECTED` - CSRF validation failed
+- `TOKEN_REQUEST_FAILED` - Failed to exchange code for token
+- `MALFORMED_RESPONSE` - Server returned invalid data
 
-**Body (alternative to header):**
-```json
-{
-    "access_token": "gho_xxxxx"
-}
-```
+## Security Features
 
-**Response:**
-```json
-{
-    "success": true,
-    "user": {
-        "id": 123456,
-        "login": "username",
-        "name": "User Name",
-        "avatar_url": "https://...",
-        "email": "user@example.com"
-    }
-}
-```
+- **CSRF Protection**: Uses random tokens stored in HttpOnly cookies
+- **Cookie Security**: Tokens marked as HttpOnly, Secure, and SameSite=Lax
+- **Domain Validation**: Optional validation against allowed origins
+- **Token Isolation**: Tokens are scoped to provider and expiration time
+- **Secure Communication**: Uses postMessage for secure window communication
 
-### 4. **logout.php** - Revoke Token
-Revokes an access token.
+## Sveltia CMS Configuration
 
-**Method:** `POST`
-**Headers:**
-- `Authorization: Bearer <access_token>` OR
-- `Content-Type: application/json`
+In your Sveltia CMS configuration, set the backend to GitHub and ensure the OAuth handler URL points to your `/oauth` endpoint.
 
-**Body (alternative to header):**
-```json
-{
-    "access_token": "gho_xxxxx"
-}
-```
-
-**Response:**
-```json
-{
-    "success": true
-}
-```
-
-### 5. **health.php** - System Status
-Checks if OAuth system is properly configured and running.
-
-**Method:** `GET`
-
-**Response:**
-```json
-{
-    "status": "ok",
-    "message": "OAuth system is running",
-    "endpoints": { ... }
-}
-```
-
-## Environment Variables Required
-
-These must be set in the PHP server environment (not in .env file):
-
-- `GITHUB_CLIENT_ID`: Your GitHub OAuth app client ID
-- `GITHUB_CLIENT_SECRET`: Your GitHub OAuth app client secret
-- `REDIRECT_URI`: The URL GitHub redirects to after authorization (e.g., `https://efa44.org/oauth/callback.php`)
-- `CMS_ORIGIN`: The origin of your CMS application
-- `ALLOWED_ORIGINS`: Comma-separated list of allowed origins for CORS
-
-## CORS Support
-
-All endpoints support CORS with origins specified in `ALLOWED_ORIGINS` environment variable.
-
-## Usage Flow
-
-1. **CMS initiates login:**
-   ```javascript
-   window.location.href = 'https://efa44.org/oauth/authorize.php?scope=user:email';
-   ```
-
-2. **User logs in to GitHub** and grants permission
-
-3. **GitHub redirects to callback** with authorization code
-
-4. **CMS exchanges code for token:**
-   ```javascript
-   const response = await fetch('https://efa44.org/oauth/callback.php', {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({ code, state })
-   });
-   ```
-
-5. **Store access token** in CMS session/storage
-
-6. **Verify token** on subsequent requests:
-   ```javascript
-   const response = await fetch('https://efa44.org/oauth/verify.php', {
-       method: 'POST',
-       headers: { 'Authorization': `Bearer ${accessToken}` }
-   });
-   ```
-
-7. **On logout**, revoke the token:
-   ```javascript
-   await fetch('https://efa44.org/oauth/logout.php', {
-       method: 'POST',
-       headers: { 'Authorization': `Bearer ${accessToken}` }
-   });
-   ```
-
-## GitHub OAuth App Setup
-
-To use this OAuth implementation, you need to create a GitHub OAuth App:
-
-1. Go to https://github.com/settings/developers
-2. Click "New OAuth App"
-3. Configure:
-   - **Application name**: Your app name
-   - **Homepage URL**: `https://efa44.org`
-   - **Authorization callback URL**: `https://efa44.org/oauth/callback.php`
-4. Copy the Client ID and Client Secret to your environment variables
-
-## Error Handling
-
-All endpoints return appropriate HTTP status codes:
-- `200` - Success
-- `204` - Success (no content)
-- `400` - Bad request
-- `401` - Unauthorized/Invalid token
-- `405` - Method not allowed
-- `500` - Server error
-
-Error responses include JSON with an `error` field explaining the issue.
+For local development, you may need to use a tunnel service like ngrok to provide an HTTPS URL for GitHub's redirect URI.
