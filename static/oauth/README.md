@@ -11,9 +11,9 @@ Based on: https://github.com/sveltia/sveltia-cms-auth
 1. Go to https://github.com/settings/applications/new
 2. Create a new OAuth Application with these settings:
    - **Application name**: Sveltia CMS Authenticator (or your preferred name)
-   - **Homepage URL**: https://efa44.org (or your site URL)
+   - **Homepage URL**: https://your-site.com (your site URL)
    - **Application description**: (optional)
-   - **Authorization callback URL**: `https://efa44.org/oauth/callback`
+   - **Authorization callback URL**: `https://your-site.com/oauth/callback`
 
 3. After creation, you'll see:
    - **Client ID**: Copy this value
@@ -26,7 +26,7 @@ The OAuth handler reads these environment variables:
 ```bash
 export GITHUB_CLIENT_ID="your-client-id"
 export GITHUB_CLIENT_SECRET="your-client-secret"
-export ALLOWED_DOMAINS="efa44.org,www.efa44.org"  # optional, comma-separated
+export ALLOWED_DOMAINS="your-site.com,www.your-site.com"  # optional, comma-separated
 ```
 
 **For PHP Server:**
@@ -43,9 +43,9 @@ In `static/admin/config.yml`, add the `base_url` to your backend configuration:
 ```yaml
 backend:
   name: github
-  repo: EFA44/site
+  repo: your-username/your-repo
   branch: main
-  base_url: https://efa44.org/oauth
+  base_url: https://your-site.com/oauth
 ```
 
 ### 4. Test the Setup
@@ -85,13 +85,13 @@ The `ALLOWED_DOMAINS` variable supports wildcard patterns:
 
 ```
 # Single domain
-ALLOWED_DOMAINS="efa44.org"
+ALLOWED_DOMAINS="your-site.com"
 
 # Multiple domains
-ALLOWED_DOMAINS="efa44.org,www.efa44.org,docs.efa44.org"
+ALLOWED_DOMAINS="your-site.com,www.your-site.com,docs.your-site.com"
 
 # Wildcard (matches any subdomain)
-ALLOWED_DOMAINS="*.efa44.org,efa44.org"
+ALLOWED_DOMAINS="*.your-site.com,your-site.com"
 
 # Complex pattern
 ALLOWED_DOMAINS="*.example.com,another.com"
