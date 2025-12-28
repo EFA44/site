@@ -126,8 +126,9 @@ The handler implements the standard OAuth authorization code flow for GitHub and
 - **CSRF Protection**: Uses CSRF tokens stored in HttpOnly cookies
 - **Domain Validation**: Validates site domain against whitelist
 - **Token Verification**: Validates state parameter matches stored token
-- **Secure Cookies**: All cookies use `Secure`, `HttpOnly`, and `SameSite=Lax` flags
+- **Secure Cookies**: CSRF cookie uses `HttpOnly` and `SameSite=Lax` by default; use `SameSite=None; Secure` only when HTTPS is guaranteed for cross-site contexts
 - **Token Expiration**: CSRF tokens expire after 10 minutes
+- **Redacted Debug Logging**: If `DEBUG_OAUTH` is enabled, debug messages are written to `debug.log` but are automatically sanitized — common secrets (access_token, refresh_token, client_secret, client_id, codes and Authorization Bearer tokens) are redacted to avoid accidental leakage.
 
 ## Optional: Domain Whitelisting
 
@@ -165,6 +166,10 @@ ALLOWED_DOMAINS="*.example.com,another.com"
 - OAuth over HTTP is not supported
 - Ensure your site uses HTTPS
 - Set secure cookies appropriately for your environment
+
+### Debugging & Tests
+- To enable debug logging: `export DEBUG_OAUTH="1"` (logs written to `static/oauth/debug.log`)
+- Debug messages are sanitized automatically to redact secrets
 
 ## File Structure
 
