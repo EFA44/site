@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
 # Sveltia CMS Configuration
 # For more information, see: https://sveltia-cms-docs.netlify.app/
 
@@ -13,8 +14,8 @@ site_url: https://efa44.org
 logo:
   src: https://efa44.uni.bzh/img/efa44-logo.svg
 
-media_folder: "static/files"
-public_folder: "/files"
+media_folder: static/files
+public_folder: /files
 
 media_libraries:
   stock_assets:
@@ -37,206 +38,215 @@ i18n:
 
 collections:
   # Contenu du site
-  - name: "events"
-    label: "Évènements"
-    label_singular: "Évènement"
-    folder: "content/events"
+  - name: events
+    label: Évènements
+    label_singular: Évènement
+    folder: content/events
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    preview_path: "events/{{slug}}"
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    preview_path: events/{{slug}}
     icon: calendar_month
-    sort: "date:desc"
+    sortable_fields:
+      fields: [date]
+      default:
+        field: date
+        direction: descending
     fields:
-      - { label: "Titre", name: "title", widget: "string" }
-      - { label: "Auteur", name: "author", widget: "hidden", default: "EFA44" }
-      - { label: "Date", name: "date", widget: "datetime", time_format: false }
+      - { name: title, label: Titre, widget: string }
+      - { name: author, widget: hidden, default: EFA44 }
+      - { name: date, label: Date, widget: datetime, time_format: false }
       - {
-          label: "Résumé",
-          name: "description",
-          widget: "text",
+          label: Résumé,
+          name: description,
+          widget: text,
           required: false,
         }
       - {
-          label: "Tags",
-          name: "tags",
-          widget: "select",
+          label: Tags,
+          name: tags,
+          widget: select,
           multiple: true,
           options:
             [
-              "conference",
-              "visio",
-              "diner",
-              "temoignage",
-              "assemblee-generale",
-              "pique-nique",
-              "projection",
-              "atelier",
-              "partenariat",
-              "autres",
+              conference,
+              visio,
+              diner,
+              temoignage,
+              assemblee-generale,
+              pique-nique,
+              projection,
+              atelier,
+              partenariat,
+              autres,
             ],
         }
-      - { label: "Contenu", name: "body", widget: "markdown" }
+      - { label: Contenu, name: body, widget: markdown }
 
-  - name: "pages"
-    label: "Pages"
-    label_singular: "Page"
-    folder: "content/pages"
+  - name: pages
+    label: Pages
+    label_singular: Page
+    folder: content/pages
     create: true
-    slug: "{{slug}}"
-    preview_path: "pages/{{slug}}"
+    slug: '{{slug}}'
+    preview_path: pages/{{slug}}
     icon: description
     fields:
-      - { label: "Titre", name: "title", widget: "string", required: true }
-      - { label: "Résumé", name: "description", widget: "text", required: true }
-      - { label: "Contenu", name: "body", widget: "markdown" }
+      - { label: Titre, name: title, widget: string, required: true }
+      - { label: Résumé, name: description, widget: text, required: true }
+      - { label: Contenu, name: body, widget: markdown }
 
   - divider: true
 
   # Configuration du site
-  - name: "index"
-    label: "Configuration du site"
-    label_singular: "Configuration du site"
+  - name: index
+    label: Configuration du site
+    label_singular: Configuration du site
     icon: settings
     files:
-      - name: "site_config"
-        label: "Configuration générale du site"
-        file: "config/_default/hugo.yaml"
+      - name: site_config
+        label: Configuration générale du site
+        file: config/_default/hugo.yaml
         fields:
-          - { label: "URL de base", name: "baseURL", widget: "string" }
-          - { label: "Code langue", name: "languageCode", widget: "string" }
-          - { label: "Titre du site", name: "title", widget: "string" }
-          - { label: "Thème", name: "theme", widget: "string", required: false }
-          - label: "Params"
-            name: "params"
-            widget: "object"
+          - { label: URL de base, name: baseURL, widget: string }
+          - { label: Code langue, name: languageCode, widget: string }
+          - { label: Titre du site, name: title, widget: string }
+          - { label: Thème, name: theme, widget: string, required: false }
+          - label: Params
+            name: params
+            widget: object
             fields:
-              - { label: "Description", name: "description", widget: "string" }
-              - { label: "Slogan", name: "tagline", widget: "string" }
-              - { label: "Logo (chemin)", name: "logo", widget: "string", required: false }
-              - { label: "Alt du logo", name: "logoAlt", widget: "string", required: false }
-              - { label: "Favicon", name: "favicon", widget: "string", required: false }
-              - { label: "Apple icon", name: "appleIcon", widget: "string", required: false }
-              - label: "Contact"
-                name: "contact"
-                widget: "object"
+              - { label: Description, name: description, widget: string }
+              - { label: Slogan, name: tagline, widget: string }
+              - { label: Logo (chemin), name: logo, widget: string, required: false }
+              - { label: Alt du logo, name: logoAlt, widget: string, required: false }
+              - { label: Favicon, name: favicon, widget: string, required: false }
+              - { label: Apple icon, name: appleIcon, widget: string, required: false }
+              - label: Contact
+                name: contact
+                widget: object
                 fields:
-                  - { label: "Email de contact", name: "email", widget: "string" }
-                  - label: "Adresse"
-                    name: "address"
-                    widget: "object"
+                  - { label: Email de contact, name: email, widget: string }
+                  - label: Adresse
+                    name: address
+                    widget: object
                     fields:
-                      - { label: "Nom", name: "name", widget: "string", required: false }
-                      - { label: "Rue", name: "street", widget: "string", required: false }
-                      - { label: "Ville", name: "city", widget: "string", required: false }
-              - label: "Réseaux sociaux"
-                name: "social"
-                widget: "object"
+                      - { label: Nom, name: name, widget: string, required: false }
+                      - { label: Rue, name: street, widget: string, required: false }
+                      - { label: Ville, name: city, widget: string, required: false }
+              - label: Réseaux sociaux
+                name: social
+                widget: object
                 fields:
-                  - label: "Fédération"
-                    name: "federation"
-                    widget: "object"
+                  - label: Fédération
+                    name: federation
+                    widget: object
                     fields:
-                      - { label: "Nom", name: "name", widget: "string", required: false }
-                      - { label: "URL", name: "url", widget: "string", required: false }
-      - name: "index"
-        label: "Configuration de la page d'accueil"
-        file: "content/_index.md"
+                      - { label: Nom, name: name, widget: string, required: false }
+                      - { label: URL, name: url, widget: string, required: false }
+      - name: index
+        label: Configuration de la page d'accueil
+        file: content/_index.md
         fields:
-          - { label: "Titre", name: "title", widget: "string" }
-          - label: "Héros"
-            name: "hero"
-            widget: "object"
+          - { label: Titre, name: title, widget: string }
+          - label: Héros
+            name: hero
+            widget: object
             fields:
-              - { label: "Titre principal", name: "title", widget: "string" }
-              - { label: "Texte en surbrillance", name: "highlight", widget: "string" }
-              - { label: "Sous-titre", name: "subtitle", widget: "text" }
-          - label: "Mission"
-            name: "mission"
-            widget: "object"
+              - { label: Titre principal, name: title, widget: string }
+              - { label: Texte en surbrillance, name: highlight, widget: string }
+              - { label: Sous-titre, name: subtitle, widget: text }
+          - label: Mission
+            name: mission
+            widget: object
             fields:
-              - { label: "Titre", name: "title", widget: "string" }
-          - label: "Cartes de services"
-            name: "cards"
-            widget: "list"
+              - { label: Titre, name: title, widget: string }
+          - label: Cartes de services
+            name: cards
+            widget: list
             fields:
-              - { label: "Titre", name: "title", widget: "string" }
-              - label: "Icône"
-                name: "icon"
-                widget: "select"
+              - { label: Titre, name: title, widget: string }
+              - label: Icône
+                name: icon
+                widget: select
                 options:
-                  - { label: "Compas", value: "compass" }
-                  - { label: "Diplôme", value: "graduation-cap" }
-                  - { label: "Utilisateurs", value: "users" }
-                  - { label: "Microphone", value: "microphone" }
-                  - { label: "Commentaires", value: "comments" }
-                  - { label: "Palette", value: "palette" }
-                  - { label: "Enfant", value: "child" }
-                  - { label: "Livre", value: "book" }
-                  - { label: "Téléphone", value: "phone" }
-              - { label: "Description", name: "content", widget: "text" }
-              - { label: "Lien", name: "link", widget: "string" }
-          - label: "Appel à l'action"
-            name: "cta"
-            widget: "object"
+                  - { label: Compas, value: compass }
+                  - { label: Diplôme, value: graduation-cap }
+                  - { label: Utilisateurs, value: users }
+                  - { label: Microphone, value: microphone }
+                  - { label: Commentaires, value: comments }
+                  - { label: Palette, value: palette }
+                  - { label: Enfant, value: child }
+                  - { label: Livre, value: book }
+                  - { label: Téléphone, value: phone }
+              - { label: Description, name: content, widget: text }
+              - { label: Lien, name: link, widget: string }
+          - label: Appel à l'action
+            name: cta
+            widget: object
             fields:
-              - { label: "Titre", name: "title", widget: "string" }
-              - { label: "Texte", name: "text", widget: "text" }
-              - { label: "Lien", name: "link", widget: "string" }
-              - { label: "Libellé du bouton", name: "label", widget: "string" }
-      - name: "main_menu_footer"
-        label: "Menu principal et Pied de page"
-        file: "config/_default/menu.yaml"
+              - { label: Titre, name: title, widget: string }
+              - { label: Texte, name: text, widget: text }
+              - { label: Lien, name: link, widget: string }
+              - { label: Libellé du bouton, name: label, widget: string }
+      - name: main_menu_footer
+        label: Menu principal et Pied de page
+        file: config/_default/menu.yaml
         fields:
-          - label: "Navigation principale"
-            name: "navbar"
-            widget: "list"
+          - label: Navigation principale
+            name: navbar
+            widget: list
             fields:
-              - { label: "Identifiant", name: "identifier", widget: "string" }
-              - { label: "Nom", name: "name", widget: "string" }
-              - { label: "URL", name: "url", widget: "string", required: false }
-              - { label: "Parent", name: "parent", widget: "string", required: false }
-              - { label: "Poids", name: "weight", widget: "number", required: false }
-              - label: "Params"
-                name: "params"
-                widget: "object"
+              - { label: Identifiant, name: identifier, widget: string }
+              - { label: Nom, name: name, widget: string }
+              - { label: URL, name: url, widget: string, required: false }
+              - { label: Parent, name: parent, widget: string, required: false }
+              - { label: Poids, name: weight, widget: number, required: false }
+              - label: Params
+                name: params
+                widget: object
                 required: false
                 fields:
-                  - { label: "Mettre en avant", name: "highlight", widget: "boolean", required: false }
-                  - { label: "Style", name: "style", widget: "string", required: false }
-                  - { label: "Externe", name: "external", widget: "boolean", required: false }
-                  - { label: "Icône", name: "icon", widget: "string", required: false }
-          - label: "Pied de page"
-            name: "footer"
-            widget: "list"
+                  - { label: Mettre en avant, name: highlight, widget: boolean, required: false }
+                  - { label: Style, name: style, widget: string, required: false }
+                  - { label: Externe, name: external, widget: boolean, required: false }
+                  - { label: Icône, name: icon, widget: string, required: false }
+          - label: Pied de page
+            name: footer
+            widget: list
             fields:
-              - { label: "Nom", name: "name", widget: "string" }
-              - { label: "URL", name: "url", widget: "string" }
-              - { label: "Poids", name: "weight", widget: "number", required: false }
-              - label: "Params"
-                name: "params"
-                widget: "object"
+              - { label: Nom, name: name, widget: string }
+              - { label: URL, name: url, widget: string }
+              - { label: Poids, name: weight, widget: number, required: false }
+              - label: Params
+                name: params
+                widget: object
                 required: false
                 fields:
-                  - { label: "Externe", name: "external", widget: "boolean", required: false }
+                  - { label: Externe, name: external, widget: boolean, required: false }
 
   - divider: true
 
   # Fichiers médias
-  - name: "activities"
-    label: "Activités"
-    label_singular: "Activité"
-    folder: "static/files/activites"
+  - name: activities
+    label: Activités
+    label_singular: Activité
+    folder: static/files/activites
     create: false
     icon: folder_open
-    media_folder: "static/files/activites"
-    public_folder: "/files/activites"
+    media_folder: /static/files/activites
+    public_folder: /files/activites
+    fields:
+      - { label: Titre, name: title, widget: string, required: true }
+      - { label: Contenu, name: body, widget: markdown }
 
-  # Fichiers médias
-  - name: "images"
-    label: "Images"
-    label_singular: "Image"
-    folder: "static/images"
+  - name: images
+    label: Images
+    label_singular: Image
+    folder: static/images
     create: false
     icon: folder_open
-    media_folder: "static/images"
-    public_folder: "/images"
+    media_folder: /static/images
+    public_folder: /images
+    fields:
+      - { label: Titre, name: title, widget: string, required: true }
+      - { label: Contenu, name: body, widget: markdown }
