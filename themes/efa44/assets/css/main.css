@@ -308,12 +308,15 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
+  min-width: 42px;
   height: 42px;
-  padding: 0;
   border-radius: 0; /* square */
   color: var(--color-text);
   border-radius: var(--border-radius-sm);
+}
+
+.nav__link--search .txt{
+  display: none;
 }
 
 .nav__link--search:hover {
@@ -1062,6 +1065,10 @@ a.event-card {
     border-radius: var(--border-radius-sm);
     justify-content: flex-start;
   }
+
+.nav__link--search .txt{
+  display: inline;
+}
 
   .nav__link--search .nav__icon {
     margin-right: var(--spacing-sm);
