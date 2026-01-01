@@ -22,8 +22,8 @@ Nous rassemblons près de 300 adhérents locaux et faisons partie d’un mouveme
 - **16 €** consacrés à nos actions locales : location de salles, documentation, formations  
 
 ### Deux méthodes d’adhésion  
-1. **En ligne** via [HelloAsso](https://www.helloasso.com/associations/efa-44/adhesions/adherer-a-efa-44-2025) : paiement sécurisé par carte bancaire  
-2. **Par courrier** : [bulletin téléchargeable](/files/efa44-bulletinadhesion-2025.pdf) à renvoyer avec chèque à l’ordre d’EFA 44  
+1. **En ligne** via [HelloAsso](https://www.helloasso.com/associations/efa-44/adhesions/adherer-a-efa-44-et-revue-accueil-2026) : paiement sécurisé par carte bancaire  
+2. **Par courrier** : [bulletin téléchargeable](/files/efa44-bulletinadhesion-2025.pdf) à renvoyer avec chèque à l’ordre d’EFA 44  (oui c'est 2025, on va mettre à jour bientôt)
 
 Adresse postale :  
 Pôle associatif Désiré Colombe  

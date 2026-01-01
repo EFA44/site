@@ -18,6 +18,7 @@ EFA 44 est une association loi 1901 à but non lucratif. Vos dons nous permetten
 
 ### Faire un don
 
-Pour faire un don à EFA 44, vous pouvez nous contacter à [contact@efa44.org](mailto:contact@efa44.org).
+1. **En ligne** via [HelloAsso](https://www.helloasso.com/associations/efa-44/) : paiement sécurisé par carte bancaire  
+2. **Par e-mail** : nous contacter à [contact@efa44.org](mailto:contact@efa44.org).
 
 Merci pour votre soutien !
