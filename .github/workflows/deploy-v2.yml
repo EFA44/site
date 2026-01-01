@@ -42,6 +42,14 @@ jobs:
       - name: Build Hugo site
         run: hugo --minify --environment ${{ github.event.inputs.environment || 'production' }}
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run Pagefind
+        run: npx pagefind@latest --site "public"
+
       - name: Display build output
         run: |
           echo "Build completed successfully"
