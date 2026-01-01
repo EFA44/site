@@ -14,3 +14,8 @@ RedirectMatch 404 /\.git
 
 # Custom 404 page
 ErrorDocument 404 /404.html
+
+# Deny direct access to ftp log
+<Files ".ftp-deploy-sync-state.json">
+    Deny from all
+</Files>
