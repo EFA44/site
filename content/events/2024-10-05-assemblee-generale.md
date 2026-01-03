@@ -2,12 +2,11 @@
 title: Assemblée Générale 2024 - Samedi 5 octobre 2024
 author: EFA 44
 date: 2024-10-05
-description: "Assemblée générale ordinaire et conférence sur la scolarité des enfants adoptés"
+description: Assemblée générale ordinaire et conférence sur la scolarité des enfants adoptés
 tags:
   - assemblee-generale
   - conference
 ---
-
 Chers adhérents,
 
 Notre assemblée générale aura lieu le **samedi 5 octobre 2024**.
@@ -38,11 +37,11 @@ Notre assemblée générale aura lieu le **samedi 5 octobre 2024**.
 
 ### Rejoindre le Conseil d'Administration
 
-Les parents intéressés pour entrer au conseil d'administration sont invités à nous contacter par mail à **efa44contact@gmail.com** (et ce, même si vous ne pouvez être présent à l'AG).
+Les parents intéressés pour entrer au conseil d'administration sont invités à nous contacter par mail à **contact@efa44.org** (et ce, même si vous ne pouvez être présent à l'AG).
 
 ### Inscription
 
-📝 Inscrivez-vous avant le 29 septembre et envoyez-nous vos questions sur le sujet à **efa44contact@gmail.com**
+📝 Inscrivez-vous avant le 29 septembre et envoyez-nous vos questions sur le sujet à **contact@efa44.org**
 
 Au plaisir de vous voir nombreux !
 
