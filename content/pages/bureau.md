@@ -42,10 +42,10 @@ Indépendante et engagée, EFA 44 se tient aux côtés des familles adoptives, d
 
 Les membres du bureau sont :
 
-* Virginie CHANDIVERT - Présidente 
+* Virginie CHANDIVERT - Présidente
 * Catherine CANTIN - Trésorière
-* Dorothée - Secrétaire, réunions d'information, sensibilisation à la parentalité adoptive, accompagnement des familles
-* Céline JOSSE - Secrétaire adjointe - Réunions d'information, sensibilisation à la parentalité adoptive
+* Dorothée DUCHE- Secrétaire, réunions d'information, sensibilisation à la parentalité adoptive, accompagnement des familles
+* Céline PITON - Secrétaire adjointe - Réunions d'information, sensibilisation à la parentalité adoptive
 
 Assistées par les membres du Conseil d'administration :
 
@@ -57,6 +57,6 @@ Assistées par les membres du Conseil d'administration :
 * Sophie MATHIEU
 * Valérie GOSSEAUME
 * Nicolas GELLERAU-BEILVERT
-* Céline Toulouse
+* Céline TOULOUSE
 
 {{< liste-documents dossier="files/activites" titre="Rapports d'activités" description="Consultez les rapports d'activités de l'association" >}}
