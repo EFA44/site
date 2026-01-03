@@ -8,7 +8,6 @@ backend:
   branch: main
   base_url: https://efa44.org
   auth_endpoint: /oauth/authorize
-  skip_ci: true
 
 display_url: https://efa44.org
 site_url: https://efa44.org
