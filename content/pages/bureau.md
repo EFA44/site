@@ -55,7 +55,6 @@ Assistées par les membres du Conseil d'administration :
 * Soizic BLANCHARD-FOURNY (Co-responsable du routage national de la revue Accueil)
 * Virginie CHANDIVERT
 * Isabelle LE BOT
-* Emmanuel CHANDIVERT
 * Sophie MATHIEU
 * Valérie GOSSEAUME
 * Nicolas GELLERAU-BEILVERT
