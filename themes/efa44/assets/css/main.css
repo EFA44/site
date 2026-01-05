@@ -804,8 +804,8 @@ a.card:hover {
   gap: var(--spacing-md);
   align-items: start;
   max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
+  margin: 0 auto var(--spacing-md) auto;
+  padding: var(--spacing-lg) var(--spacing-md);
 }
 
 /* Page header: title and subtitle above everything */
@@ -891,8 +891,8 @@ a.card:hover {
 @media (max-width: 768px) {
   .page {
     display: block;
-    padding: 0;
   }
+
 }
 
 /* ==========================================================================

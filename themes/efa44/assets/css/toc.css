@@ -16,6 +16,7 @@
         position: static;
         max-height: none;
         overflow: visible;
+        display: none; /* hidden by default on small screens */
     }
 }
 
