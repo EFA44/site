@@ -1,17 +1,15 @@
 {{/*
   Shortcode dynamique pour lister des fichiers d'un répertoire
-  Usage: liste-documents dossier="files/activites" titre="Rapports d'activités"
+  Usage: liste-documents dossier="files/activites"
   Options: 
     - dossier: chemin relatif dans /static (requis)
-    - titre: titre de la section (optionnel)
-    - description: description sous le titre (optionnel)
-    - icone: emoji pour le titre (optionnel, défaut: 📄)
+    - id: id d'ancre facultatif (optionnel)
 */}}
 
 {{ $dossier := .Get "dossier" }}
-{{ $titre := .Get "titre" }}
-{{ $description := .Get "description" }}
-{{ $icone := .Get "icone" | default "📄" }}
+{{ $idParam := .Get "id" }}
+{{ $idBase := cond (ne $idParam "") $idParam (path.Base $dossier) }}
+{{ $id := $idBase | urlize }}
 
 {{ if not $dossier }}
   {{ errorf "Le paramètre 'dossier' est requis pour le shortcode liste-documents" }}
@@ -21,11 +19,7 @@
 {{ $fichiers := readDir $cheminComplet }}
 
 {{ if $fichiers }}
-<section class="documents-liste">
-  {{ with $titre }}
-  <h2>{{ $icone }} {{ . }}</h2>
-  {{ end }}
-  {{ with $description }}<p>{{ . }} :</p>{{ end }}
+<section class="documents-liste" id="{{ $id }}">
   
   <ul class="documents-list">
     {{/* Créer une liste avec les infos extraites des noms de fichiers */}}

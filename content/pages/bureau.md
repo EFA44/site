@@ -59,4 +59,7 @@ Assistées par les membres du Conseil d'administration :
 * Nicolas GELLERAU-BEILVERT
 * Céline TOULOUSE
 
-{{< liste-documents dossier="files/activites" titre="Rapports d'activités" description="Consultez les rapports d'activités de l'association" >}}
+## Rapports d'activités
+Consultez les rapports d'activités de l'association
+
+{{< liste-documents dossier="files/activites" id="rapports-d-activites" >}}
