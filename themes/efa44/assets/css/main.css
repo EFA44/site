@@ -795,7 +795,35 @@ a.card:hover {
 .content {
   max-width: 800px;
   margin: 0 auto;
-  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.page {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: var(--spacing-md);
+  align-items: start;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+/* Page header: title and subtitle above everything */
+.page-header {
+  padding: var(--spacing-lg) var(--spacing-md);
+  background: var(--color-bg);
+  margin-bottom: var(--spacing-md);
+}
+
+.page-title {
+  color: var(--color-primary);
+  font-size: var(--font-size-3xl);
+  margin: 0 0 var(--spacing-md);
+}
+
+.page-subtitle {
+  color: var(--color-text-muted);
+  margin: 0;
+  font-size: var(--font-size-lg);
 }
 
 .content h1 {
@@ -811,6 +839,7 @@ a.card:hover {
   margin-bottom: var(--spacing-md);
   padding-bottom: var(--spacing-sm);
   border-bottom: 2px solid var(--color-highlight);
+  scroll-margin-top: 120px; /* offset for sticky header */
 }
 
 .content h3 {
@@ -818,6 +847,7 @@ a.card:hover {
   font-size: var(--font-size-xl);
   margin-top: var(--spacing-lg);
   margin-bottom: var(--spacing-sm);
+  scroll-margin-top: 120px; /* offset for sticky header */
 }
 
 .content a {
@@ -855,6 +885,13 @@ a.card:hover {
   background-color: var(--color-primary-10);
   padding: var(--spacing-md) var(--spacing-lg);
   border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+}
+
+@media (max-width: 768px) {
+  .page {
+    display: block;
+    padding: 0;
+  }
 }
 
 /* ==========================================================================
@@ -1006,6 +1043,7 @@ a.event-card {
    ========================================================================== */
 
 @media (max-width: 768px) {
+  
   :root {
     --font-size-3xl: 1.75rem;
     --font-size-2xl: 1.25rem;

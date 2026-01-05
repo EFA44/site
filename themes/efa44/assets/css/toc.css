@@ -1,0 +1,82 @@
+@media screen and (min-width: 992px) {
+    .toc {
+        align-self: flex-start;
+        top: 4.5rem;
+        position: sticky;
+    }
+
+    [data-nav="sticky"] .toc {
+        top: 5.5rem;
+    }
+}
+
+/* On small screens, reset to normal flow */
+@media (max-width: 767px) {
+    .toc {
+        position: static;
+        max-height: none;
+        overflow: visible;
+    }
+}
+
+.toc-title {
+    color: var(--color-primary);
+    font-size: var(--font-size-2xl);
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-highlight);
+    scroll-margin-top: 120px;
+}
+
+/* TOC CSS variables — override to fit your layout */
+#TableOfContents {
+    --toc-max: 900px; /* max height for expanded groups (fallback) */
+    --toc-offset: 120px; /* used by scroll-spy JS to account for headers */
+}
+
+#TableOfContents ul {
+    border-left: 1px solid var(--color-border);
+    padding: 0.5rem;
+    margin: 0;
+}
+
+#TableOfContents li {
+    list-style: none;
+}
+
+/* Collapse nested lists (H3 groups) by default */
+#TableOfContents ul ul {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: max-height 0.28s ease, opacity 0.2s ease, visibility 0s linear 0.28s;
+    will-change: max-height, opacity;
+}
+
+/* When expanded, allow full height (CSS-driven) */
+#TableOfContents ul ul.expanded {
+    opacity: 1;
+    max-height: var(--toc-max);
+    visibility: visible;
+    transition-delay: 0s;
+} 
+
+/* Active link styling */
+#TableOfContents a.active {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* Slight hover/focus hint */
+#TableOfContents a:focus,
+#TableOfContents a:hover {
+    text-decoration: underline;
+}
+
+#TableOfContents ul li ul {
+    border-left: none;
+    padding: 0 0.5rem;
+    margin: 0;
+}
