@@ -593,6 +593,7 @@ a.card:hover {
   background-color: var(--color-primary-dark);
   transform: translateY(-1px);
   box-shadow: var(--shadow-primary);
+  color: var(--color-text-on-primary);
 }
 
 .btn--primary:active {
