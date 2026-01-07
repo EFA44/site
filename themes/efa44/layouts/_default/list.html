@@ -1,8 +1,6 @@
 {{ define "main" }}
 <section class="section">
   <div class="container">
-    <h1 class="section__title">{{ .Title }}</h1>
-    
     {{ .Content }}
     
     {{ $today := time (now.Format "2006-01-02") }}
