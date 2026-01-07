@@ -70,7 +70,7 @@
   <div class="container">
     <h1 class="hero__title">{{ .Title }}</h1>
     {{ with .Params.subtitle }}
-    <p class="hero__subtitle">{{ . }}</p>
+    <div class="hero__subtitle">{{ . | markdownify }}</div>
     {{ end }}
   </div>
 </section>

@@ -12,6 +12,7 @@ hero:
     et votre cheminement. Au niveau national, EFA œuvre auprès des institutions
     et des pouvoirs publics pour améliorer le cadre juridique et administratif
     de l'adoption et porter la parole des familles par adoption.
+    **EFA ne confie pas d’enfants à l’adoption.**
 
 mission:
   title: Nos missions

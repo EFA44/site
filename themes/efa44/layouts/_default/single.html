@@ -4,7 +4,7 @@
     <div class="hero__content">
       <div class="hero__text">
         <h1 class="hero__title"> {{ .Title }} </h1>
-        {{ with .Params.description }}<p class="hero__subtitle">{{ . }}</p>{{ end }}
+        {{ with .Params.description }}<div class="hero__subtitle">{{ . | markdownify }}</div>{{ end }}
       </div>
     </div>
   </div>

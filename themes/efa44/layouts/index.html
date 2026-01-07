@@ -12,9 +12,11 @@
           {{ .Site.Title }}
           {{ end }}
         </h1>
-        <p class="hero__subtitle">
-          {{ with .Params.hero.subtitle }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}
-        </p>
+        {{ with .Params.hero.subtitle }}
+        <div class="hero__subtitle">{{ . | markdownify }}</div>
+        {{ else }}
+        <div class="hero__subtitle">{{ .Site.Params.description | markdownify }}</div>
+        {{ end }}
       </div>
       {{ with .Site.Params.logo }}
       <div class="hero__logo-wrapper">
