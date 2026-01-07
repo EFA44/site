@@ -1,16 +1,29 @@
 {{ define "main" }}
 
-<div class="content">
-  <h1 class="content__title">{{ .Title }}</h1>
+<section class="hero">
+  <div class="container">
+    <div class="hero__content">
+      <div class="hero__text">
+        <h1 class="hero__title">
+          {{ .Title }}
+        </h1>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
-  <script src="/pagefind/pagefind-ui.js"></script>
-  <div id="search"></div>
-  <script>
-    window.addEventListener('DOMContentLoaded', (event) => {
-      new PagefindUI({ element: "#search", showSubResults: true });
-    });
-  </script>
+<section class="section">
+  <div class="container">
+    <div id="search"></div>
+  </div>
+</section>
 
-</div>
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-ui.js"></script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    new PagefindUI({ element: "#search", showSubResults: true });
+  });
+</script>
 {{ end }}
