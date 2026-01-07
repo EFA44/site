@@ -1,8 +1,8 @@
 ---
 title: Accueil
 hero:
-  title: Bienvenue chez
-  highlight: EFA 44
+  title: Enfance & Familles d’Adoption de 
+  highlight: Loire-Atlantique
   subtitle: >
     EFA 44, c'est une équipe soudée de bénévoles — adoptés, parents par adoption
     et postulants agréés — qui se mobilisent pour organiser des actions en
