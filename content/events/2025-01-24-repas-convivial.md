@@ -2,7 +2,7 @@
 title: Repas convivial - Vendredi 24 janvier 2025
 author: EFA 44
 date: 2025-01-24
-description: "Soirée chaleureuse pour échanger autour de la parentalité adoptive au restaurant LuluPaulette"
+description: Soirée chaleureuse pour échanger autour de la parentalité adoptive au restaurant LuluPaulette
 tags:
   - diner
 ---
