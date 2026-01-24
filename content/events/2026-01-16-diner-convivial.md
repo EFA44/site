@@ -2,7 +2,7 @@
 title: Dîner convivial annuel - Vendredi 16 janvier 2026
 author: EFA 44
 date: 2026-01-16
-description: "Moment d'échanges et de rencontres entre membres de l'association"
+description: Moment d'échanges et de rencontres entre membres de l'association
 tags:
   - diner
 ---
