@@ -12,11 +12,13 @@ Venez nous rejoindre lors du traditionnel diner convivial annuel, moment d’éc
 Ce repas réunira postulants à l’adoption, parents par adoption et adoptés majeurs. Il permettra d’évoquer les parcours de chacun, la parentalité adoptive et les expériences partagées, dans une atmosphère chaleureuse et bienveillante. Ce sera aussi l’occasion de rencontrer les membres du Conseil d’administration et d’échanger sur les actions de l’association.
 
 ### Informations pratiques
+
 - Date : vendredi 16 janvier 2026
 - Horaire : à partir de 19 h 30
 - Lieu : Brasserie Saint-Félix, Nantes
 
 ### Inscription
+
 L’inscription se fait exclusivement via le lien HelloAsso ci-dessous : au plus tard le **05/01/2026.**
 
 👉 [**S'inscrire au repas convivial janvier 2026**](https://www.helloasso.com/associations/efa-44/evenements/diner-convivial-2026 "https://www.helloasso.com/associations/efa-44/evenements/diner-convivial-2026")
