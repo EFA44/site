@@ -26,7 +26,7 @@ Nous rassemblons près de 300 adhérents locaux et faisons partie d’un mouveme
 ### Deux méthodes d’adhésion
 
 1. **En ligne** via [HelloAsso](https://www.helloasso.com/associations/efa-44/adhesions/adherer-a-efa-44-et-revue-accueil-2026) : paiement sécurisé par carte bancaire
-2. **Par courrier** : [bulletin téléchargeable](/files/BulletinAdhésion2026.pdf) à renvoyer avec chèque à l’ordre d’EFA 44  (oui c'est 2025, on va mettre à jour bientôt)
+2. **Par courrier** : [bulletin téléchargeable](/files/BulletinAdhésion2026.pdf) à renvoyer avec chèque à l’ordre d’EFA 44.
 
 Adresse postale :
 Pôle associatif Désiré Colombe
