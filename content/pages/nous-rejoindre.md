@@ -15,7 +15,7 @@ Nous rassemblons près de 300 adhérents locaux et faisons partie d’un mouveme
 - **Pour les familles** : cafés des parents, ateliers d’équithérapie pour enfants
 - **Pour les adoptés majeurs** : groupes de parole trimestriels et ressources documentaires
 
-## Modalités pratiques 2025
+## Modalités pratiques 2026
 
 ### Cotisation annuelle
 
