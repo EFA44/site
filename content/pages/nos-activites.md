@@ -2,6 +2,7 @@
 title: Nos activités
 description: EFA 44 propose tout au long de l'année une programmation riche et variée d'activités destinées à accompagner les familles adoptives, les candidats à l'adoption et les adoptés majeurs. Notre association organise des événements conviviaux, informatifs et de soutien qui créent du lien et favorisent les échanges d'expériences au sein de notre communauté.
 ---
+
 ## Les Soirées Témoignages
 
 Nos soirées témoignages constituent un moment privilégié d'échange et de partage d'expériences entre familles adoptives et candidats à l'adoption. Ces rencontres permettent de créer des liens authentiques et d'aborder les réalités de l'adoption dans un cadre bienveillant.
@@ -16,7 +17,7 @@ Les conférences d'EFA 44 abordent des thématiques spécialisées liées à l'a
 
 Nos conférences s'inscrivent dans une démarche de formation continue et d'information de qualité. Elles complètent parfaitement notre offre d'accompagnement en apportant des éclairages scientifiques et pratiques sur des questions fondamentales de l'adoption. Ces événements participent à la montée en compétences de notre communauté et renforcent notre mission d'information et de sensibilisation.
 
-[**En savoir plus sur nos conférences**](/tags/conferences)
+[**En savoir plus sur nos conférences**](/tags/conference)
 
 ## La Soirée Conviviale
 
@@ -24,7 +25,7 @@ La soirée conviviale annuelle d'EFA 44 représente un moment festif et détendu
 
 Ces rencontres conviviales sont essentielles pour maintenir la cohésion de notre association et offrir un espace de respiration aux familles. Elles permettent également aux nouveaux adhérents de s'intégrer plus facilement dans notre communauté et de nouer des contacts précieux. L'aspect festif de ces événements contribue à créer une dynamique positive au sein d'EFA 44.
 
-[**En savoir plus sur notre soirée conviviale**](/tags/soirees-conviviale)
+[**En savoir plus sur notre soirée conviviale**](/tags/diner)
 
 ## Le Pique-Nique
 
