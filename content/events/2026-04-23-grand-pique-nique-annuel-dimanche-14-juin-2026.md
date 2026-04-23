@@ -2,7 +2,7 @@
 title: Grand pique-nique annuel - dimanche 14  juin 2026
 author: EFA44
 date: 2026-06-14
-description: ''
+description: Moment chaleureux entre adhérents, dans un esprit de simplicité et de détente pour rencontrer d’autres familles, d’autres parcours, d’autres histoires, ...
 tags:
   - pique-nique
 ---
