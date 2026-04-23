@@ -33,7 +33,7 @@ Le pique-nique annuel d'EFA 44 constitue l'événement familial phare de notre a
 
 Cet événement familial représente un moment fort de notre calendrier associatif et contribue significativement au sentiment d'appartenance à la communauté EFA 44. Il offre également l'opportunité aux nouvelles familles de découvrir notre association dans un cadre convivial et non formel.
 
-[**En savoir plus sur notre pique-nique**](/tags/picnics)
+[**En savoir plus sur notre pique-nique**](/tags/pique-nique)
 
 ## L'Assemblée Générale
 
