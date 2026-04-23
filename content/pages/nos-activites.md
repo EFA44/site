@@ -9,7 +9,7 @@ Nos soirées témoignages constituent un moment privilégié d'échange et de pa
 
 Ces événements offrent aux participants l'opportunité d'entendre des récits d'adoption variés, de poser leurs questions et de bénéficier de l'expérience collective de notre association. Ils représentent un pilier fondamental de notre accompagnement et contribuent à démystifier certains aspects de l'adoption.
 
-[**En savoir plus sur nos soirées témoignages**](/tags/temoignages)
+[**En savoir plus sur nos soirées témoignages**](/tags/temoignage)
 
 ## Les Conférences
 
