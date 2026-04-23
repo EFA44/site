@@ -18,7 +18,7 @@ cards:
   - title: Moments conviviaux
     icon: users
     content: 'Rencontres moins formelles : repas convivial, pique-nique, café des parents... Une occasion de rencontrer des personnes dans la même situation et de se soutenir mutuellement.'
-    link: /events/
+    link: /pages/nos-activites/
   - title: Conférences
     icon: microphone
     content: Conférences, projections, soirées témoignages pour suivre l'actualité de l'adoption et rencontrer des experts sur des thématiques ciblées.
