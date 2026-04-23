@@ -41,4 +41,4 @@ L'assemblée générale d'EFA 44 constitue le temps démocratique fort de notre 
 
 L'assemblée générale fédérale a par ailleurs voté trois axes stratégiques prioritaires pour la période 2024-2028, orientant ainsi l'action d'EFA autour de la sensibilisation à l'adoption d'enfants grands et/ou porteurs de handicaps, du statut des enfants confiés à l'ASE et de la promotion des modalités alternatives à l'adoption. Ces orientations guident également l'action d'EFA 44 au niveau départemental.
 
-[**En savoir plus sur notre assemblée générale**](/tags/assemblees-generales)
+[**En savoir plus sur notre assemblée générale**](/tags/assemblee-generale)
