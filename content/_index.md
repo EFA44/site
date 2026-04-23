@@ -42,7 +42,7 @@ cards:
   - title: Ligne d'écoute
     icon: phone
     content: "Une écoute de pairs, sans jugement, dans l'anonymat et la discrétion. Permanences les mercredis (20h30-22h30) et jeudis (14h30-16h30). Tél : 01.40.05.57.79"
-    link: tel:+33140055779
+    link: https://www.adoptionefa.org/efa-qui-sommes-nous/accompagner-les-familles/accompagner-et-ecouter-les-familles/la-ligne-nationale-decoute/
 cta:
   title: Rejoignez-nous
   text: Vous souhaitez devenir membre d'EFA 44 ou participer à nos activités ?
