@@ -10,7 +10,7 @@ cards:
   - title: Accompagnement
     icon: compass
     content: Permanences généralistes ou thématiques avec des membres bénévoles pour répondre à vos questions, échanger sur votre projet ou sur les problématiques rencontrées.
-    link: /pages/familles/
+    link: /pages/postulants/
   - title: Sensibilisations
     icon: graduation-cap
     content: Journées de préparation et de réflexion pour les postulants et leurs familles. Pour vous sensibiliser aux spécificités de la parentalité adoptive et au vécu des enfants adoptés.
