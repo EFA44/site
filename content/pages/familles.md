@@ -1,8 +1,6 @@
 ---
 title: Famille adoptive
 description: 'Famille adoptive : les ateliers pour les enfants'
-images:
-  - https://via.placeholder.com/250x200/d9d9d9/000000
 ---
 
 ## Médiation équine avec EFA 44 : pour le bien-être et l’épanouissement des enfants adoptés
