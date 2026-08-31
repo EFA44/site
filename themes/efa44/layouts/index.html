@@ -36,8 +36,9 @@
     {{ with .Params.cards }}
     <div class="cards">
       {{ range . }}
-      <a href="{{ if or (hasPrefix .link " http") (hasPrefix .link "tel:" ) }}{{ .link | safeURL }}{{ else }}{{ .link |
-        relURL }}{{ end }}" class="card">
+      {{ $external := hasPrefix .link "http" }}
+      <a href="{{ if or $external (hasPrefix .link "tel:") }}{{ .link | safeURL }}{{ else }}{{ .link |
+        relURL }}{{ end }}" class="card"{{ if $external }} target="_blank" rel="noopener noreferrer"{{ end }}>
         <div class="card__icon">
           {{ if eq .icon "compass" }}
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">

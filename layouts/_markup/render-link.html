@@ -1,0 +1,11 @@
+{{- /* Ouvre les liens externes (hors efa44.org) dans un nouvel onglet. */ -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $isExternal := false -}}
+{{- if and $u.IsAbs (in (slice "http" "https") $u.Scheme) -}}
+  {{- $host := strings.TrimPrefix "www." $u.Host -}}
+  {{- $base := strings.TrimPrefix "www." (urls.Parse .Page.Site.BaseURL).Host -}}
+  {{- if ne $host $base -}}
+    {{- $isExternal = true -}}
+  {{- end -}}
+{{- end -}}
+<a href="{{ .Destination | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $isExternal }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Text | safeHTML }}</a>
