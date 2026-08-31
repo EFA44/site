@@ -44,8 +44,8 @@ cards:
     content: "Une écoute de pairs, sans jugement, dans l'anonymat et la discrétion. Permanences les mercredis (20h30-22h30) et jeudis (14h30-16h30). Tél : 01.40.05.57.79"
     link: https://www.adoptionefa.org/efa-qui-sommes-nous/accompagner-les-familles/accompagner-et-ecouter-les-familles/la-ligne-nationale-decoute/
 video:
-  title: EFA 44 dans les médias
-  subtitle: Retrouvez la matinale consacrée à l'adoption sur Sqool TV.
+  title: EFA dans les médias
+  subtitle: Dans cette matinale, la fédération Enfance & Familles d'Adoption revient sur son rôle et sur l'accompagnement des familles tout au long du parcours d'adoption.
   youtubeId: 7Xf8HpSq8pY
 cta:
   title: Rejoignez-nous
