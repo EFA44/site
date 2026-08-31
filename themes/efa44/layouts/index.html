@@ -96,6 +96,23 @@
   </div>
 </section>
 
+{{ with .Params.video }}
+<section class="section">
+  <div class="container">
+    <h2 class="section__title">{{ .title }}</h2>
+    {{ with .subtitle }}
+    <div class="section__subtitle text-center">{{ . | markdownify }}</div>
+    {{ end }}
+    <div class="video-embed">
+      <iframe src="https://www.youtube-nocookie.com/embed/{{ .youtubeId }}"
+        title="{{ .title }}" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+{{ end }}
+
 {{ $today := time (now.Format "2006-01-02") }}
 {{ $events := where (where .Site.RegularPages "Section" "events") ".Date" ">=" $today }}
 {{ if $events }}

@@ -43,6 +43,10 @@ cards:
     icon: phone
     content: "Une écoute de pairs, sans jugement, dans l'anonymat et la discrétion. Permanences les mercredis (20h30-22h30) et jeudis (14h30-16h30). Tél : 01.40.05.57.79"
     link: https://www.adoptionefa.org/efa-qui-sommes-nous/accompagner-les-familles/accompagner-et-ecouter-les-familles/la-ligne-nationale-decoute/
+video:
+  title: EFA 44 dans les médias
+  subtitle: Retrouvez la matinale consacrée à l'adoption sur Sqool TV.
+  youtubeId: 7Xf8HpSq8pY
 cta:
   title: Rejoignez-nous
   text: Vous souhaitez devenir membre d'EFA 44 ou participer à nos activités ?

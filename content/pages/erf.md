@@ -18,3 +18,7 @@ Karine Nivelais, bénévole et membre du bureau fédéral en charge de l’adopt
 Le rôle du correspondant ERF ? Il est de sensibiliser les familles agréées du département aux besoins spécifiques de ces enfants, de rencontrer et d'informer les postulants, et de les accompagner dans leur réflexion et leur démarche d’adoption, selon leurs souhaits.
 
 Pour toute question ou pour en savoir plus, contactez-nous ! ou directement depuis le site de la fédération : [Enfants en recherche de famille](https://www.adoptionefa.org/efa-qui-sommes-nous/enfants-en-recherche-de-famille/)
+
+## Le blog Zébulon
+
+Retrouvez toute l'actualité du service Enfants en Recherche de Famille, les portraits d'enfants en attente d'une famille et les témoignages sur le blog Zébulon : [erf.adoptionefa.org](https://erf.adoptionefa.org/)
