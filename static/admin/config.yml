@@ -56,6 +56,14 @@ collections:
       - { name: author, widget: hidden, default: EFA44 }
       - { name: date, label: Date, widget: datetime, time_format: false }
       - {
+          name: enddate,
+          label: Date de fin,
+          hint: "Optionnel. Pour un événement sur plusieurs jours (ex. exposition), l'événement reste \"à venir\" jusqu'à cette date.",
+          widget: datetime,
+          time_format: false,
+          required: false,
+        }
+      - {
           label: Résumé,
           name: description,
           widget: text,
@@ -77,6 +85,11 @@ collections:
               projection,
               atelier,
               partenariat,
+              exposition,
+              adoption,
+              information,
+              parentalite,
+              scolarite,
               autres,
             ],
         }

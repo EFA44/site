@@ -115,7 +115,14 @@
 {{ end }}
 
 {{ $today := time (now.Format "2006-01-02") }}
-{{ $events := where (where .Site.RegularPages "Section" "events") ".Date" ">=" $today }}
+{{ $events := slice }}
+{{ range where .Site.RegularPages "Section" "events" }}
+  {{ $effectiveDate := .Date }}
+  {{ with .Params.enddate }}{{ $effectiveDate = time . }}{{ end }}
+  {{ if ge $effectiveDate $today }}
+    {{ $events = $events | append . }}
+  {{ end }}
+{{ end }}
 {{ if $events }}
 <section class="section section--alt">
   <div class="container">

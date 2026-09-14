@@ -4,8 +4,17 @@
     {{ .Content }}
     
     {{ $today := time (now.Format "2006-01-02") }}
-    {{ $upcomingEvents := where .Pages ".Date" ">=" $today }}
-    {{ $pastEvents := where .Pages ".Date" "<" $today }}
+    {{ $upcomingEvents := slice }}
+    {{ $pastEvents := slice }}
+    {{ range .Pages }}
+      {{ $effectiveDate := .Date }}
+      {{ with .Params.enddate }}{{ $effectiveDate = time . }}{{ end }}
+      {{ if ge $effectiveDate $today }}
+        {{ $upcomingEvents = $upcomingEvents | append . }}
+      {{ else }}
+        {{ $pastEvents = $pastEvents | append . }}
+      {{ end }}
+    {{ end }}
     
     {{/* Événements à venir */}}
     {{ if $upcomingEvents }}
