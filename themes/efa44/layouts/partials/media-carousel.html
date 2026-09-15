@@ -1,0 +1,62 @@
+{{/* Carrousel média : vidéos locales (mp4) et/ou YouTube.
+     Défilement automatique, mis en pause quand une vidéo est lue.
+     Données attendues dans .slides (liste), .title, .autoplay, .interval (ms). */}}
+{{ $c := . }}
+{{ $slides := $c.slides }}
+{{ if $slides }}
+<section class="section section--alt">
+  <div class="container">
+    {{ with $c.title }}<h2 class="section__title">{{ . }}</h2>{{ end }}
+
+    <div class="carousel"
+         data-carousel
+         data-autoplay="{{ if eq $c.autoplay false }}false{{ else }}true{{ end }}"
+         data-interval="{{ $c.interval | default 8000 }}">
+      <div class="carousel__viewport">
+        <div class="carousel__track">
+          {{ range $i, $s := $slides }}
+          <div class="carousel__slide{{ if eq $i 0 }} is-active{{ end }}" role="group" aria-roledescription="diapositive" aria-label="{{ add $i 1 }} sur {{ len $slides }}"{{ if ne $i 0 }} aria-hidden="true"{{ end }}>
+            <div class="carousel__media">
+              {{ if eq $s.type "youtube" }}
+                <div class="video-embed">
+                  <iframe data-src="https://www.youtube-nocookie.com/embed/{{ $s.youtubeId }}?enablejsapi=1"
+                    title="{{ $s.title }}" frameborder="0" loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+              {{ else }}
+                <div class="video-embed">
+                  <video class="carousel__video" controls preload="none"
+                    {{ with $s.poster }}poster="{{ . | relURL }}"{{ end }}>
+                    <source src="{{ $s.src | relURL }}" type="video/mp4">
+                    Votre navigateur ne prend pas en charge la lecture vidéo.
+                  </video>
+                </div>
+              {{ end }}
+            </div>
+            {{ if or $s.title $s.description $s.link }}
+            <div class="carousel__caption">
+              {{ with $s.title }}<h3 class="carousel__slide-title">{{ . }}</h3>{{ end }}
+              {{ with $s.description }}<p class="carousel__slide-desc">{{ . | markdownify }}</p>{{ end }}
+              {{ with $s.link }}
+                {{ $external := hasPrefix . "http" }}
+                <a href="{{ . | safeURL }}" class="btn btn--primary carousel__slide-link"{{ if $external }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ $s.linkLabel | default "En savoir plus" }}</a>
+              {{ end }}
+            </div>
+            {{ end }}
+          </div>
+          {{ end }}
+        </div>
+      </div>
+
+      {{ if gt (len $slides) 1 }}
+      <div class="carousel__dots" role="tablist" aria-label="Choisir une diapositive">
+        {{ range $i, $s := $slides }}
+        <button class="carousel__dot{{ if eq $i 0 }} is-active{{ end }}" type="button" role="tab" aria-label="Diapositive {{ add $i 1 }}" data-carousel-dot="{{ $i }}"></button>
+        {{ end }}
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

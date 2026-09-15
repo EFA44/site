@@ -254,6 +254,75 @@ collections:
                   - { label: Téléphone, value: phone }
               - { label: Description, name: content, widget: text }
               - { label: Lien, name: link, widget: string }
+          - label: Carrousel média
+            name: mediaCarousel
+            widget: object
+            required: false
+            fields:
+              - { label: Titre de la section, name: title, widget: string }
+              - {
+                  label: Défilement automatique,
+                  name: autoplay,
+                  widget: boolean,
+                  default: true,
+                  required: false,
+                }
+              - {
+                  label: Intervalle (ms),
+                  name: interval,
+                  hint: "Durée d'affichage de chaque diapositive avant de passer à la suivante (en millisecondes).",
+                  widget: number,
+                  default: 8000,
+                  required: false,
+                }
+              - label: Diapositives
+                name: slides
+                widget: list
+                fields:
+                  - label: Type
+                    name: type
+                    widget: select
+                    default: video
+                    options:
+                      - { label: Vidéo (fichier), value: video }
+                      - { label: YouTube, value: youtube }
+                  - { label: Titre, name: title, widget: string, required: false }
+                  - { label: Description, name: description, widget: text, required: false }
+                  - {
+                      label: Fichier vidéo,
+                      name: src,
+                      hint: "Pour le type Vidéo (fichier). Sélectionnez un fichier .mp4.",
+                      widget: file,
+                      required: false,
+                    }
+                  - {
+                      label: Image d'aperçu (poster),
+                      name: poster,
+                      hint: "Optionnel. Image affichée avant la lecture de la vidéo.",
+                      widget: image,
+                      required: false,
+                    }
+                  - {
+                      label: ID YouTube,
+                      name: youtubeId,
+                      hint: "Pour le type YouTube. Ex. 7Xf8HpSq8pY",
+                      widget: string,
+                      required: false,
+                    }
+                  - {
+                      label: Lien (bouton),
+                      name: link,
+                      hint: "Optionnel. Affiche un bouton sous la vidéo (ex. lien vers l'enquête).",
+                      widget: string,
+                      required: false,
+                    }
+                  - {
+                      label: Libellé du bouton,
+                      name: linkLabel,
+                      hint: "Texte du bouton. Par défaut : « En savoir plus ».",
+                      widget: string,
+                      required: false,
+                    }
           - label: Appel à l'action
             name: cta
             widget: object

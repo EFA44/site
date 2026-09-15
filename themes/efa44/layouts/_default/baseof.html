@@ -84,5 +84,11 @@
     {{ $tocscript := $tocjs | minify | fingerprint }}
     <script src="{{ $tocscript.Permalink }}" integrity="{{ $tocscript.Data.Integrity }}" defer></script>
   {{ end }}
+
+  {{ $carouseljs := resources.Get "js/carousel.js" }}
+  {{ if $carouseljs }}
+    {{ $carouselscript := $carouseljs | minify | fingerprint }}
+    <script src="{{ $carouselscript.Permalink }}" integrity="{{ $carouselscript.Data.Integrity }}" defer></script>
+  {{ end }}
 </body>
 </html>
