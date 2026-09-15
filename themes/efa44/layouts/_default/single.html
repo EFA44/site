@@ -3,6 +3,7 @@
   <div class="container">
     <div class="hero__content">
       <div class="hero__text">
+        {{ if or (eq .Section "events") (eq .Section "actualites") }}{{ partial "scope-badge.html" .Params.scope }}{{ end }}
         <h1 class="hero__title"> {{ .Title }} </h1>
         {{ with .Params.description }}<div class="hero__subtitle">{{ . | markdownify }}</div>{{ end }}
       </div>

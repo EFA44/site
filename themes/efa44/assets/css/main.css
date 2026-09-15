@@ -1050,6 +1050,85 @@ a.event-card {
   margin-top: var(--spacing-xs);
 }
 
+/* Badge d'origine (local EFA 44 / national fédération) */
+.scope-badge {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.3em 0.7em;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: var(--spacing-sm);
+}
+
+.scope-badge--local {
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
+  border: 1px solid var(--color-primary);
+}
+
+.scope-badge--national {
+  background-color: var(--color-highlight);
+  color: var(--color-text-on-highlight);
+  border: 1px solid var(--color-highlight-dark);
+}
+
+/* Sur le hero (fond bleu foncé) : garder les badges bien lisibles */
+.hero .scope-badge--local {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--color-text-on-primary);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.hero .scope-badge--national {
+  background-color: var(--color-highlight);
+  color: var(--color-text-on-highlight);
+  border-color: var(--color-highlight);
+}
+
+/* Liste des actualités */
+.news-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.news-card {
+  display: block;
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+  text-decoration: none;
+  color: inherit;
+}
+
+.news-card:hover {
+  border-color: var(--color-highlight);
+  box-shadow: var(--shadow-highlight);
+}
+
+.news-card__date {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-xs);
+}
+
+.news-card__title {
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.news-card__excerpt {
+  color: var(--color-text-light);
+  margin: 0 0 var(--spacing-sm);
+}
+
 /* ==========================================================================
    13. Forms
    ========================================================================== */

@@ -64,6 +64,18 @@ collections:
           required: false,
         }
       - {
+          label: Origine,
+          name: scope,
+          hint: "Qui organise ? \"EFA 44\" (local) ou \"National\" (fédération EFA, même en visio ou relayé chez nous).",
+          widget: select,
+          default: local,
+          options:
+            [
+              { label: "EFA 44 (local)", value: local },
+              { label: "National (fédération EFA)", value: national },
+            ],
+        }
+      - {
           label: Résumé,
           name: description,
           widget: text,
@@ -90,8 +102,57 @@ collections:
               information,
               parentalite,
               scolarite,
+              journee-professionnelle,
+              delaissement,
+              newsletter,
+              federation,
               autres,
             ],
+        }
+      - { label: Contenu, name: body, widget: markdown }
+
+  - name: actualites
+    label: Actualités
+    label_singular: Actualité
+    folder: content/actualites
+    create: true
+    slug: '{{year}}-{{month}}-{{slug}}'
+    preview_path: actualites/{{slug}}
+    icon: newspaper
+    sortable_fields:
+      fields: [date]
+      default:
+        field: date
+        direction: descending
+    fields:
+      - { name: title, label: Titre, widget: string }
+      - { name: author, widget: hidden, default: EFA 44 }
+      - { name: date, label: Date, widget: datetime, time_format: false }
+      - {
+          label: Origine,
+          name: scope,
+          hint: "Qui publie ? \"National\" (relais d'une newsletter/actu de la fédération EFA) ou \"EFA 44\" (actualité locale).",
+          widget: select,
+          default: national,
+          options:
+            [
+              { label: "National (fédération EFA)", value: national },
+              { label: "EFA 44 (local)", value: local },
+            ],
+        }
+      - {
+          label: Résumé,
+          name: description,
+          widget: text,
+          required: false,
+        }
+      - {
+          label: Tags,
+          name: tags,
+          widget: select,
+          multiple: true,
+          required: false,
+          options: [newsletter, federation, adoption, scolarite, autres],
         }
       - { label: Contenu, name: body, widget: markdown }
 

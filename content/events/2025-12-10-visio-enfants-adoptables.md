@@ -2,6 +2,7 @@
 title: Visio "Qui sont les enfants adoptables en France ?" - Mercredi 10 décembre 2025
 author: EFA 44
 date: 2025-12-10
+scope: national
 description: "Dernière session 2025 de la visioconférence pour comprendre qui sont les enfants adoptables en France"
 tags:
   - visio

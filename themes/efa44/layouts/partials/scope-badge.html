@@ -1,0 +1,8 @@
+{{/* Affiche un badge d'origine : local (EFA 44) ou national (fédération EFA).
+     Défaut : local. Passer le scope en contexte, ex. {{ partial "scope-badge.html" .Params.scope }} */}}
+{{ $scope := . | default "local" }}
+{{ if eq $scope "national" }}
+<span class="scope-badge scope-badge--national">National</span>
+{{ else }}
+<span class="scope-badge scope-badge--local">EFA 44</span>
+{{ end }}

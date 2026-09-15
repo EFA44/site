@@ -2,6 +2,7 @@
 title: Visio "Qui sont les enfants adoptables en France ?" - mardi 13 mars 2026
 author: EFA44
 date: 2026-03-10
+scope: national
 description: Visioconférence pour comprendre qui sont les enfants adoptables en France, temps d'information-échange entre pairs
 tags:
   - visio

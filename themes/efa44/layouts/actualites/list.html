@@ -1,0 +1,24 @@
+{{ define "main" }}
+<section class="section">
+  <div class="container">
+    {{ .Content }}
+
+    {{ $pages := sort .Pages ".Date" "desc" }}
+    {{ if $pages }}
+    <div class="news-list">
+      {{ range $pages }}
+        <a href="{{ .Permalink }}" class="news-card">
+          {{ partial "scope-badge.html" .Params.scope }}
+          <time class="news-card__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time>
+          <h3 class="news-card__title">{{ .Title }}</h3>
+          {{ with .Description }}<p class="news-card__excerpt">{{ . }}</p>{{ end }}
+          <span class="card__link">Lire la suite</span>
+        </a>
+      {{ end }}
+    </div>
+    {{ else }}
+    <p>Aucune actualité pour le moment.</p>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
