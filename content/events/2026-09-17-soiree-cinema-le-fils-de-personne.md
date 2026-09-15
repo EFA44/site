@@ -27,7 +27,7 @@ EFA 44, en partenariat avec le Cinéma Le Beaulieu, a le plaisir de vous inviter
 ### Tarif et billetterie
 
 - **Tarif plein** : 6,30 €
-- 🎫 Les places sont à prendre directement sur place, le soir de la séance, ou sur le site du [Cinéma Le Beaulieu](https://www.cinema-lebeaulieu.com/).
+- 🎫 Les places sont à prendre directement sur place, le soir de la séance, ou sur le site du [Cinéma Le Beaulieu](https://cinemalebeaulieu.com/evenements/cine-debats.html#/).
 
 Nous espérons vous retrouver nombreux pour cette soirée !
 
