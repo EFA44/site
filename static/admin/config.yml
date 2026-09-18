@@ -46,15 +46,20 @@ collections:
     slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
     preview_path: events/{{slug}}
     icon: calendar_month
+    summary: "{{title}} — {{date | date('DD MMM YYYY')}}"
     sortable_fields:
       fields: [date]
       default:
         field: date
         direction: descending
+    view_filters:
+      - { label: "À venir", field: date, gte: '{{today}}' }
+      - { label: "Passés", field: date, lt: '{{today}}' }
+      - { label: "Cette année", field: date, pattern: '^{{year}}' }
     fields:
       - { name: title, label: Titre, widget: string }
       - { name: author, widget: hidden, default: EFA44 }
-      - { name: date, label: Date, widget: datetime, time_format: false }
+      - { name: date, label: Date, widget: datetime, time_format: false, default: '{{now}}' }
       - {
           name: enddate,
           label: Date de fin,
@@ -119,15 +124,18 @@ collections:
     slug: '{{year}}-{{month}}-{{slug}}'
     preview_path: actualites/{{slug}}
     icon: newspaper
+    summary: "{{title}} — {{date | date('DD MMM YYYY')}}"
     sortable_fields:
       fields: [date]
       default:
         field: date
         direction: descending
+    view_filters:
+      - { label: "Cette année", field: date, pattern: '^{{year}}' }
     fields:
       - { name: title, label: Titre, widget: string }
       - { name: author, widget: hidden, default: EFA 44 }
-      - { name: date, label: Date, widget: datetime, time_format: false }
+      - { name: date, label: Date, widget: datetime, time_format: false, default: '{{now}}' }
       - {
           label: Origine,
           name: scope,
