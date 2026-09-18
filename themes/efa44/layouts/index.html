@@ -1,29 +1,14 @@
 {{ define "main" }}
 {{ $site := .Site.Params }}
 
-<section class="hero">
+<section class="hero hero--carousel">
   <div class="container">
-    <div class="hero__content">
-      <div class="hero__text">
-        <h1 class="hero__title">
-          {{ with .Params.hero }}
-          {{ .title }} <span class="hero__highlight">{{ .highlight }}</span>
-          {{ else }}
-          {{ .Site.Title }}
-          {{ end }}
-        </h1>
-        {{ with .Params.hero.subtitle }}
-        <div class="hero__subtitle">{{ . | markdownify }}</div>
-        {{ else }}
-        <div class="hero__subtitle">{{ .Site.Params.description | markdownify }}</div>
-        {{ end }}
-      </div>
-      {{ with .Site.Params.logo }}
-      <div class="hero__logo-wrapper">
-        <img src="/images/efa44-logo.svg" alt="{{ $.Site.Params.logoAlt | default $.Site.Title }}" class="hero__logo">
-      </div>
-      {{ end }}
-    </div>
+    {{ with .Params.mediaCarousel }}
+      {{ $data := merge . (dict
+        "logo" "/images/efa44-logo.svg"
+        "logoAlt" ($.Site.Params.logoAlt | default $.Site.Title)) }}
+      {{ partial "media-carousel.html" $data }}
+    {{ end }}
   </div>
 </section>
 
@@ -96,10 +81,6 @@
     {{ end }}
   </div>
 </section>
-
-{{ with .Params.mediaCarousel }}
-  {{ partial "media-carousel.html" . }}
-{{ end }}
 
 {{ $today := time (now.Format "2006-01-02") }}
 {{ $events := slice }}

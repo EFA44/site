@@ -1,5 +1,5 @@
 baseURL: https://efa44.org/
-languageCode: fr-fr
+locale: fr-fr
 title: EFA44
 theme: efa44
 buildFuture: true

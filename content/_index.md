@@ -3,7 +3,6 @@ title: Accueil
 hero:
   title: Enfance & Familles d’Adoption de
   highlight: Loire-Atlantique
-  subtitle: EFA 44, c'est une équipe soudée de bénévoles — adoptés, parents par adoption et postulants agréés — qui se mobilisent pour organiser des actions en Loire-Atlantique. Depuis 1958, nous accompagnons les familles adoptives, les candidats à l'adoption et les adoptés devenus adultes. Les membres de l'équipe sont à votre écoute et vous accompagnent dans vos questionnements et votre cheminement. Au niveau national, EFA œuvre auprès des institutions et des pouvoirs publics pour améliorer le cadre juridique et administratif de l'adoption et porter la parole des familles par adoption. **EFA ne confie pas d’enfants à l’adoption.**
 mission:
   title: Nos missions
 cards:
@@ -44,10 +43,14 @@ cards:
     content: "Une écoute de pairs, sans jugement, dans l'anonymat et la discrétion. Permanences les mercredis (20h30-22h30) et jeudis (14h30-16h30). Tél : 01.40.05.57.79"
     link: https://www.adoptionefa.org/efa-qui-sommes-nous/accompagner-les-familles/accompagner-et-ecouter-les-familles/la-ligne-nationale-decoute/
 mediaCarousel:
-  title: EFA dans les médias
   autoplay: true
-  interval: 8000
+  interval: 12000
   slides:
+    - type: presentation
+      title: "Qui sommes-nous ?"
+      description: "EFA 44, c'est une équipe de bénévoles — adoptés, parents par adoption et postulants agréés — qui se mobilise en Loire-Atlantique. Depuis 1958, nous accompagnons les familles adoptives, les candidats à l'adoption et les adoptés devenus adultes, et portons leur parole auprès des pouvoirs publics au niveau national. **EFA ne confie pas d'enfants à l'adoption.**"
+      link: /pages/bureau/
+      linkLabel: En savoir plus sur EFA 44
     - type: video
       title: "Enquête Parcours Adoption, Santé, Scolarité 2026-2028"
       description: "EFA lance sa grande enquête nationale. Participez et partagez pour atteindre 1 000 réponses !"

@@ -9,6 +9,9 @@
    ========================================================================== */
 
 :root {
+  /* Icône Material Symbols "open_in_new" (SVG inline, coloré via mask) */
+  --icon-external: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'%3E%3Cpath d='M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z'/%3E%3C/svg%3E");
+
   /* Couleurs principales */
   --color-primary: #345cac;
   --color-primary-dark: #2a4a8a;
@@ -74,7 +77,8 @@
   --font-size-xl: 1.25rem;
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 2rem;
-  
+  --font-size-4xl: 2.5rem;
+
   /* Bordures */
   --border-radius-sm: 0.25rem;
   --border-radius-md: 0.5rem;
@@ -115,6 +119,41 @@ a {
 
 a:hover {
   color: var(--color-primary-dark);
+}
+
+/* Icône « ouvrir dans un nouvel onglet » sur tous les liens externes
+   (Material Symbols open_in_new). SVG masqué → prend la couleur du texte. */
+a[target="_blank"]::after {
+  content: "";
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-left: 0.25em;
+  vertical-align: -0.08em;
+  background-color: currentColor;
+  -webkit-mask: var(--icon-external) center / contain no-repeat;
+  mask: var(--icon-external) center / contain no-repeat;
+}
+
+/* Pas d'icône directement sur les conteneurs « habillés » (logos, nav,
+   points du carrousel) — elle serait mal placée. */
+.header__logo[target="_blank"]::after,
+.nav__link[target="_blank"]::after,
+.carousel__dot[target="_blank"]::after,
+a.footer__logo[target="_blank"]::after {
+  content: none;
+}
+
+/* Sur une carte externe, l'icône se place en haut à droite (position absolue,
+   pas dans le flux) plutôt qu'après le texte. */
+.card[target="_blank"]::after {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  margin-left: 0;
+  width: 1.1em;
+  height: 1.1em;
+  color: var(--color-text-muted);
 }
 
 img {
@@ -165,6 +204,21 @@ img {
 
 .header__logo:hover {
   opacity: 0.8;
+}
+
+.header__logo--text {
+  font-size: var(--font-size-2xl);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.header__logo-e,
+.header__logo-44 {
+  color: var(--color-primary);
+}
+
+.header__logo-fa {
+  color: var(--color-highlight);
 }
 
 .header__logo-img {
@@ -233,6 +287,34 @@ img {
 
 .hero__highlight {
   color: var(--color-highlight);
+}
+
+/* Hero intégrant le carrousel */
+.hero--carousel .hero__title {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.hero--carousel .carousel {
+  max-width: 1100px;
+}
+
+/* Sur fond bleu : rendre lisibles les textes du carrousel */
+.hero--carousel .carousel__slide-title,
+.hero--carousel .carousel__presentation-title {
+  color: var(--color-text-on-primary);
+}
+
+.hero--carousel .carousel__slide-desc {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero--carousel .carousel__dot {
+  border-color: var(--color-text-on-primary);
+}
+
+.hero--carousel .carousel__dot.is-active {
+  border-color: var(--color-highlight);
 }
 
 @media (max-width: 768px) {
@@ -850,6 +932,105 @@ a.card:hover {
 
 .carousel__viewport {
   overflow: hidden;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Chaque volet occupe toute la largeur ; hauteur uniforme via le viewport.
+   Contenu (vidéo + légende ou présentation) centré verticalement. */
+.carousel__slide.is-active {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .carousel__viewport {
+    min-height: 460px;
+  }
+}
+
+/* Volet de présentation (titre + texte + logo, sans vidéo) :
+   occupe toute la hauteur du viewport, texte et logo agrandis. */
+.carousel__presentation {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xl);
+  min-height: 560px;
+  width: 100%;
+}
+
+.carousel__presentation-text {
+  flex: 1 1 auto;
+  text-align: left;
+}
+
+.carousel__presentation-title {
+  font-size: var(--font-size-4xl, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 var(--spacing-lg);
+}
+
+.carousel__presentation-desc {
+  font-size: var(--font-size-xl);
+  line-height: 1.7;
+}
+
+/* Lien « En savoir plus » type carte, adapté au fond bleu du hero. */
+.carousel__presentation-link {
+  margin-top: var(--spacing-md);
+  color: var(--color-highlight);
+}
+.carousel__presentation-link:hover {
+  color: var(--color-highlight-light);
+}
+
+.carousel__presentation-logo {
+  flex: 0 0 auto;
+  background-color: var(--color-bg);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.carousel__presentation-logo img {
+  display: block;
+  height: 340px;
+  width: auto;
+  max-width: 340px;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .carousel__presentation {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: var(--spacing-lg);
+    min-height: 0;
+  }
+  .carousel__presentation-text {
+    text-align: center;
+  }
+  .carousel__presentation {
+    min-height: 0;
+  }
+  .carousel__presentation-title {
+    font-size: var(--font-size-2xl);
+  }
+  .carousel__presentation-desc {
+    font-size: var(--font-size-base);
+  }
+  .carousel__presentation-logo {
+    padding: var(--spacing-md);
+  }
+  .carousel__presentation-logo img {
+    height: 150px;
+    max-width: 150px;
+  }
 }
 
 .carousel__slide {
@@ -857,7 +1038,6 @@ a.card:hover {
 }
 
 .carousel__slide.is-active {
-  display: block;
   animation: carousel-fade var(--transition-slow, 350ms) ease;
 }
 
@@ -887,27 +1067,81 @@ a.card:hover {
   margin-top: var(--spacing-md);
 }
 
-/* Points */
+/* Barres de progression (navigation manuelle + minuterie visuelle) */
 .carousel__dots {
   display: flex;
   justify-content: center;
   gap: var(--spacing-sm);
-  margin-top: var(--spacing-md);
+  margin-top: var(--spacing-lg);
 }
 
+/* Inactifs : petits ronds à contour ; actif : barre allongée avec remplissage */
 .carousel__dot {
+  position: relative;
   width: 12px;
   height: 12px;
   padding: 0;
-  border-radius: 50%;
   border: 2px solid var(--color-primary);
+  border-radius: 999px;
   background-color: transparent;
   cursor: pointer;
-  transition: background-color var(--transition-fast);
+  overflow: hidden;
+  transition: width var(--transition-fast), background-color var(--transition-fast);
 }
 
+.carousel__dot:hover {
+  background-color: var(--color-primary-20);
+}
+
+/* Actif : barre allongée. On garde le bord (comme les points inactifs) et une
+   piste translucide sous le remplissage — pas de fond bleu franc visible. */
 .carousel__dot.is-active {
+  width: 56px;
+  background-color: var(--color-primary-20);
+}
+
+/* Remplissage animé en CSS ; la durée = l'intervalle (défini en JS sur .carousel).
+   Positionné sur toute la hauteur, coin droit franc, l'arrondi de la pilule
+   étant assuré par overflow:hidden du bouton. */
+.carousel__dot-progress {
+  position: absolute;
+  inset: 0;
+  width: 0;
   background-color: var(--color-primary);
+}
+
+@keyframes carousel-fill {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+.carousel__dot.is-active .carousel__dot-progress {
+  animation: carousel-fill var(--carousel-duration, 8000ms) linear forwards;
+}
+
+.carousel.is-paused .carousel__dot.is-active .carousel__dot-progress {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel__dot.is-active .carousel__dot-progress {
+    animation: none;
+    width: 100%;
+  }
+}
+
+/* Sur fond bleu (hero) : contour + remplissage clairs */
+.hero--carousel .carousel__dot {
+  border-color: var(--color-text-on-primary);
+}
+.hero--carousel .carousel__dot:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+.hero--carousel .carousel__dot.is-active {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.hero--carousel .carousel__dot-progress {
+  background-color: var(--color-highlight);
 }
 
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode | default "fr" }}">
+<html lang="{{ .Site.Language.Locale | default "fr" }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,14 +20,14 @@
   {{ $css := resources.Get "css/main.css" }}
   {{ if $css }}
     {{ $style := $css | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
   {{ end }}
 
   {{/* TOC styles */}}
   {{ $toc := resources.Get "css/toc.css" }}
   {{ if $toc }}
     {{ $tocStyle := $toc | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $tocStyle.Permalink }}" integrity="{{ $tocStyle.Data.Integrity }}">
+    <link rel="stylesheet" href="{{ $tocStyle.RelPermalink }}" integrity="{{ $tocStyle.Data.Integrity }}">
   {{ end }}
   
   {{/* Canonical URL */}}
@@ -82,13 +82,13 @@
   {{ $tocjs := resources.Get "js/toc.js" }}
   {{ if $tocjs }}
     {{ $tocscript := $tocjs | minify | fingerprint }}
-    <script src="{{ $tocscript.Permalink }}" integrity="{{ $tocscript.Data.Integrity }}" defer></script>
+    <script src="{{ $tocscript.RelPermalink }}" integrity="{{ $tocscript.Data.Integrity }}" defer></script>
   {{ end }}
 
   {{ $carouseljs := resources.Get "js/carousel.js" }}
   {{ if $carouseljs }}
     {{ $carouselscript := $carouseljs | minify | fingerprint }}
-    <script src="{{ $carouselscript.Permalink }}" integrity="{{ $carouselscript.Data.Integrity }}" defer></script>
+    <script src="{{ $carouselscript.RelPermalink }}" integrity="{{ $carouselscript.Data.Integrity }}" defer></script>
   {{ end }}
 </body>
 </html>

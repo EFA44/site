@@ -25,19 +25,23 @@
   var uid = 0;
 
   function initCarousel(root) {
-    var track = root.querySelector('.carousel__track');
     var slides = Array.prototype.slice.call(root.querySelectorAll('.carousel__slide'));
-    if (!track || slides.length === 0) return;
+    if (slides.length === 0) return;
 
     var dots = Array.prototype.slice.call(root.querySelectorAll('[data-carousel-dot]'));
 
     var autoplay = root.getAttribute('data-autoplay') !== 'false';
-    var interval = parseInt(root.getAttribute('data-interval'), 10) || 8000;
+    // Le template émet toujours data-interval ; ce repli ne couvre qu'un attribut manquant/illisible.
+    var interval = parseInt(root.getAttribute('data-interval'), 10) || 12000;
 
     var current = 0;
-    var timer = null;
     var isPlayingMedia = false;
     var ytPlayers = {}; // index -> YT.Player
+
+    // La barre de progression est animée en CSS (keyframes carousel-fill),
+    // sa durée = l'intervalle. Chaque volet active un dot différent, donc son
+    // animation de remplissage repart de zéro sans intervention JS.
+    root.style.setProperty('--carousel-duration', interval + 'ms');
 
     // Chargement paresseux : l'iframe YouTube n'est chargée (et son lecteur API
     // instancié) que lorsque son slide devient actif.
@@ -76,15 +80,20 @@
       lazyLoadSlide(current);
     }
 
-    function next() { show(current + 1); }
+    function next() { show(current + 1); startAuto(); }
 
+    // Bascule pilotée par minuterie JS (fiable), l'animation CSS de la barre
+    // (même durée) n'est que visuelle. Les deux se terminent ensemble.
+    var timer = null;
     function startAuto() {
-      if (!autoplay || slides.length < 2 || isPlayingMedia) return;
       stopAuto();
-      timer = setInterval(next, interval);
+      if (!autoplay || slides.length < 2 || isPlayingMedia) return;
+      root.classList.remove('is-paused');
+      timer = window.setTimeout(next, interval);
     }
     function stopAuto() {
-      if (timer) { clearInterval(timer); timer = null; }
+      if (timer) { window.clearTimeout(timer); timer = null; }
+      root.classList.add('is-paused');
     }
 
     // --- Contrôle des médias ---
@@ -122,10 +131,6 @@
         startAuto();
       });
     });
-
-    // Pause au survol (confort de lecture), reprise à la sortie
-    root.addEventListener('mouseenter', stopAuto);
-    root.addEventListener('mouseleave', startAuto);
 
     show(0);
     startAuto();

@@ -228,7 +228,13 @@ collections:
             fields:
               - { label: Titre principal, name: title, widget: string }
               - { label: Texte en surbrillance, name: highlight, widget: string }
-              - { label: Sous-titre, name: subtitle, widget: text }
+              - {
+                  label: Sous-titre,
+                  name: subtitle,
+                  hint: "Optionnel et non affiché : la présentation de l'association se gère désormais via une diapositive « Présentation » du carrousel média.",
+                  widget: text,
+                  required: false,
+                }
           - label: Mission
             name: mission
             widget: object
@@ -259,7 +265,13 @@ collections:
             widget: object
             required: false
             fields:
-              - { label: Titre de la section, name: title, widget: string }
+              - {
+                  label: Titre de la section,
+                  name: title,
+                  hint: "Optionnel. Laisser vide : le carrousel est intégré au bandeau d'accueil, sans titre de section.",
+                  widget: string,
+                  required: false,
+                }
               - {
                   label: Défilement automatique,
                   name: autoplay,
@@ -272,7 +284,7 @@ collections:
                   name: interval,
                   hint: "Durée d'affichage de chaque diapositive avant de passer à la suivante (en millisecondes).",
                   widget: number,
-                  default: 8000,
+                  default: 12000,
                   required: false,
                 }
               - label: Diapositives
@@ -284,10 +296,17 @@ collections:
                     widget: select
                     default: video
                     options:
+                      - { label: Présentation (texte + logo), value: presentation }
                       - { label: Vidéo (fichier), value: video }
                       - { label: YouTube, value: youtube }
                   - { label: Titre, name: title, widget: string, required: false }
-                  - { label: Description, name: description, widget: text, required: false }
+                  - {
+                      label: Description,
+                      name: description,
+                      hint: "Pour le type Présentation, c'est le texte affiché à côté du logo. Le Markdown est accepté.",
+                      widget: text,
+                      required: false,
+                    }
                   - {
                       label: Fichier vidéo,
                       name: src,

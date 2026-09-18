@@ -2,12 +2,8 @@
 <header class="header">
   <div class="container">
     <div class="header__inner">
-      <a href="{{ .Site.BaseURL }}" class="header__logo">
-        {{ with $site.logo }}
-          <img src="{{ . }}" alt="{{ $site.logoAlt | default $.Site.Title }}" class="header__logo-img">
-        {{ else }}
-          {{ $.Site.Title }}
-        {{ end }}
+      <a href="{{ .Site.BaseURL }}" class="header__logo header__logo--text" aria-label="{{ $site.logoAlt | default $.Site.Title }}">
+        <span class="header__logo-e">e</span><span class="header__logo-fa">fa</span><span class="header__logo-44">44</span>
       </a>
       
       <nav class="nav" aria-label="Navigation principale">
