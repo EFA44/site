@@ -212,15 +212,6 @@ img {
   letter-spacing: 0.02em;
 }
 
-.header__logo-e,
-.header__logo-44 {
-  color: var(--color-primary);
-}
-
-.header__logo-fa {
-  color: var(--color-highlight);
-}
-
 .header__logo-img {
   height: 50px;
   width: auto;
