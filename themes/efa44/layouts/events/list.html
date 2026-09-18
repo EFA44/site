@@ -1,0 +1,91 @@
+{{ define "main" }}
+<section class="section">
+  <div class="container">
+    {{ .Content }}
+
+    {{ $today := time (now.Format "2006-01-02") }}
+    {{ $upcomingEvents := slice }}
+    {{ $pastEvents := slice }}
+    {{ range .Pages }}
+      {{ $effectiveDate := .Date }}
+      {{ with .Params.enddate }}{{ $effectiveDate = time . }}{{ end }}
+      {{ if ge $effectiveDate $today }}
+        {{ $upcomingEvents = $upcomingEvents | append . }}
+      {{ else }}
+        {{ $pastEvents = $pastEvents | append . }}
+      {{ end }}
+    {{ end }}
+
+    {{/* Calendrier navigable (JS) : 2 mois côte à côte, tous les événements passés et à venir */}}
+    {{ $calEvents := slice }}
+    {{ range .Pages }}
+      {{ $end := .Date }}
+      {{ with .Params.enddate }}{{ $end = time . }}{{ end }}
+      {{ $type := "normal" }}
+      {{ if in (.Params.tags | default slice) "assemblee-generale" }}{{ $type = "ag" }}{{ end }}
+      {{ $calEvents = $calEvents | append (dict "start" (.Date.Format "2006-01-02") "end" ($end.Format "2006-01-02") "title" .Title "url" .Permalink "type" $type) }}
+    {{ end }}
+    <div class="calendar" data-calendar data-today="{{ now.Format "2006-01-02" }}">
+      <div class="calendar__controls">
+        <button type="button" class="calendar__nav" data-cal-prev aria-label="Mois précédents">‹</button>
+        <span class="calendar__range" data-cal-range aria-live="polite"></span>
+        <button type="button" class="calendar__nav" data-cal-next aria-label="Mois suivants">›</button>
+      </div>
+      <div class="calendar__months" data-cal-months></div>
+      <div class="calendar__legend">
+        <span><i class="calendar__dot calendar__dot--normal"></i> Événement</span>
+        <span><i class="calendar__dot calendar__dot--ag"></i> Assemblée générale</span>
+        <span><i class="calendar__dot calendar__dot--multiday"></i> Sur plusieurs jours</span>
+      </div>
+      <div class="calendar__popover" data-cal-popover hidden></div>
+    </div>
+    <script type="application/json" data-cal-data>{{ $calEvents | jsonify | safeJS }}</script>
+    <script src="{{ (resources.Get "js/calendar.js" | resources.Minify | resources.Fingerprint).RelPermalink }}" defer></script>
+
+    {{/* Événements à venir */}}
+    {{ if $upcomingEvents }}
+    <h2 class="events-section__title">À venir</h2>
+    <div class="events-list">
+      {{ range sort $upcomingEvents ".Date" }}
+        <a href="{{ .Permalink }}" class="event-card">
+          <div class="event-card__date">
+            <span class="event-card__day">{{ .Date.Day }}</span>
+            <span class="event-card__month">{{ index (split "Jan Fév Mar Avr Mai Juin Juil Août Sep Oct Nov Déc" " ") (sub .Date.Month 1) }}</span>
+          </div>
+          <div class="event-card__body">
+            {{ partial "scope-badge.html" .Params.scope }}
+            <h3 class="event-card__title">{{ .Title }}</h3>
+            <p class="event-card__excerpt">{{ .Description }}</p>
+            <span class="card__link">Lire la suite</span>
+          </div>
+        </a>
+      {{ end }}
+    </div>
+    {{ else }}
+    <p>Aucun événement à venir pour le moment.</p>
+    {{ end }}
+
+    {{/* Événements passés */}}
+    {{ if $pastEvents }}
+    <h2 class="events-section__title events-section__title--past">Événements passés</h2>
+    <div class="events-list events-list--past">
+      {{ range sort $pastEvents ".Date" "desc" }}
+        <a href="{{ .Permalink }}" class="event-card event-card--past">
+          <div class="event-card__date">
+            <span class="event-card__day">{{ .Date.Day }}</span>
+            <span class="event-card__month">{{ index (split "Jan Fév Mar Avr Mai Juin Juil Août Sep Oct Nov Déc" " ") (sub .Date.Month 1) }}</span>
+            <span class="event-card__year">{{ .Date.Year }}</span>
+          </div>
+          <div class="event-card__body">
+            {{ partial "scope-badge.html" .Params.scope }}
+            <h3 class="event-card__title">{{ .Title }}</h3>
+            <p class="event-card__excerpt">{{ .Description }}</p>
+            <span class="card__link">Lire la suite</span>
+          </div>
+        </a>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
