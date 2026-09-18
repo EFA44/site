@@ -1,8 +1,8 @@
 ---
 title: La fédération
-description: La fédération Enfance et Familles d'Adoption (EFA) est une association créée en 1953 et reconnue d'utilité publique depuis 1984. Elle regroupe aujourd'hui 92 associations départementales, et représente plus de 6000 familles et adoptés majeurs.
+description: La fédération Enfance et Familles d'Adoption (EFA) est une association créée en 1953 et reconnue d'utilité publique depuis 1984. Elle regroupe aujourd'hui 90 associations départementales, et représente près de 5200 familles et adoptés majeurs.
 ---
-La fédération [Enfance et Familles d'Adoption (EFA)](https://www.adoptionefa.org/) est une **association créée en 1953** et reconnue d'utilité publique **depuis 1984**. Elle regroupe aujourd'hui 92 associations départementales, et représente plus de 6000 familles et adoptés majeurs.
+La fédération [Enfance et Familles d'Adoption (EFA)](https://www.adoptionefa.org/) est une **association créée en 1953** et reconnue d'utilité publique **depuis 1984**. Elle regroupe aujourd'hui 90 associations départementales, et représente près de 5200 familles et adoptés majeurs.
 
 Enfance & Familles d'Adoption rassemble des parents adoptifs, des adoptés majeurs et des postulants à l'adoption.
 

@@ -7,7 +7,7 @@ description: Pourquoi nous rejoindre ?
 
 ### Un réseau solidaire et expérimenté
 
-Nous rassemblons près de 300 adhérents locaux et faisons partie d’un mouvement national de 89 associations départementales. Notre équipe de 13 bénévoles expérimentés vous guide dans les défis spécifiques de l’adoption, de la préparation du projet à l’accompagnement post-adoptif.
+Nous rassemblons près de 300 adhérents locaux et faisons partie d’un mouvement national de 90 associations départementales. Notre équipe de 13 bénévoles expérimentés vous guide dans les défis spécifiques de l’adoption, de la préparation du projet à l’accompagnement post-adoptif.
 
 ### Des services adaptés à vos besoins
 

@@ -182,7 +182,7 @@ collections:
         file: config/_default/hugo.yaml
         fields:
           - { label: URL de base, name: baseURL, widget: string }
-          - { label: Code langue, name: languageCode, widget: string }
+          - { label: Langue (locale), name: locale, widget: string }
           - { label: Titre du site, name: title, widget: string }
           - { label: Thème, name: theme, widget: string, required: false }
           - label: Params
