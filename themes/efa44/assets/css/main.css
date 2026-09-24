@@ -142,7 +142,8 @@ a[target="_blank"]::after {
 .carousel__dot[target="_blank"]::after,
 a.footer__logo[target="_blank"]::after,
 .footer__social a[target="_blank"]::after,
-.link-preview[target="_blank"]::after {
+.link-preview[target="_blank"]::after,
+.media-item[target="_blank"]::after {
   content: none;
 }
 
@@ -707,6 +708,50 @@ a.card:hover {
 .link-preview__url {
   color: var(--color-text-light);
   font-size: 0.9em;
+}
+
+/* Grille de médias (shortcode medias) */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--spacing-lg);
+  margin: var(--spacing-md) 0 var(--spacing-xl);
+}
+
+.media-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.media-item img {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.25rem;
+  transition: transform var(--transition-fast);
+}
+
+a.media-item:hover img {
+  transform: translateY(-3px);
+}
+
+.media-item__title {
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+a.media-item .media-item__title {
+  color: var(--color-primary);
+}
+
+.media-item__meta {
+  font-size: 0.85em;
+  opacity: 0.75;
+  line-height: 1.3;
 }
 
 /* Card Grid */

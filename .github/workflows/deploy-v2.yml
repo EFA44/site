@@ -110,8 +110,7 @@ jobs:
         run: |
           hugo --minify --baseURL https://preview.efa44.org/
           printf 'User-agent: *\nDisallow: /\n' > public/robots.txt
-          rm -rf public/admin
-          rm -rf public/admin
+          rm -rf public/admin public/oauth
 
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0

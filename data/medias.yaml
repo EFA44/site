@@ -1,0 +1,200 @@
+# Médias partagés sur Instagram (page /pages/medias/), une liste par catégorie
+podcasts:
+  - titre: "Nos chaînons invisibles"
+    auteur: "Elson"
+    lien: "https://open.spotify.com/show/6fcNl9j10zhgefD4z3nvbB"
+    image: /images/medias/podcasts-01.jpg
+  - titre: "L'adoption et la parentalité adoptive - Geneviève Miral - #201"
+    auteur: "Les Adultes de Demain"
+    lien: "https://open.spotify.com/episode/0NlIo16wULiWInAIOC9vNG"
+    image: /images/medias/podcasts-02.jpg
+  - titre: "Chers papas"
+    auteur: "Post-Scriptum"
+    lien: "https://open.spotify.com/episode/4dPwjZhv3Tbz2iK2iQ53pJ"
+    image: /images/medias/podcasts-03.jpg
+  - titre: "#228 - Marie, mon bébé pupille"
+    auteur: "Bliss-Stories - Maternité sans filtre"
+    lien: "https://open.spotify.com/episode/0kQPyPv1hYWToYhbzbRa52"
+    image: /images/medias/podcasts-04.jpg
+  - titre: "D'autres mères que la mienne"
+    auteur: "France Culture – Les Pieds sur terre"
+    lien: "https://www.radiofrance.fr/franceculture/podcasts/serie-d-autres-meres-que-la-mienne"
+    image: /images/medias/podcasts-05.jpg
+  - titre: "Claire & Élise : L'adoption, une histoire à deux voix"
+    auteur: "Entre Elles (ELLE)"
+    lien: "https://open.spotify.com/episode/7ua4CK4hhGDdUABQEtMkpK"
+    image: /images/medias/podcasts-06.jpg
+  - titre: "ADOPTION - Claire et François ont adopté : « C’est difficile mais une très belle aventure »"
+    auteur: "Dans les yeux d'Olivier Delacroix (Europe 1)"
+    lien: "https://open.spotify.com/episode/5ShYPDeVbDaRL77xHZGuoE"
+    image: /images/medias/podcasts-07.jpg
+  - titre: "1- Ludivine et Karine : Choisir de devenir mère en solo"
+    auteur: "Nos histoires d'adoption"
+    lien: "https://open.spotify.com/episode/2HPc4ml7E0MVE3MwalVzLn"
+    image: /images/medias/podcasts-08.jpg
+  - titre: "2- Mylène : Ouvrir sa maison et son cœur à des enfants a besoins particuliers"
+    auteur: "Nos histoires d'adoption"
+    lien: "https://open.spotify.com/episode/56UqtgFSDTcm52WY41kdzV"
+    image: /images/medias/podcasts-09.jpg
+  - titre: "Deux frères et un secret"
+    auteur: "France Culture – Les Pieds sur terre"
+    lien: "https://www.radiofrance.fr/franceculture/podcasts/les-pieds-sur-terre/deux-freres-et-un-secret-3988248"
+    image: /images/medias/podcasts-10.jpg
+  - titre: "3 – Nicolas : Réaliser son rêve de paternité dans une famille homoparentale"
+    auteur: "Nos histoires d'adoption"
+    lien: "https://open.spotify.com/episode/4Owr1XK6SOR1hjkmKEppti"
+    image: /images/medias/podcasts-11.jpg
+  - titre: "À l'oreille d'une sage-femme"
+    auteur: "Julia Cinget"
+    description: "Les 4 premiers épisodes de ce podcast abordent l'adoption."
+    lien: "https://open.spotify.com/show/1Zt8fMaYfwREQeo3tvLyQG"
+    image: /images/medias/podcasts-12.jpg
+  - titre: "Devenir la maman d'un enfant qu'on ne connaît pas - Émilie"
+    auteur: "Résilientes"
+    description: "Témoignage d'une adhérente EFA44."
+    lien: "https://open.spotify.com/episode/4fyeXES93GiE016CrN6jmb"
+    image: /images/medias/podcasts-13.jpg
+films:
+  - titre: "Pupille"
+    auteur: "Jeanne Herry"
+    image: /images/medias/films-01.jpg
+  - titre: "Retour à Séoul"
+    auteur: "Davy Chou"
+    image: /images/medias/films-02.jpg
+  - titre: "Lion"
+    auteur: "Garth Davis"
+    image: /images/medias/films-03.jpg
+  - titre: "Comment j'ai rencontré mon père"
+    auteur: "Maxime Motte"
+    image: /images/medias/films-04.jpg
+  - titre: "Va, vis et deviens"
+    auteur: "Radu Mihaileanu"
+    image: /images/medias/films-05.jpg
+  - titre: "Il a déjà tes yeux"
+    auteur: "Lucien Jean-Baptiste"
+    image: /images/medias/films-06.jpg
+  - titre: "Un autre père"
+    auteur: "Arte"
+    image: /images/medias/films-07.jpg
+livres_jeunesse:
+  - titre: "Catalogue de parents pour les enfants qui veulent en changer"
+    auteur: "Claude Ponti"
+    image: /images/medias/livres-jeunesse-01.jpg
+  - titre: "Une maman c'est comme une maison"
+    auteur: "Aurore Petit"
+    image: /images/medias/livres-jeunesse-02.jpg
+  - titre: "Nous serons toujours là pour toi"
+    auteur: "Stephan Valentin, Denitza Mineva"
+    image: /images/medias/livres-jeunesse-03.jpg
+  - titre: "En attendant Timoun"
+    auteur: "Geneviève Casterman"
+    image: /images/medias/livres-jeunesse-04.jpg
+  - titre: "Mon amour"
+    auteur: "Astrid Desbordes, Pauline Martin"
+    image: /images/medias/livres-jeunesse-05.jpg
+  - titre: "Une mère et une maman"
+    auteur: "Catherine Cahard, Emilie Camatte"
+    description: "une histoire franco-indienne"
+    image: /images/medias/livres-jeunesse-06.jpg
+  - titre: "Tu es trop grand, Georges !"
+    auteur: "Agnès de Lestrade, Sylvie Bessard"
+    image: /images/medias/livres-jeunesse-07.jpg
+  - titre: "Mille et une familles"
+    auteur: "Marie-Cécile Distinguin-Rabot"
+    image: /images/medias/livres-jeunesse-08.jpg
+  - titre: "L'adoption"
+    description: "Élaboré avec les conseils d'une pédiatre. 4-7 ans."
+    image: /images/medias/livres-jeunesse-09.jpg
+  - titre: "La vérité vraie sur Mireille Marcassin"
+    auteur: "Émilie Chazerand, Amandine Piu"
+    image: /images/medias/livres-jeunesse-10.jpg
+  - titre: "Né sous X"
+    auteur: "Lacroix, ill. Laurence Schluth"
+    image: /images/medias/livres-jeunesse-11.jpg
+livres:
+  - titre: "La normalité adoptive"
+    auteur: "Johanne Lemieux"
+    description: "Les clés pour accompagner l'enfant adopté"
+    image: /images/medias/livres-01.jpg
+  - titre: "Créer des liens : Adoption et Maternage"
+    auteur: "Cécile Flé"
+    image: /images/medias/livres-02.jpg
+  - titre: "Parents de cœur"
+    auteur: "Sherrie Eldridge"
+    description: "Comprendre et aider l'enfant adopté"
+    image: /images/medias/livres-03.jpg
+  - titre: "L'adoption bientraitante"
+    auteur: "Patricia Chalon"
+    description: "Dire et faire autrement"
+    image: /images/medias/livres-04.jpg
+  - titre: "Les premiers liens dans l'adoption internationale"
+    auteur: "Thomas Cascales et Marie-Blanche Lacroix"
+    description: "Les besoins particuliers de l'enfant et des parents"
+    image: /images/medias/livres-05.jpg
+  - titre: "Adoption : comment bien gérer l'adolescence"
+    auteur: "Katie Naftzger, Françoise Hallet"
+    description: "Guide pour parents adoptifs. Une vision de l'intérieur : de la petite fille adoptée à la psy"
+    image: /images/medias/livres-06.jpg
+  - titre: "Une poupée en chocolat"
+    auteur: "Amandine Gay"
+    image: /images/medias/livres-07.jpg
+  - titre: "L'enfant abandonné"
+    auteur: "Niels Peter Rygaard"
+    description: "Guide de traitement des troubles de l'attachement"
+    image: /images/medias/livres-08.jpg
+  - titre: "Adoption : les ados racontent"
+    auteur: "Anne Lanchon, Jacques Azam"
+    image: /images/medias/livres-09.jpg
+  - titre: "Parents par adoption"
+    auteur: "Blandine Hamon-Clementz"
+    description: "Des mots pour le quotidien"
+    image: /images/medias/livres-10.jpg
+  - titre: "L'enfant adopté"
+    auteur: "Nancy Newton Verrier"
+    description: "Comprendre la blessure primitive"
+    image: /images/medias/livres-11.jpg
+series:
+  - titre: "Lost Boys & Fairies"
+    auteur: "Arte"
+    image: /images/medias/series-01.jpg
+  - titre: "Trying"
+    image: /images/medias/series-02.jpg
+documentaires:
+  - titre: "Un foyer pour grandir"
+    auteur: "Daniel Abma"
+    description: "89 min – Disponible sur Arte jusqu'au 22/10/2026"
+    lien: "https://www.arte.tv/fr/videos/110266-000-A/un-foyer-pour-grandir/"
+    image: /images/medias/documentaires-11.jpg
+  - titre: "Une histoire à soi"
+    auteur: "Amandine Gay"
+    image: /images/medias/documentaires-01.jpg
+  - titre: "Née quelque part"
+    auteur: "Gabrielle Niang"
+    description: "43 min – Disponible sur france.tv jusqu'au 06/01/2027"
+    lien: "https://www.france.tv/documentaires/6365885-nee-quelque-part-le-documentaire.html"
+    image: /images/medias/documentaires-02.jpg
+  - titre: "Bébés placés, la vie devant eux"
+    auteur: "Karine Dusfour"
+    image: /images/medias/documentaires-03.jpg
+  - titre: "Adoptees, la force de vivre"
+    auteur: "Yohan Laffort"
+    image: /images/medias/documentaires-04.jpg
+  - titre: "Sri landaise"
+    auteur: "Maylis Dartigue"
+    image: /images/medias/documentaires-05.jpg
+  - titre: "C'est toi que j'attendais"
+    auteur: "Stéphanie Pillonca"
+    image: /images/medias/documentaires-06.jpg
+  - titre: "Wonder Boy, Olivier Rousteing, né sous X"
+    auteur: "Anissa Bonnefont"
+    image: /images/medias/documentaires-07.jpg
+  - titre: "Mères sous X, mères de l'ombre"
+    auteur: "Nicolas Bourgoin et Nathalie Perrier"
+    image: /images/medias/documentaires-08.jpg
+  - titre: "Kalkidane, le serment d'une adoptée"
+    auteur: "Hugo Lemant"
+    image: /images/medias/documentaires-09.jpg
+  - titre: "Laurie, du Cœur et des Racines"
+    auteur: "Aurélien Pol"
+    lien: "https://www.france.tv/france-3/outremer-ledoc/7453628-laurie-du-coeur-et-des-racines.html"
+    image: /images/medias/documentaires-10.jpg
