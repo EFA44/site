@@ -12,7 +12,7 @@
       // Shortcode Hugo apercu-lien (themes/efa44/layouts/shortcodes/apercu-lien.html)
       CMS.registerEditorComponent({
         id: 'apercu-lien',
-        label: 'Aperçu de lien',
+        label: 'Fiche',
         icon: 'link',
         fields: [
           { name: 'url', label: 'URL', widget: 'string' },
@@ -26,6 +26,23 @@
           `<a href="${url}" style="display:flex;align-items:center;gap:1.5rem;max-width:640px;border:1px solid #ddd;border-radius:8px;overflow:hidden;text-decoration:none;color:inherit">` +
           (image ? `<img src="${image}" alt="" style="width:120px;height:120px;object-fit:cover;flex:none">` : '') +
           `<span style="min-width:0;padding-right:1.5rem"><strong style="display:block">${titre}</strong><span style="display:block;opacity:.7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${url}</span></span></a>`,
+      });
+
+      // Shortcode Hugo liste-documents : la liste est générée au build (readDir),
+      // l'aperçu n'affiche donc qu'un encadré indiquant le dossier listé.
+      CMS.registerEditorComponent({
+        id: 'liste-documents',
+        label: 'Liste de documents',
+        icon: 'folder_open',
+        fields: [
+          { name: 'dossier', label: 'Dossier', widget: 'string', hint: 'Chemin dans static/, ex. files/activites' },
+          { name: 'id', label: 'Ancre', widget: 'string', required: false },
+        ],
+        pattern: /{{< liste-documents dossier="(?<dossier>[^"]*)"(?: id="(?<id>[^"]*)")? >}}/,
+        toBlock: ({ dossier = '', id = '' }) =>
+          `{{< liste-documents dossier="${dossier}"${id ? ` id="${id}"` : ''} >}}`,
+        toPreview: ({ dossier = '' }) =>
+          `<div style="border:1px dashed #aaa;border-radius:8px;padding:1rem">📥 Liste des documents du dossier <code>${dossier}</code> (générée à la publication)</div>`,
       });
     </script>
   </body>
