@@ -23,7 +23,10 @@
       {{ range . }}
       {{ $external := hasPrefix .link "http" }}
       <a href="{{ if or $external (hasPrefix .link "tel:") }}{{ .link | safeURL }}{{ else }}{{ .link |
-        relURL }}{{ end }}" class="card"{{ if $external }} target="_blank" rel="noopener noreferrer"{{ end }}>
+        relURL }}{{ end }}" class="card{{ if .image }} card--image{{ end }}"{{ if $external }} target="_blank" rel="noopener noreferrer"{{ end }}>
+        {{ if .image }}
+        <img src="{{ .image | relURL }}" alt="{{ .title }}{{ with .content }} – {{ . }}{{ end }}" loading="lazy">
+        {{ else }}
         <div class="card__icon">
           {{ if eq .icon "compass" }}
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
@@ -75,6 +78,7 @@
         <h3 class="card__title">{{ .title }}</h3>
         <p class="card__content">{{ .content }}</p>
         <span class="card__link">En savoir plus</span>
+        {{ end }}
       </a>
       {{ end }}
     </div>

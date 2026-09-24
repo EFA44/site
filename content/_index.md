@@ -29,6 +29,7 @@ cards:
     link: /pages/familles/
   - title: ERF
     icon: child
+    image: /images/erf-zebulon.png
     content: Le service Enfants en Recherche de Famille œuvre pour trouver des familles prêtes à accueillir des enfants ayant des besoins spécifiques.
     link: /pages/erf/
   - title: Revue Accueil

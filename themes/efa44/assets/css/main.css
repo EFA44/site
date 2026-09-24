@@ -639,6 +639,21 @@ a.card:hover {
   transform: translateX(4px);
 }
 
+/* Carte image seule (ex. ERF / Zébulon) */
+a.card.card--image {
+  padding: 0;
+}
+
+/* Absolue : l'image ne dicte pas la taille, la carte garde celle de ses voisines */
+.card--image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
 /* Card Grid */
 .cards {
   display: flex;

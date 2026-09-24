@@ -266,6 +266,13 @@ collections:
                   - { label: Enfant, value: child }
                   - { label: Livre, value: book }
                   - { label: Téléphone, value: phone }
+              - {
+                  label: Image,
+                  name: image,
+                  hint: "Optionnel. Si renseignée, la carte n'affiche que l'image (titre et description servent de texte alternatif).",
+                  widget: image,
+                  required: false,
+                }
               - { label: Description, name: content, widget: text }
               - { label: Lien, name: link, widget: string }
           - label: Carrousel média
