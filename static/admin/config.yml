@@ -401,13 +401,13 @@ collections:
                 fields:
                   - { label: Externe, name: external, widget: boolean, required: false }
 
-  - divider: true
-
-  # Fichiers médias
+  # Fichiers médias : collections masquées du menu, elles servent uniquement
+  # à exposer leurs dossiers dans la médiathèque (Assets).
   - name: activities
     label: Activités
     label_singular: Activité
     folder: static/files/activites
+    hide: true
     create: false
     icon: folder_open
     media_folder: /static/files/activites
@@ -420,6 +420,7 @@ collections:
     label: Images
     label_singular: Image
     folder: static/images
+    hide: true
     create: false
     icon: folder_open
     media_folder: /static/images
