@@ -18,6 +18,7 @@ podcasts:
     image: /images/medias/podcasts-04.jpg
   - titre: "D'autres mères que la mienne"
     auteur: "France Culture – Les Pieds sur terre"
+    lien: "https://www.radiofrance.fr/franceculture/podcasts/serie-d-autres-meres-que-la-mienne"
     image: /images/medias/podcasts-05.jpg
   - titre: "Claire & Élise : L'adoption, une histoire à deux voix"
     auteur: "Entre Elles (ELLE)"
@@ -37,6 +38,7 @@ podcasts:
     image: /images/medias/podcasts-09.jpg
   - titre: "Deux frères et un secret"
     auteur: "France Culture – Les Pieds sur terre"
+    lien: "https://www.radiofrance.fr/franceculture/podcasts/les-pieds-sur-terre/deux-freres-et-un-secret-3988248"
     image: /images/medias/podcasts-10.jpg
   - titre: "3 – Nicolas : Réaliser son rêve de paternité dans une famille homoparentale"
     auteur: "Nos histoires d'adoption"
@@ -158,6 +160,11 @@ series:
   - titre: "Trying"
     image: /images/medias/series-02.jpg
 documentaires:
+  - titre: "Un foyer pour grandir"
+    auteur: "Daniel Abma"
+    description: "89 min – Disponible sur Arte jusqu'au 22/10/2026"
+    lien: "https://www.arte.tv/fr/videos/110266-000-A/un-foyer-pour-grandir/"
+    image: /images/medias/documentaires-11.jpg
   - titre: "Une histoire à soi"
     auteur: "Amandine Gay"
     image: /images/medias/documentaires-01.jpg
