@@ -141,6 +141,7 @@ a[target="_blank"]::after {
 .nav__link[target="_blank"]::after,
 .carousel__dot[target="_blank"]::after,
 a.footer__logo[target="_blank"]::after,
+.footer__social a[target="_blank"]::after,
 .link-preview[target="_blank"]::after {
   content: none;
 }
@@ -876,6 +877,17 @@ a.card:hover {
 .footer__link:hover {
   color: var(--color-highlight);
   opacity: 1;
+}
+
+.footer__social {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.footer__social svg {
+  width: 24px;
+  height: 24px;
 }
 
 .footer__bottom {

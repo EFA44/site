@@ -222,6 +222,8 @@ collections:
                 name: social
                 widget: object
                 fields:
+                  - { label: Facebook (URL), name: facebook, widget: string, required: false }
+                  - { label: Instagram (URL), name: instagram, widget: string, required: false }
                   - label: Fédération
                     name: federation
                     widget: object

@@ -18,6 +18,8 @@ params:
       street: 8 rue Arsène Leloup
       city: 44100 Nantes
   social:
+    facebook: https://www.facebook.com/EnfanceetFamillesAdoption44
+    instagram: https://www.instagram.com/efa.44loireatlantique/
     federation:
       name: Fédération EFA
       url: https://www.adoptionefa.org/

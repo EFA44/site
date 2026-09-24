@@ -35,6 +35,12 @@
             {{ with .city }}{{ . }}{{ end }}
           {{ end }}
         </p>
+        {{ with $site.social }}
+        <div class="footer__social">
+          {{ with .facebook }}<a href="{{ . }}" class="footer__link" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22,12c0-5.52-4.48-10-10-10S2,6.48,2,12c0,4.84,3.44,8.87,8,9.8V15H8v-3h2V9.5C10,7.57,11.57,6,13.5,6H16v3h-2 c-0.55,0-1,0.45-1,1v2h3v3h-3v6.95C18.05,21.45,22,17.19,22,12z"/></svg></a>{{ end }}
+          {{ with .instagram }}<a href="{{ . }}" class="footer__link" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>{{ end }}
+        </div>
+        {{ end }}
       </div>
       {{ end }}
       
