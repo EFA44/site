@@ -23,10 +23,6 @@ cards:
     icon: microphone
     content: Conférences, projections, soirées témoignages pour suivre l'actualité de l'adoption et rencontrer des experts sur des thématiques ciblées.
     link: /events/
-  - title: Groupes de parole
-    icon: comments
-    content: Animés par des professionnels et destinés aux parents par adoption, ces groupes sont des lieux d'écoute, de dialogue et de soutien entre pairs.
-    link: /pages/familles/
   - title: Ateliers pour les enfants et les parents
     icon: palette
     content: "Ateliers pour les enfants et les parents animés par des professionnels : musicothérapie, médiation équine, ... Pour s'exprimer autrement."
