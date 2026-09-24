@@ -12,7 +12,7 @@ backend:
 display_url: https://efa44.org
 site_url: https://efa44.org
 logo:
-  src: https://efa44.uni.bzh/img/efa44-logo.svg
+  src: /images/efa44-logo-small.svg
 
 media_folder: static/files
 public_folder: /files
