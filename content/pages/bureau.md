@@ -2,6 +2,7 @@
 title: Les engagements et le bureau EFA 44
 description: Depuis 1958, Enfance & Familles d'Adoption de Loire-Atlantique, plus couramment appelée EFA 44, accompagne les familles adoptives, les candidats à l'adoption et les adoptés devenus adultes dans le respect de leur parcours et de leurs besoins. Association départementale loi 1901, EFA 44 rassemble près de 300 adhérents, avec un Conseil d’Administration et un bureau composé de parents adoptifs et d’adoptés majeurs, tous bénévoles, qui partagent avec conviction leur expérience et leurs connaissances.
 ---
+
 ## Enfance & Familles d'Adoption de Loire-Atlantique : une association engagée au service de l’enfant et de sa famille adoptive
 
 Depuis 1958, Enfance & Familles d'Adoption de Loire-Atlantique, plus couramment appelée EFA 44, accompagne les familles adoptives, les candidats à l'adoption et les adoptés devenus adultes dans le respect de leur parcours et de leurs besoins. Association départementale loi 1901, EFA 44 rassemble près de 300 adhérents, avec un Conseil d’Administration et un bureau composé de parents adoptifs et d’adoptés majeurs, tous bénévoles, qui partagent avec conviction leur expérience et leurs connaissances.
@@ -56,10 +57,10 @@ Assistées par les membres du Conseil d'administration :
 * Isabelle LE BOT
 * Sophie MATHIEU
 * Valérie GOSSEAUME
-* Nicolas GELLERAU-BEILVERT
 * Céline TOULOUSE
 
 ## Rapports d'activités
+
 Consultez les rapports d'activités de l'association
 
 {{< liste-documents dossier="files/activites" id="rapports-d-activites" >}}
