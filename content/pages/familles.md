@@ -1,9 +1,9 @@
 ---
 title: Famille adoptive
-description: 'Famille adoptive : les ateliers pour les enfants'
+description: "Des ateliers animés par des professionnels pour les enfants et les parents : médiation équine, musicothérapie… Pour s’exprimer autrement et favoriser le bien-être des enfants adoptés."
 ---
 
-## Médiation équine avec EFA 44 : pour le bien-être et l’épanouissement des enfants adoptés
+## Médiation équine
 
 Les séances de médiation équine proposées par EFA 44 offrent aux enfants adoptés un espace de bien-être et de développement personnel unique, facilité par le contact avec le cheval. Encadrées par Caroline Le Nair, psychologue et équithérapeute, et Claire Mouchet, équithérapeute diplômée, ces sessions de médiation par le cheval aident les enfants à explorer la confiance en soi, l’estime de soi et les relations avec autrui, dans un cadre bienveillant et sans jugement.
 
