@@ -10,7 +10,7 @@ Les séances de médiation équine proposées par EFA 44 offrent aux enfants ado
 > « Les séances de médiation que je propose entrent dans le domaine de l'aide et du soin facilité par le cheval et visent à promouvoir et améliorer le bien-être. Mon éthique repose sur la bienveillance, l'accueil de la parole et le non-jugement. […] Chacun peut venir y explorer son vécu avec l'aide et le soutien du thérapeute et du cheval. La dimension de groupe permet d'inclure une dynamique particulière aux séances par l'échange entre chaque participant. »
 > — Caroline Le Nair, psychologue et équithérapeute
 
-Les séances se déroulent un dimanche matin par mois, d'octobre à juin (hors vacances scolaires), au centre équestre La Clef des Loisirs, à Vigneux-de-Bretagne. Les enfants participent en petits groupes de quatre, ce qui favorise une dynamique et une proximité enrichissante.
+Les séances se déroulent un dimanche matin par mois, d'octobre à juin (hors vacances scolaires), au centre équestre [La Clef des Loisirs](https://www.assocle-equitation.fr/), à Vigneux-de-Bretagne. Les enfants participent en petits groupes de quatre, ce qui favorise une dynamique et une proximité enrichissante.
 
 Pour plus d’informations : [contact@efa44.org](mailto:contact@efa44.org)
 
