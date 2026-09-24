@@ -270,6 +270,7 @@ collections:
                   - { label: Palette, value: palette }
                   - { label: Enfant, value: child }
                   - { label: Livre, value: book }
+                  - { label: Film, value: film }
                   - { label: Téléphone, value: phone }
               - {
                   label: Image,
