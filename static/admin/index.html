@@ -8,5 +8,25 @@
   </head>
   <body>
     <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+    <script>
+      // Shortcode Hugo apercu-lien (themes/efa44/layouts/shortcodes/apercu-lien.html)
+      CMS.registerEditorComponent({
+        id: 'apercu-lien',
+        label: 'Aperçu de lien',
+        icon: 'link',
+        fields: [
+          { name: 'url', label: 'URL', widget: 'string' },
+          { name: 'titre', label: 'Titre', widget: 'string' },
+          { name: 'image', label: 'Image', widget: 'image', required: false },
+        ],
+        pattern: /{{< apercu-lien url="(?<url>[^"]*)" titre="(?<titre>[^"]*)" image="(?<image>[^"]*)" >}}/,
+        toBlock: ({ url = '', titre = '', image = '' }) =>
+          `{{< apercu-lien url="${url}" titre="${titre}" image="${image}" >}}`,
+        toPreview: ({ url = '', titre = '', image = '' }) =>
+          `<a href="${url}" style="display:flex;align-items:center;gap:1.5rem;max-width:640px;border:1px solid #ddd;border-radius:8px;overflow:hidden;text-decoration:none;color:inherit">` +
+          (image ? `<img src="${image}" alt="" style="width:120px;height:120px;object-fit:cover;flex:none">` : '') +
+          `<span style="min-width:0;padding-right:1.5rem"><strong style="display:block">${titre}</strong><span style="display:block;opacity:.7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${url}</span></span></a>`,
+      });
+    </script>
   </body>
 </html>
