@@ -11,8 +11,9 @@ on:
         options:
           - production
           - staging
+  # Brouillons du CMS (editorial workflow) : chaque PR est déployée sur preview.efa44.org
   pull_request:
-    types: [closed]
+    types: [opened, synchronize, reopened]
     branches:
       - main
   push:
@@ -23,6 +24,7 @@ on:
 
 jobs:
   deploy:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || 'production' }}
     
@@ -78,3 +80,61 @@ jobs:
         run: |
           echo "✗ Deployment failed"
           exit 1
+
+  preview:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    # ponytail: un seul site d'aperçu, il montre le dernier brouillon poussé
+    concurrency: preview
+    environment:
+      name: preview
+      url: https://preview.efa44.org/
+    permissions:
+      contents: read
+      statuses: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@2752ce1d29631191ea3f27c23495fa06139a5b78 # v3.2.1
+        with:
+          hugo-version: latest
+          extended: true
+
+      - name: Build Hugo site
+        run: |
+          hugo --minify --baseURL https://preview.efa44.org/
+          printf 'User-agent: *\nDisallow: /\n' > public/robots.txt
+          rm -rf public/admin
+          rm -rf public/admin
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+
+      - name: Run Pagefind
+        run: npx pagefind@latest --site "public"
+
+      - name: Upload to FTP
+        uses: SamKirkland/FTP-Deploy-Action@3a9c65ae0fc12ac924ccef8afc26941cc43aad0b # v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ vars.FTP_PROTOCOL }}
+          local-dir: ./public/
+          dangerous-clean-slate: false
+
+      # Statut lu par Sveltia CMS pour afficher le bouton d'aperçu du brouillon
+      - name: Publish preview status
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
+            -f state=success -f target_url=https://preview.efa44.org/ -f context=deploy/preview

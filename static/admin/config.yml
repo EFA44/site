@@ -8,6 +8,9 @@ backend:
   branch: main
   base_url: https://efa44.org
   auth_endpoint: /oauth/authorize
+  preview_context: deploy/preview
+
+publish_mode: editorial_workflow
 
 display_url: https://efa44.org
 site_url: https://efa44.org
