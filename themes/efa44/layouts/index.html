@@ -25,7 +25,7 @@
       <a href="{{ if or $external (hasPrefix .link "tel:") }}{{ .link | safeURL }}{{ else }}{{ .link |
         relURL }}{{ end }}" class="card{{ if .image }} card--image{{ end }}"{{ if $external }} target="_blank" rel="noopener noreferrer"{{ end }}>
         {{ if .image }}
-        <img src="{{ .image | relURL }}" alt="{{ .title }}{{ with .content }} – {{ . }}{{ end }}" loading="lazy">
+        <img src="{{ .image | relURL }}" alt="" loading="lazy">
         {{ else }}
         <div class="card__icon">
           {{ if eq .icon "compass" }}
@@ -75,10 +75,10 @@
           </svg>
           {{ end }}
         </div>
+        {{ end }}
         <h3 class="card__title">{{ .title }}</h3>
         <p class="card__content">{{ .content }}</p>
         <span class="card__link">En savoir plus</span>
-        {{ end }}
       </a>
       {{ end }}
     </div>

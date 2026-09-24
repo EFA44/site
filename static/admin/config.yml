@@ -269,7 +269,7 @@ collections:
               - {
                   label: Image,
                   name: image,
-                  hint: "Optionnel. Si renseignée, la carte n'affiche que l'image (titre et description servent de texte alternatif).",
+                  hint: "Optionnel. Si renseignée, l'image recouvre la carte ; le titre et la description apparaissent au survol.",
                   widget: image,
                   required: false,
                 }

@@ -639,19 +639,22 @@ a.card:hover {
   transform: translateX(4px);
 }
 
-/* Carte image seule (ex. ERF / Zébulon) */
-a.card.card--image {
-  padding: 0;
-}
-
-/* Absolue : l'image ne dicte pas la taille, la carte garde celle de ses voisines */
+/* Carte image (ex. ERF / Zébulon) : image par-dessus le texte : au survol/focus, elle s'assombrit et s'estompe pour révéler le texte */
 .card--image img {
   position: absolute;
   inset: 0;
+  z-index: 2;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top;
+  transition: opacity 400ms ease-in-out, filter 400ms ease-in-out;
+}
+
+.card--image:hover img,
+.card--image:focus-visible img {
+  opacity: 0.10;
+  filter: brightness(0.5);
 }
 
 /* Card Grid */
