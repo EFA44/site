@@ -2,16 +2,28 @@
 title: Médias à découvrir
 description: "Podcasts, films, livres jeunesse, livres, séries, documentaires : les ressources autour de l'adoption que nous partageons sur Instagram."
 ---
-Retrouvez nos coups de cœur dans les stories à la une de notre compte Instagram [@efa.44loireatlantique](https://www.instagram.com/efa.44loireatlantique/).
+Retrouvez aussi nos coups de cœur dans les stories à la une de notre compte Instagram [@efa.44loireatlantique](https://www.instagram.com/efa.44loireatlantique/).
 
-{{< apercu-lien url="https://www.instagram.com/stories/highlights/17973768032753011/" titre="Podcasts" image="/images/medias/podcasts.jpg" >}}
+## Podcasts
 
-{{< apercu-lien url="https://www.instagram.com/stories/highlights/18062752001189778/" titre="Films" image="/images/medias/films.jpg" >}}
+{{< medias liste="podcasts" >}}
 
-{{< apercu-lien url="https://www.instagram.com/stories/highlights/18102218278602844/" titre="Livres jeunesse" image="/images/medias/livres-jeunesse.jpg" >}}
+## Films
 
-{{< apercu-lien url="https://www.instagram.com/stories/highlights/18097860034597135/" titre="Livres" image="/images/medias/livres.jpg" >}}
+{{< medias liste="films" >}}
 
-{{< apercu-lien url="https://www.instagram.com/stories/highlights/17911137420157434/" titre="Séries" image="/images/medias/series.jpg" >}}
+## Livres jeunesse
 
-{{< apercu-lien url="https://www.instagram.com/stories/highlights/18131485072437327/" titre="Documentaires" image="/images/medias/documentaires.jpg" >}}
+{{< medias liste="livres_jeunesse" >}}
+
+## Livres
+
+{{< medias liste="livres" >}}
+
+## Séries
+
+{{< medias liste="series" >}}
+
+## Documentaires
+
+{{< medias liste="documentaires" >}}

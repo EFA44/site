@@ -371,6 +371,26 @@ collections:
               - { label: Texte, name: text, widget: text }
               - { label: Lien, name: link, widget: string }
               - { label: Libellé du bouton, name: label, widget: string }
+      - name: medias
+        label: Médias à découvrir
+        file: data/medias.yaml
+        fields:
+          - &media_list
+            label: Podcasts
+            name: podcasts
+            widget: list
+            summary: "{{titre}}"
+            fields:
+              - { label: Titre, name: titre, widget: string }
+              - { label: Auteur / réalisateur, name: auteur, widget: string, required: false }
+              - { label: Description, name: description, widget: text, required: false }
+              - { label: Image, name: image, widget: image }
+              - { label: Lien, name: lien, widget: string, required: false }
+          - { <<: *media_list, label: Films, name: films }
+          - { <<: *media_list, label: Livres jeunesse, name: livres_jeunesse }
+          - { <<: *media_list, label: Livres, name: livres }
+          - { <<: *media_list, label: Séries, name: series }
+          - { <<: *media_list, label: Documentaires, name: documentaires }
       - name: main_menu_footer
         label: Menu principal et Pied de page
         file: config/_default/menu.yaml
