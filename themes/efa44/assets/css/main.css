@@ -140,7 +140,8 @@ a[target="_blank"]::after {
 .header__logo[target="_blank"]::after,
 .nav__link[target="_blank"]::after,
 .carousel__dot[target="_blank"]::after,
-a.footer__logo[target="_blank"]::after {
+a.footer__logo[target="_blank"]::after,
+.link-preview[target="_blank"]::after {
   content: none;
 }
 
@@ -655,6 +656,56 @@ a.card:hover {
 .card--image:focus-visible img {
   opacity: 0.10;
   filter: brightness(0.5);
+}
+
+/* Aperçu de lien (shortcode apercu-lien) */
+.link-preview {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  max-width: 640px;
+  margin: var(--spacing-md) 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.link-preview:hover {
+  border-color: var(--color-highlight);
+  box-shadow: var(--shadow-highlight);
+}
+
+.link-preview img {
+  flex: 0 0 120px;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.link-preview__body {
+  min-width: 0;
+  padding-right: var(--spacing-lg);
+}
+
+.link-preview__title,
+.link-preview__url {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link-preview__title {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.link-preview__url {
+  color: var(--color-text-light);
+  font-size: 0.9em;
 }
 
 /* Card Grid */

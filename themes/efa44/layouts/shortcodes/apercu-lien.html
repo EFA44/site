@@ -1,0 +1,10 @@
+{{/* Aperçu de lien externe : image à gauche, titre et URL à droite.
+     Usage : {{< apercu-lien url="https://…" titre="…" image="/files/…" >}} */}}
+{{ $url := .Get "url" }}
+<a href="{{ $url | safeURL }}" class="link-preview" target="_blank" rel="noopener noreferrer">
+  {{ with .Get "image" }}<img src="{{ . | relURL }}" alt="" loading="lazy">{{ end }}
+  <span class="link-preview__body">
+    <span class="link-preview__title">{{ .Get "titre" }}</span>
+    <span class="link-preview__url">{{ $url }}</span>
+  </span>
+</a>

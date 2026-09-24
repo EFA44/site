@@ -31,7 +31,7 @@ Comment le délaissement impacte-t-il l'enfant… et ceux qui l'accompagnent au 
 
 Ces deux journées, entièrement en distanciel, proposeront des repères concrets pour mieux agir et mieux protéger, à destination des professionnels et des étudiants en travail social ou en psychologie.
 
-👉 En savoir plus et s'inscrire sur le [site national](https://www.adoptionefa.org/). *(Voir aussi [la 4e Journée professionnelle EFA](/events/2026-11-17-journee-professionnelle-efa-delaissement/) dans nos événements.)*
+👉 En savoir plus et s'inscrire sur le [site national](https://www.adoptionefa.org/).
 
 ## EFA était sur France Inter le 9 juin
 
