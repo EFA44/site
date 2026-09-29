@@ -386,6 +386,9 @@ collections:
               - { label: Description, name: description, widget: text, required: false }
               - { label: Image, name: image, widget: image }
               - { label: Lien, name: lien, widget: string, required: false }
+              - { label: Couleur (carte story), name: couleur, widget: color, required: false, hint: "Fond de la carte « story » ; l'image doit alors être la pochette carrée. Laisser vide pour une vignette simple." }
+              - { label: Intertitre, name: intertitre, widget: string, required: false }
+              - { label: Lecteur intégré (URL embed), name: embed, widget: string, required: false, hint: "Automatique pour Spotify ; à remplir pour Radio France (URL embed.radiofrance.fr)" }
           - { <<: *media_list, label: Films, name: films }
           - { <<: *media_list, label: Livres jeunesse, name: livres_jeunesse }
           - { <<: *media_list, label: Livres, name: livres }
