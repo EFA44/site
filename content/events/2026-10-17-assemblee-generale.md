@@ -2,29 +2,30 @@
 title: Assemblée Générale 2025 - Samedi 17 octobre 2026
 author: EFA 44
 date: 2026-10-17
-description: "Assemblée générale d'EFA 44 : bilan de l'année, bilan financier et perspectives 2026-2027"
+description: "Assemblée générale d'EFA 44 : une après-midi dédiée à la parole des adoptés, suivie du rapport d'activité et du rapport financier"
 tags:
   - assemblee-generale
 ---
 
-📅 **Samedi 17 octobre 2026, de 14h à 18h**
+📅 **Samedi 17 octobre 2026, à partir de 14h**
 
-Ce rendez-vous est l'occasion de nous retrouver, de vous présenter ce qui a rythmé la vie d'EFA 44 au cours de l'année passée, mais aussi d'échanger ensemble sur les projets à venir.
+C'est avec grand plaisir que nous vous retrouverons à notre prochaine Assemblée Générale ordinaire. Notre programme pour cette après-midi est enfin finalisé et nous sommes heureux de pouvoir vous le dévoiler !
 
 ### Informations pratiques
 
-- 📅 **Date** : samedi 17 octobre 2026, de 14h à 18h
-- 📍 **Lieu** : Salle polyvalente et cuisine – Maison des Habitants et du Citoyen, 1 Square des Lauriers – Michelle Palas, 44100 Nantes (Quartier Bellevue)
+- 📅 **Date** : samedi 17 octobre 2026, à partir de 14h
+- 📍 **Lieu** : Salle polyvalente – Maison des Habitants et du Citoyen, 1 Square des Lauriers, 44100 Nantes (Quartier Bellevue)
 - 🚋 **Accès** : Tramway ligne 1 – arrêt Lauriers
 - 🗓️ **Date limite d'inscription** : 12 octobre 2026
 
 ### Au programme de l'après-midi
 
-- retour sur les activités et temps forts de 2025 ;
-- présentation du bilan financier ;
-- perspectives 2026-2027.
+Cette année, notre après-midi sera dédiée à **la parole des adoptés**.
 
-Nous avions également prévu une conférence à l'issue de l'assemblée générale. Malheureusement, notre conférencière a dû annuler sa venue. Mais nous ne baissons pas les bras 😊 : nous réfléchissons actuellement à une autre proposition pour cette deuxième partie d'après-midi.
+- **14h00 – Accueil convivial** : postulants, parents adoptifs, familles… rejoignez-nous autour d'une boisson chaude ou rafraîchissante pour un premier temps de rencontres et d'échanges.
+- **Témoignage d'une adulte adoptée**, enfant pupille de l'État et née sous le secret. Elle partagera avec nous son parcours, son vécu de l'adoption, la recherche de ses origines et son chemin vers la parentalité.
+- **Rencontre avec l'association Voix d'Adoptés**, portée par des adultes adoptés, qui viendra nous présenter ses actions ainsi que son nouvel atelier destiné aux adolescents. Parents d'adolescents, venez les rencontrer ! Ce sera l'occasion de découvrir cet atelier, d'échanger directement avec l'association et de poser toutes vos questions.
+- **Assemblée Générale** : présentation du rapport d'activité et du rapport financier d'EFA 44, suivie d'un temps d'échange.
 
 ### Inscription
 
@@ -32,6 +33,4 @@ Pour nous aider à organiser au mieux ce rendez-vous, l'inscription est obligato
 
 👉 [**S'inscrire à l'assemblée générale**](https://www.helloasso.com/associations/efa-44/evenements/17-10-2026-assemblee-generale-2025)
 
-Nous espérons vraiment vous retrouver nombreux pour ce temps important de la vie de notre association, mais aussi et surtout pour le plaisir de nous retrouver et d'échanger ensemble.
-
-Alors, à vos agendas : rendez-vous le samedi 17 octobre !
+Nous espérons vous retrouver nombreux pour cette après-midi qui s'annonce riche en rencontres et en échanges !
