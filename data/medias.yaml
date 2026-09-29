@@ -54,10 +54,6 @@ podcasts:
     description: "Témoignage d'une adhérente EFA44."
     lien: "https://open.spotify.com/episode/4fyeXES93GiE016CrN6jmb"
     image: /images/medias/podcasts-13.jpg
-  - titre: "37 - Les enjeux de l’adoption (1/4) : connaître « les options supplémentaires de la normalité adoptive » (Johanne Lemieux, psychothérapeute)"
-    auteur: "L'allumeur de réverbères"
-    lien: "https://open.spotify.com/episode/5A4al63aFaoN1MDCJ462CA"
-    image: /images/medias/podcasts-14.jpg
 films:
   - titre: "Pupille"
     auteur: "Jeanne Herry"
@@ -164,11 +160,6 @@ series:
   - titre: "Trying"
     image: /images/medias/series-02.jpg
 documentaires:
-  - titre: "Un foyer pour grandir"
-    auteur: "Daniel Abma"
-    description: "89 min – Disponible sur Arte jusqu'au 22/10/2026"
-    lien: "https://www.arte.tv/fr/videos/110266-000-A/un-foyer-pour-grandir/"
-    image: /images/medias/documentaires-11.jpg
   - titre: "Une histoire à soi"
     auteur: "Amandine Gay"
     image: /images/medias/documentaires-01.jpg
