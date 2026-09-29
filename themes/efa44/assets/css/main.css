@@ -739,6 +739,122 @@ a.media-item:hover img {
   transform: translateY(-3px);
 }
 
+/* Carte « story » Spotify en CSS, mesures de la vignette 360×640 d'origine (1px = 100cqw / 360) */
+.media-story {
+  container-type: inline-size;
+  aspect-ratio: 9 / 16;
+  border-radius: 8px;
+  margin-bottom: 0.25rem;
+  background: var(--c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-fast);
+}
+
+a.media-item:hover .media-story {
+  transform: translateY(-3px);
+}
+
+.media-story__card {
+  --card: color-mix(in srgb, var(--c) 30%, black);
+  position: relative;
+  width: 75cqw;
+  box-sizing: border-box;
+  padding: 4.2cqw 4.4cqw 4.4cqw;
+  border-radius: 2.2cqw;
+  background: var(--card);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+a.media-item .media-story__card img {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 1.1cqw;
+  margin: 0;
+  transform: none;
+}
+
+/* Texte ajouté sur la story Instagram, au-dessus de la carte */
+.media-story__intertitre {
+  position: absolute;
+  bottom: 100%;
+  left: -8cqw;
+  right: -8cqw;
+  margin-bottom: 3cqw;
+  text-align: center;
+  font-family: "Bradley Hand", "Segoe Print", cursive;
+  font-size: 6cqw;
+  line-height: 1.3;
+  color: #fff;
+}
+
+.media-story__title {
+  margin-top: 3.3cqw;
+  font-size: 5.3cqw;
+  line-height: 7.5cqw;
+  font-weight: 700;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.media-story__show {
+  margin-top: 1.1cqw;
+  font-size: 4.4cqw;
+  line-height: 6.1cqw;
+  opacity: 0.75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+a.media-item .media-story__card .media-story__logo {
+  width: auto;
+  height: 5.6cqw;
+  aspect-ratio: auto;
+  margin-top: 5.5cqw;
+  border-radius: 0;
+  align-self: flex-start;
+}
+
+/* Lecteur intégré ouvert au clic (shortcode medias) */
+.media-player {
+  width: min(600px, 92vw);
+  padding: var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.media-player::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.media-player form {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.media-player__close {
+  border: none;
+  background: none;
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-text-muted);
+}
+
+.media-player iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+}
+
 .media-item__title {
   font-weight: 600;
   line-height: 1.3;
@@ -1333,6 +1449,19 @@ a.media-item .media-item__title {
   text-decoration-color: var(--color-highlight);
   text-underline-offset: 2px;
   transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+}
+
+/* Soulignement sur les textes seulement : posé sur le lien, il traverserait la carte story */
+.content a.media-item {
+  text-decoration-line: none;
+}
+
+.content a.media-item :is(.media-item__title, .media-item__meta) {
+  text-decoration: underline var(--color-highlight);
+}
+
+.content a.media-item:hover :is(.media-item__title, .media-item__meta) {
+  text-decoration-color: var(--color-highlight-dark);
 }
 
 .content a:hover {

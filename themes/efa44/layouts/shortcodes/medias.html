@@ -1,11 +1,51 @@
 {{/* Grille de médias depuis data/medias.yaml : {{< medias liste="podcasts" >}} */}}
 <div class="media-grid">
   {{ range index hugo.Data.medias (.Get "liste") }}
-  {{ if .lien }}<a href="{{ .lien | safeURL }}" class="media-item" target="_blank" rel="noopener noreferrer">{{ else }}<div class="media-item">{{ end }}
+  {{ $embed := .embed }}
+  {{ if and .lien (strings.Contains .lien "open.spotify.com/") }}{{ $embed = replace .lien "open.spotify.com/" "open.spotify.com/embed/" }}{{ end }}
+  {{ if .lien }}<a href="{{ .lien | safeURL }}" class="media-item" target="_blank" rel="noopener noreferrer"{{ with $embed }} data-embed="{{ . }}"{{ end }}>{{ else }}<div class="media-item">{{ end }}
+    {{ if .couleur }}
+    {{/* Carte « story » Spotify dessinée en CSS : image = pochette carrée (scripts/spotify-story.py) */}}
+    <div class="media-story" style="--c: {{ .couleur | safeCSS }}">
+      <div class="media-story__card">
+        {{ with .intertitre }}<span class="media-story__intertitre">{{ . }}</span>{{ end }}
+        <img src="{{ .image | relURL }}" alt="" loading="lazy">
+        <span class="media-story__title">{{ .titre }}</span>
+        <span class="media-story__show">{{ .auteur }}</span>
+        {{ if strings.Contains .lien "radiofrance.fr" }}<img class="media-story__logo" src="{{ "images/radiofrance.svg" | relURL }}" alt="Radio France">{{ else }}<img class="media-story__logo" src="{{ "images/spotify.svg" | relURL }}" alt="Spotify">{{ end }}
+      </div>
+    </div>
+    {{ else }}
     <img src="{{ .image | relURL }}" alt="" loading="lazy">
     <span class="media-item__title">{{ .titre }}</span>
     {{ with .auteur }}<span class="media-item__meta">{{ . }}</span>{{ end }}
+    {{ end }}
     {{ with .description }}<span class="media-item__meta">{{ . }}</span>{{ end }}
   {{ if .lien }}</a>{{ else }}</div>{{ end }}
   {{ end }}
 </div>
+
+{{/* Lecteur intégré (Spotify / Radio France) ouvert au clic sur une vignette, une seule fois par page */}}
+{{ if not (.Page.Store.Get "media-player") }}
+{{ .Page.Store.Set "media-player" true }}
+<dialog class="media-player" aria-label="Lecteur">
+  <form method="dialog"><button class="media-player__close" aria-label="Fermer">×</button></form>
+  <iframe title="Lecteur" height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+</dialog>
+<script>
+  (() => {
+    const dialog = document.querySelector(".media-player");
+    const iframe = dialog.querySelector("iframe");
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest("a[data-embed]");
+      if (!link || !dialog.showModal) return;
+      e.preventDefault();
+      iframe.src = link.dataset.embed;
+      dialog.showModal();
+    });
+    // Clic sur le fond : fermer ; à la fermeture, vider l'iframe pour couper le son
+    dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
+    dialog.addEventListener("close", () => { iframe.src = "about:blank"; });
+  })();
+</script>
+{{ end }}
