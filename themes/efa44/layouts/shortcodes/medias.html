@@ -1,4 +1,4 @@
-{{/* Grille de médias depuis data/medias.yaml : {{< medias liste="podcasts" >}} */}}
+{{/* Grille de médias depuis data/medias/<liste>.yaml : {{< medias liste="podcasts" >}} */}}
 <div class="media-grid">
   {{ range index hugo.Data.medias (.Get "liste") }}
   {{ $embed := .embed }}

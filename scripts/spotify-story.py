@@ -6,7 +6,7 @@
    « Enregistrer tout au format HAR ».
 2. python3 scripts/spotify-story.py <fichier.har> <url de l'épisode> static/images/medias/podcasts-NN.jpg
 
-Télécharge la pochette et affiche l'entrée à coller dans data/medias.yaml.
+Télécharge la pochette et affiche l'entrée à coller dans data/medias/podcasts.yaml.
 """
 import json, os, re, subprocess, sys, urllib.request
 
@@ -28,8 +28,8 @@ subprocess.run(["sips", "-Z", "360", out], check=True, capture_output=True)
 
 # minContrast.backgroundBase = fond des cartes story Spotify (vérifié sur les vignettes existantes)
 c = ep["visualIdentity"]["squareCoverImage"]["extractedColorSet"]["minContrast"]["backgroundBase"]
-print(f'''  - titre: "{ep["name"]}"
-    auteur: "{ep["podcastV2"]["data"]["name"]}"
-    lien: "https://open.spotify.com/episode/{episode}"
-    image: /images/medias/{os.path.basename(out)}
-    couleur: "#{c["red"]:02x}{c["green"]:02x}{c["blue"]:02x}"''')
+print(f'''- titre: "{ep["name"]}"
+  auteur: "{ep["podcastV2"]["data"]["name"]}"
+  lien: "https://open.spotify.com/episode/{episode}"
+  image: /images/medias/{os.path.basename(out)}
+  couleur: "#{c["red"]:02x}{c["green"]:02x}{c["blue"]:02x}"''')

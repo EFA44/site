@@ -21,6 +21,8 @@
   {{ if $css }}
     {{ $style := $css | minify | fingerprint }}
     <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+    {{/* Copie à URL fixe pour l'aperçu du CMS (static/admin/index.html) */}}
+    {{ ($css | resources.Copy "admin/preview.css").Publish }}
   {{ end }}
 
   {{/* TOC styles */}}

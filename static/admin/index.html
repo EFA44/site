@@ -44,6 +44,39 @@
         toPreview: ({ dossier = '' }) =>
           `<div style="border:1px dashed #aaa;border-radius:8px;padding:1rem">📥 Liste des documents du dossier <code>${dossier}</code> (générée à la publication)</div>`,
       });
+
+      // Aperçu de data/medias/*.yaml avec le balisage du shortcode medias et les styles du site
+      CMS.registerPreviewStyle('/admin/preview.css');
+      const mediaPreview = createClass({
+        render: function () {
+          const { entry, getAsset } = this.props;
+          const items = entry.toJS().data.items || [];
+          const src = (path) => getAsset(path)?.url || path;
+          const card = (m, i) =>
+            h(m.lien ? 'a' : 'div', { key: i, className: 'media-item', href: m.lien || undefined, target: m.lien ? '_blank' : undefined },
+              m.couleur
+                ? h('div', { className: 'media-story', style: { '--c': m.couleur } },
+                    h('div', { className: 'media-story__card' },
+                      m.intertitre && h('span', { className: 'media-story__intertitre' }, m.intertitre),
+                      h('img', { src: src(m.image), alt: '' }),
+                      h('span', { className: 'media-story__title' }, m.titre),
+                      h('span', { className: 'media-story__show' }, m.auteur),
+                      h('img', {
+                        className: 'media-story__logo',
+                        src: /radiofrance\.fr/.test(m.lien) ? '/images/radiofrance.svg' : '/images/spotify.svg',
+                        alt: '',
+                      })))
+                : h(rf, {},
+                    h('img', { src: src(m.image), alt: '' }),
+                    h('span', { className: 'media-item__title' }, m.titre),
+                    m.auteur && h('span', { className: 'media-item__meta' }, m.auteur)),
+              m.description && h('span', { className: 'media-item__meta' }, m.description));
+
+          return h('div', { className: 'content' }, h('div', { className: 'media-grid' }, items.map(card)));
+        },
+      });
+      ['podcasts', 'films', 'livres_jeunesse', 'livres', 'series', 'documentaires'].forEach((name) =>
+        CMS.registerPreviewTemplate(name, mediaPreview));
     </script>
   </body>
 </html>
