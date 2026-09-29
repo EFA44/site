@@ -1,0 +1,11 @@
+{{/* Grille de médias depuis data/medias.yaml : {{< medias liste="podcasts" >}} */}}
+<div class="media-grid">
+  {{ range index hugo.Data.medias (.Get "liste") }}
+  {{ if .lien }}<a href="{{ .lien | safeURL }}" class="media-item" target="_blank" rel="noopener noreferrer">{{ else }}<div class="media-item">{{ end }}
+    <img src="{{ .image | relURL }}" alt="" loading="lazy">
+    <span class="media-item__title">{{ .titre }}</span>
+    {{ with .auteur }}<span class="media-item__meta">{{ . }}</span>{{ end }}
+    {{ with .description }}<span class="media-item__meta">{{ . }}</span>{{ end }}
+  {{ if .lien }}</a>{{ else }}</div>{{ end }}
+  {{ end }}
+</div>

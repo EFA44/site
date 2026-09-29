@@ -36,6 +36,10 @@ cards:
     icon: book
     content: Témoignages, articles de professionnels, analyses et retours d'études. Une revue qui accompagne, informe et invite à aller plus loin.
     link: /pages/revue-accueil/
+  - title: Médias à découvrir
+    icon: film
+    content: Podcasts, films, livres jeunesse, séries, documentaires… Notre sélection autour de l'adoption, partagée sur Instagram.
+    link: /pages/medias/
   - title: Ligne d'écoute
     icon: phone
     content: "Une écoute de pairs, sans jugement, dans l'anonymat et la discrétion. Permanences les mercredis (20h30-22h30) et jeudis (14h30-16h30). Tél : 01.40.05.57.79"
