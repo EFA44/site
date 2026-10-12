@@ -53,13 +53,14 @@
           const items = entry.toJS().data.items || [];
           const src = (path) => getAsset(path)?.url || path;
           const card = (m, i) =>
-            h(m.lien ? 'a' : 'div', { key: i, className: m.ajout && new Date() - new Date(m.ajout) < 21 * 864e5 ? 'media-item is-new' : 'media-item', href: m.lien || undefined, target: m.lien ? '_blank' : undefined },
+            // Pas de href : un clic sur la vignette ouvre l'élément dans le formulaire (data-key-path)
+            h(m.lien ? 'a' : 'div', { key: i, 'data-key-path': `items.${i}`, tabIndex: 0, className: m.ajout && new Date() - new Date(m.ajout) < 21 * 864e5 ? 'media-item is-new' : 'media-item', target: m.lien ? '_blank' : undefined },
               m.couleur
                 ? h('div', { className: 'media-story', style: { '--c': m.couleur } },
                     h('div', { className: 'media-story__card' },
                       m.intertitre && h('span', { className: 'media-story__intertitre' }, m.intertitre),
                       h('img', { src: src(m.image), alt: '' }),
-                      h('span', { className: 'media-story__title' }, m.titre),
+                      h('span', { className: 'media-story__title', 'data-key-path': `items.${i}.titre` }, m.titre),
                       h('span', { className: 'media-story__show' }, m.auteur),
                       h('img', {
                         className: 'media-story__logo',
@@ -68,7 +69,7 @@
                       })))
                 : h(rf, {},
                     h('img', { src: src(m.image), alt: '' }),
-                    h('span', { className: 'media-item__title' }, m.titre),
+                    h('span', { className: 'media-item__title', 'data-key-path': `items.${i}.titre` }, m.titre),
                     m.auteur && h('span', { className: 'media-item__meta' }, m.auteur)),
               m.description && h('span', { className: 'media-item__meta' }, m.description),
               m.fin && h('span', { className: 'media-item__meta' }, `${m.lien ? `Sur ${new URL(m.lien).host.replace(/^www\./, '')}` : 'Disponible'} jusqu'au ${m.fin.split('-').reverse().join('/')}`));

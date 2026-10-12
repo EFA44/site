@@ -53,6 +53,7 @@ collections:
     view_filters:
       - { label: "À venir", field: date, gte: '{{today}}' }
       - { label: "Passés", field: date, lt: '{{today}}' }
+      - { label: "Sans date de fin", field: enddate, empty: true }
       - { label: "Cette année", field: date, pattern: '^{{year}}' }
     fields:
       - { name: title, label: Titre, widget: string }
@@ -193,8 +194,8 @@ collections:
             collapsed: true
             fields:
               - { label: Titre, name: titre, widget: string }
-              - { label: Date d'ajout, name: ajout, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", required: false, hint: "Étiquette « Nouveau » pendant 3 semaines." }
-              - { label: Disponible jusqu'au, name: fin, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", required: false, hint: "Fin du replay : compte à rebours sur la vignette dans les 30 derniers jours." }
+              - { label: Date d'ajout, name: ajout, widget: datetime, type: date, default: "{{now}}", required: false, hint: "Remplie automatiquement à la création ; étiquette « Nouveau » pendant 3 semaines." }
+              - { label: Disponible jusqu'au, name: fin, widget: datetime, type: date, required: false, hint: "Fin du replay : compte à rebours sur la vignette dans les 30 derniers jours." }
               - { label: Auteur / réalisateur, name: auteur, widget: string, required: false }
               - { label: Description, name: description, widget: text, required: false }
               - { label: Image, name: image, widget: image }
