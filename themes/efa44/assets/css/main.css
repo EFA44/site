@@ -892,6 +892,12 @@ a.media-item .media-item__title {
   cursor: pointer;
 }
 
+.toc .media-filter {
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+
 .media-filter[aria-pressed="true"] {
   background: var(--color-highlight);
 }

@@ -82,8 +82,10 @@
         if (grid.previousElementSibling?.tagName === "H2") grid.previousElementSibling.hidden = vide;
       });
     });
-    const first = grids[0].previousElementSibling?.tagName === "H2" ? grids[0].previousElementSibling : grids[0];
-    first.before(button);
+    // Sous « Sommaire » dans le menu de gauche ; au-dessus des catégories quand il est masqué (mobile)
+    const tocTitle = document.querySelector(".toc .toc-title");
+    if (tocTitle?.offsetParent) tocTitle.after(button);
+    else (grids[0].previousElementSibling?.tagName === "H2" ? grids[0].previousElementSibling : grids[0]).before(button);
   });
 </script>
 {{ end }}
