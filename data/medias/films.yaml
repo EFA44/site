@@ -4,7 +4,7 @@
 - titre: "Retour à Séoul"
   ajout: "2026-10-12"
   auteur: "Davy Chou"
-  description: "Disponible sur france.tv jusqu'au 31/12/2026"
+  fin: "2026-12-31"
   lien: "https://www.france.tv/films/films-drame/8702871-retour-a-seoul.html"
   image: /images/medias/films-02.jpg
 - titre: "Lion"
@@ -20,17 +20,17 @@
   auteur: "Lucien Jean-Baptiste"
   image: /images/medias/films-06.jpg
 - titre: "Un autre père"
-  auteur: "Arte"
+  auteur: "Pierre Linhart"
   image: /images/medias/films-07.jpg
 - titre: "Heureusement qu'on s'a"
   ajout: "2026-10-12"
-  auteur: "France TV"
-  description: "Disponible sur france.tv jusqu'au 30/11/2026"
+  auteur: "Anne Giafferi"
+  fin: "2026-11-30"
   lien: "https://www.france.tv/series-et-fictions/films-tv/4837153-heureusement-qu-on-s-a.html"
   image: /images/medias/films-08.jpg
 - titre: "L'enfant de personne"
   ajout: "2026-10-12"
-  auteur: "France TV"
-  description: "Disponible sur france.tv jusqu'au 31/12/2026"
+  auteur: "Akim Isker"
+  fin: "2026-12-31"
   lien: "https://www.france.tv/france-2/l-enfant-de-personne/7127792-emission-du-mardi-22-avril-2025.html"
   image: /images/medias/films-09.jpg

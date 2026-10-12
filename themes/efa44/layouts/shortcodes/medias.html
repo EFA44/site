@@ -4,6 +4,7 @@
   {{ $embed := .embed }}
   {{ if and .lien (strings.Contains .lien "open.spotify.com/") }}{{ $embed = replace .lien "open.spotify.com/" "open.spotify.com/embed/" }}{{ end }}
   {{ $ajout := "" }}{{ with .ajout }}{{ $ajout = printf ` data-ajout="%s"` (time.Format "2006-01-02" .) | safeHTMLAttr }}{{ end }}
+  {{ with .fin }}{{ $ajout = printf `%s data-fin="%s"` $ajout (time.Format "2006-01-02" .) | safeHTMLAttr }}{{ end }}
   {{ if .lien }}<a href="{{ .lien | safeURL }}" class="media-item" target="_blank" rel="noopener noreferrer"{{ with $embed }} data-embed="{{ . }}"{{ end }}{{ $ajout }}>{{ else }}<div class="media-item"{{ $ajout }}>{{ end }}
     {{ if .couleur }}
     {{/* Carte « story » Spotify dessinée en CSS : image = pochette carrée (scripts/spotify-story.py) */}}
@@ -22,71 +23,17 @@
     {{ with .auteur }}<span class="media-item__meta">{{ . }}</span>{{ end }}
     {{ end }}
     {{ with .description }}<span class="media-item__meta">{{ . }}</span>{{ end }}
+    {{ if .fin }}<span class="media-item__meta media-item__fin">{{ if .lien }}Sur {{ strings.TrimPrefix "www." (urls.Parse .lien).Host }}{{ else }}Disponible{{ end }} jusqu'au {{ time.Format "02/01/2006" .fin }}</span>{{ end }}
   {{ if .lien }}</a>{{ else }}</div>{{ end }}
   {{ end }}
 </div>
 
-{{/* Lecteur intégré (Spotify / Radio France) ouvert au clic sur une vignette, une seule fois par page */}}
-{{ if not (.Page.Store.Get "media-player") }}
-{{ .Page.Store.Set "media-player" true }}
+{{/* Lecteur intégré (Spotify / Radio France) et script de la page, une seule fois par page */}}
+{{ if eq .Ordinal 0 }}
 <dialog class="media-player" aria-label="Lecteur">
   <form method="dialog"><button class="media-player__close" aria-label="Fermer">×</button></form>
   <iframe title="Lecteur" height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
 </dialog>
-<script>
-  (() => {
-    const dialog = document.querySelector(".media-player");
-    const iframe = dialog.querySelector("iframe");
-    document.addEventListener("click", (e) => {
-      const link = e.target.closest("a[data-embed]");
-      if (!link || !dialog.showModal) return;
-      e.preventDefault();
-      iframe.src = link.dataset.embed;
-      dialog.showModal();
-    });
-    // Clic sur le fond : fermer ; à la fermeture, vider l'iframe pour couper le son
-    dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
-    dialog.addEventListener("close", () => { iframe.src = "about:blank"; });
-  })();
-
-  // Nouveautés : éléments ajoutés (champ ajout) depuis la visite précédente de ce navigateur,
-  // ou depuis 30 jours à la première visite. La visite précédente est figée pour la session.
-  // ponytail: comparaison au jour près, un ajout le jour même d'une visite n'est pas signalé
-  document.addEventListener("DOMContentLoaded", () => {
-    const today = new Date().toISOString().slice(0, 10);
-    const prev = sessionStorage.getItem("medias-prev") || localStorage.getItem("medias-last")
-      || new Date(Date.now() - 30 * 864e5).toISOString().slice(0, 10);
-    sessionStorage.setItem("medias-prev", prev);
-    localStorage.setItem("medias-last", today);
-
-    const nouveaux = [...document.querySelectorAll(".media-item[data-ajout]")].filter((el) => el.dataset.ajout > prev);
-    if (!nouveaux.length) return;
-    nouveaux.forEach((el) => el.classList.add("is-new"));
-
-    const grids = [...document.querySelectorAll(".media-grid")];
-    const button = document.createElement("button");
-    button.className = "media-filter";
-    button.setAttribute("aria-pressed", "false");
-    button.title = "Depuis votre dernière visite";
-    const label = () => button.textContent = button.getAttribute("aria-pressed") === "true"
-      ? "Tout afficher" : `Nouveautés (${nouveaux.length})`;
-    label();
-    button.addEventListener("click", () => {
-      const on = button.getAttribute("aria-pressed") !== "true";
-      button.setAttribute("aria-pressed", on);
-      label();
-      grids.forEach((grid) => {
-        grid.querySelectorAll(".media-item").forEach((el) => el.hidden = on && !el.classList.contains("is-new"));
-        // Masquer aussi l'intertitre des catégories sans nouveauté
-        const vide = on && !grid.querySelector(".media-item.is-new");
-        grid.hidden = vide;
-        if (grid.previousElementSibling?.tagName === "H2") grid.previousElementSibling.hidden = vide;
-      });
-    });
-    // Sous « Sommaire » dans le menu de gauche ; au-dessus des catégories quand il est masqué (mobile)
-    const tocTitle = document.querySelector(".toc .toc-title");
-    if (tocTitle?.offsetParent) tocTitle.after(button);
-    else (grids[0].previousElementSibling?.tagName === "H2" ? grids[0].previousElementSibling : grids[0]).before(button);
-  });
-</script>
+{{ $js := resources.Get "js/medias.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
 {{ end }}

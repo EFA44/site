@@ -198,7 +198,8 @@ collections:
             collapsed: true
             fields:
               - { label: Titre, name: titre, widget: string }
-              - { label: Date d'ajout, name: ajout, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", required: false, hint: "Étiquette « Nouveau » pour les visiteurs dont la dernière visite est antérieure (30 jours pour une première visite)." }
+              - { label: Date d'ajout, name: ajout, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", required: false, hint: "Étiquette « Nouveau » pendant 3 semaines." }
+              - { label: Disponible jusqu'au, name: fin, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", required: false, hint: "Fin du replay : compte à rebours sur la vignette dans les 30 derniers jours." }
               - { label: Auteur / réalisateur, name: auteur, widget: string, required: false }
               - { label: Description, name: description, widget: text, required: false }
               - { label: Image, name: image, widget: image }

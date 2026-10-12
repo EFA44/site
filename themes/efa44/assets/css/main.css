@@ -881,6 +881,30 @@ a.media-item .media-item__title {
   letter-spacing: 0.03em;
 }
 
+.media-item[data-reste]::after {
+  content: attr(data-reste);
+  /* Annule l'icône « lien externe » portée par a[target="_blank"]::after */
+  width: auto;
+  height: auto;
+  margin: 0;
+  -webkit-mask: none;
+  mask: none;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: #c0392b;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: 700;
+}
+
+.media-item.is-new[data-reste]::after {
+  top: 2.1rem;
+}
+
 .media-filter {
   padding: 0.4rem 1rem;
   border: 2px solid var(--color-highlight);
