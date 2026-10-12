@@ -17,8 +17,7 @@
 // Nouveautés : éléments ajoutés (champ ajout) il y a moins de 3 semaines
 document.addEventListener("DOMContentLoaded", () => {
   const jour = (decalage = 0) => new Date(Date.now() + decalage * 864e5).toISOString().slice(0, 10);
-  // ?date=AAAA-MM-JJ dans l'URL pour vérifier les étiquettes à une autre date
-  const today = new URLSearchParams(location.search).get("date") || jour();
+  const today = jour();
   const limite = jour(-21);
 
   // Date limite (champ fin) : compte à rebours dans les 30 derniers jours ;
