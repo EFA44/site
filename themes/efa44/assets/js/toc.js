@@ -5,11 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const rootUl = toc.querySelector('ul');
   const nestedUls = Array.from(toc.querySelectorAll('ul ul'));
 
-  // Décalage du scroll-spy (hauteur des en-têtes fixes). Surchargé via --toc-offset.
-  const OFFSET = (() => {
-    const n = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--toc-offset'), 10);
-    return Number.isFinite(n) ? n : 120;
-  })();
+  // Décalage du scroll-spy (hauteur des en-têtes fixes).
+  const OFFSET = 120;
 
   // Un seul groupe ouvert à la fois.
   function expand(ul) {

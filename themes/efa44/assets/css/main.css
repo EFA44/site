@@ -215,18 +215,6 @@ img {
   letter-spacing: 0.02em;
 }
 
-.header__logo-img {
-  height: 50px;
-  width: auto;
-  transition: opacity var(--transition-fast);
-}
-
-@media (max-width: 768px) {
-  .header__logo-img {
-    height: 40px;
-  }
-}
-
 .hero {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-darker) 100%);
   color: var(--color-text-on-primary);
@@ -249,24 +237,6 @@ img {
   max-width: none;
 }
 
-.hero__logo-wrapper {
-  background-color: var(--color-bg);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-lg);
-  flex: 0 0 auto;
-  margin-left: auto; /* push logo to the right */
-  align-self: center; /* keep logo vertically centered */
-}
-
-.hero__logo {
-  display: block;
-  height: 240px;
-  width: auto;
-  max-width: 240px;
-  object-fit: contain;
-}
-
 .hero__title {
   font-size: var(--font-size-3xl);
   margin: 0 0 var(--spacing-md);
@@ -277,10 +247,6 @@ img {
   font-size: var(--font-size-lg);
   opacity: 0.9;
   margin: 0;
-}
-
-.hero__highlight {
-  color: var(--color-highlight);
 }
 
 /* Hero intégrant le carrousel */
@@ -323,18 +289,7 @@ img {
     text-align: center;
     width: 100%;
   }
-  
-  .hero__logo-wrapper {
-    margin-left: 0;
-    align-self: center;
-    padding: calc(var(--spacing-md) + 0.5rem);
-  }
-  
-  .hero__logo {
-    /* height: 220px; bigger on mobile */
-    width: 100%;
-    margin: 0 auto;
-  }
+
 }
 
 /* ==========================================================================
@@ -1007,18 +962,6 @@ a.media-item .media-item__title {
   transform: translateY(0);
 }
 
-/* Outline Button */
-.btn--outline {
-  background-color: transparent;
-  color: var(--color-primary);
-  border: 2px solid var(--color-primary);
-}
-
-.btn--outline:hover {
-  background-color: var(--color-primary);
-  color: var(--color-text-on-primary);
-}
-
 /* ==========================================================================
    8. Footer
    ========================================================================== */
@@ -1139,29 +1082,6 @@ a.media-item .media-item__title {
   color: var(--color-primary);
 }
 
-.bg-primary {
-  background-color: var(--color-primary);
-  color: var(--color-text-on-primary);
-}
-
-.bg-highlight {
-  background-color: var(--color-highlight);
-  color: var(--color-text-on-highlight);
-}
-
-.border-highlight {
-  border-color: var(--color-highlight);
-}
-
-/* Highlight Bar */
-.highlight-bar {
-  width: 60px;
-  height: 4px;
-  background-color: var(--color-highlight);
-  border-radius: var(--border-radius-sm);
-  margin-bottom: var(--spacing-md);
-}
-
 /* ==========================================================================
    10. Content Sections
    ========================================================================== */
@@ -1188,12 +1108,6 @@ a.media-item .media-item__title {
   background-color: var(--color-highlight);
   margin-top: var(--spacing-sm);
   border-radius: var(--border-radius-sm);
-}
-
-.section__subtitle {
-  max-width: 800px;
-  margin: 0 auto var(--spacing-lg);
-  color: var(--color-text-muted, inherit);
 }
 
 .video-embed {
@@ -1447,7 +1361,6 @@ a.media-item .media-item__title {
   background-color: var(--color-highlight);
 }
 
-
 /* ==========================================================================
    11. Article / Content
    ========================================================================== */
@@ -1465,25 +1378,6 @@ a.media-item .media-item__title {
   max-width: var(--container-max-width);
   margin: 0 auto var(--spacing-md) auto;
   padding: var(--spacing-lg) var(--spacing-md);
-}
-
-/* Page header: title and subtitle above everything */
-.page-header {
-  padding: var(--spacing-lg) var(--spacing-md);
-  background: var(--color-bg);
-  margin-bottom: var(--spacing-md);
-}
-
-.page-title {
-  color: var(--color-primary);
-  font-size: var(--font-size-3xl);
-  margin: 0 0 var(--spacing-md);
-}
-
-.page-subtitle {
-  color: var(--color-text-muted);
-  margin: 0;
-  font-size: var(--font-size-lg);
 }
 
 .content h1 {
@@ -1970,38 +1864,6 @@ a.event-card {
 }
 
 /* ==========================================================================
-   13. Forms
-   ========================================================================== */
-
-.form__group {
-  margin-bottom: var(--spacing-lg);
-}
-
-.form__label {
-  display: block;
-  margin-bottom: var(--spacing-xs);
-  font-weight: 500;
-  color: var(--color-text);
-}
-
-.form__input,
-.form__textarea {
-  width: 100%;
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: var(--font-size-base);
-  border: 2px solid var(--color-border);
-  border-radius: var(--border-radius-md);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.form__input:focus,
-.form__textarea:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-20);
-}
-
-/* ==========================================================================
    14. Responsive
    ========================================================================== */
 
@@ -2111,25 +1973,7 @@ a.event-card {
   text-align: center;
 }
 
-.text-primary {
-  color: var(--color-primary);
-}
-
-.text-highlight {
-  color: var(--color-highlight);
-}
-
-.mt-0 { margin-top: 0; }
-.mt-1 { margin-top: var(--spacing-sm); }
-.mt-2 { margin-top: var(--spacing-md); }
 .mt-3 { margin-top: var(--spacing-lg); }
-.mt-4 { margin-top: var(--spacing-xl); }
-
-.mb-0 { margin-bottom: 0; }
-.mb-1 { margin-bottom: var(--spacing-sm); }
-.mb-2 { margin-bottom: var(--spacing-md); }
-.mb-3 { margin-bottom: var(--spacing-lg); }
-.mb-4 { margin-bottom: var(--spacing-xl); }
 
 .sr-only {
   position: absolute;
@@ -2185,12 +2029,6 @@ a.event-card {
 
 .document-icon {
   font-size: 1.5rem;
-}
-
-.document-description {
-  margin: var(--spacing-xs) 0 0 2.25rem;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
 }
 
 /* ==========================================================================
@@ -2252,4 +2090,91 @@ a.event-card {
     flex-direction: column;
     align-items: center;
   }
+}
+
+/* ==========================================================================
+   Sommaire (TOC)
+   ========================================================================== */
+
+@media screen and (min-width: 992px) {
+    .toc {
+        align-self: flex-start;
+        top: 4.5rem;
+        position: sticky;
+    }
+
+    [data-nav="sticky"] .toc {
+        top: 5.5rem;
+    }
+}
+
+/* On small screens, reset to normal flow */
+@media (max-width: 767px) {
+    .toc {
+        position: static;
+        max-height: none;
+        overflow: visible;
+        display: none; /* hidden by default on small screens */
+    }
+}
+
+.toc-title {
+    color: var(--color-primary);
+    font-size: var(--font-size-2xl);
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-highlight);
+    scroll-margin-top: 120px;
+}
+
+/* TOC CSS variables — override to fit your layout */
+#TableOfContents {
+    --toc-max: 900px; /* max height for expanded groups (fallback) */
+}
+
+#TableOfContents ul {
+    border-left: 1px solid var(--color-border);
+    padding: 0.5rem;
+    margin: 0;
+}
+
+#TableOfContents li {
+    list-style: none;
+}
+
+/* Collapse nested lists (H3 groups) by default */
+#TableOfContents ul ul {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: max-height 0.28s ease, opacity 0.2s ease, visibility 0s linear 0.28s;
+    will-change: max-height, opacity;
+}
+
+/* When expanded, allow full height (CSS-driven) */
+#TableOfContents ul ul.expanded {
+    opacity: 1;
+    max-height: var(--toc-max);
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+/* Active link styling */
+#TableOfContents a.active {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* Slight hover/focus hint */
+#TableOfContents a:focus,
+#TableOfContents a:hover {
+    text-decoration: underline;
+}
+
+#TableOfContents ul li ul {
+    border-left: none;
+    padding: 0 0.5rem;
+    margin: 0;
 }

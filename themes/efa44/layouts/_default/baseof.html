@@ -18,20 +18,11 @@
   
   {{/* CSS principal */}}
   {{ $css := resources.Get "css/main.css" }}
-  {{ if $css }}
-    {{ $style := $css | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
-    {{/* Copie à URL fixe pour l'aperçu du CMS (static/admin/index.html) */}}
-    {{ ($css | resources.Copy "admin/preview.css").Publish }}
-  {{ end }}
+  {{ $style := $css | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+  {{/* Copie à URL fixe pour l'aperçu du CMS (static/admin/index.html) */}}
+  {{ ($css | resources.Copy "admin/preview.css").Publish }}
 
-  {{/* TOC styles */}}
-  {{ $toc := resources.Get "css/toc.css" }}
-  {{ if $toc }}
-    {{ $tocStyle := $toc | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $tocStyle.RelPermalink }}" integrity="{{ $tocStyle.Data.Integrity }}">
-  {{ end }}
-  
   {{/* Canonical URL */}}
   <link rel="canonical" href="{{ .Permalink }}">
   
@@ -81,16 +72,9 @@
     });
   </script>
 
-  {{ $tocjs := resources.Get "js/toc.js" }}
-  {{ if $tocjs }}
-    {{ $tocscript := $tocjs | minify | fingerprint }}
-    <script src="{{ $tocscript.RelPermalink }}" integrity="{{ $tocscript.Data.Integrity }}" defer></script>
-  {{ end }}
-
-  {{ $carouseljs := resources.Get "js/carousel.js" }}
-  {{ if $carouseljs }}
-    {{ $carouselscript := $carouseljs | minify | fingerprint }}
-    <script src="{{ $carouselscript.RelPermalink }}" integrity="{{ $carouselscript.Data.Integrity }}" defer></script>
+  {{ range slice "js/toc.js" "js/carousel.js" }}
+    {{ $js := resources.Get . | minify | fingerprint }}
+    <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
   {{ end }}
 </body>
 </html>

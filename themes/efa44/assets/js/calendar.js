@@ -3,8 +3,7 @@
   var dataEl = document.querySelector('[data-cal-data]');
   if (!root || !dataEl) return;
 
-  var events = [];
-  try { events = JSON.parse(dataEl.textContent) || []; } catch (e) { events = []; }
+  var events = JSON.parse(dataEl.textContent);
 
   var MONTHS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
     'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
@@ -32,7 +31,7 @@
   var today = root.getAttribute('data-today');
 
   // Vue de départ : mois courant (colonne de gauche) + suivant.
-  var start = today ? new Date(today + 'T00:00:00') : new Date();
+  var start = new Date(today + 'T00:00:00');
   var viewY = start.getFullYear();
   var viewM = start.getMonth();
 
@@ -71,7 +70,7 @@
         var hasAg = dayEvents.some(function (e) { return e.type === 'ag'; });
         var hasSingle = dayEvents.some(function (e) { return !e.multi; });
         var variant = hasAg ? ' calendar__cell--ag' : (hasSingle ? '' : ' calendar__cell--multiday');
-        if (today && k < today) variant += ' calendar__cell--past';
+        if (k < today) variant += ' calendar__cell--past';
         cell.className = 'calendar__cell calendar__cell--event' + variant;
         cell.setAttribute('data-day', k);
         cell.setAttribute('aria-label', d + ' : ' + dayEvents.length + ' événement(s)');

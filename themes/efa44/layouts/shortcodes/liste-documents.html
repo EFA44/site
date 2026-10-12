@@ -31,16 +31,13 @@
         {{ $nomSansExt := strings.TrimSuffix $ext $nom }}
         
         {{/* Extraire l'année du nom de fichier (ex: rapport-activite-2024.pdf -> 2024) */}}
-        {{ $annee := "" }}
-        {{ if findRE `\d{4}` $nom }}
-          {{ $annee = index (findRE `\d{4}` $nom) 0 }}
-        {{ end }}
+        {{ $annee := index (findRE `\d{4}` $nom) 0 | default "" }}
         
         {{/* Créer un titre lisible à partir du nom de fichier */}}
         {{ $titreDoc := replace $nomSansExt "-" " " }}
         {{ $titreDoc = strings.Title $titreDoc }}
         
-        {{ $item := dict "nom" $nom "titre" $titreDoc "annee" $annee "chemin" (printf "/%s/%s" $dossier $nom) }}
+        {{ $item := dict "titre" $titreDoc "annee" $annee "chemin" (printf "/%s/%s" $dossier $nom) }}
         {{ $items = $items | append $item }}
       {{ end }}
     {{ end }}

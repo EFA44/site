@@ -52,12 +52,6 @@ jobs:
       - name: Run Pagefind
         run: npx pagefind@latest --site "public"
 
-      - name: Display build output
-        run: |
-          echo "Build completed successfully"
-          du -sh public/
-          find public -type f | wc -l
-
       - name: Upload to FTP
         uses: SamKirkland/FTP-Deploy-Action@3a9c65ae0fc12ac924ccef8afc26941cc43aad0b # v4.4.0
         with:
@@ -67,19 +61,6 @@ jobs:
           protocol: ${{ vars.FTP_PROTOCOL }}
           local-dir: ./public/
           dangerous-clean-slate: false
-
-      - name: Deployment notification
-        if: success()
-        run: |
-          echo "✓ Site deployed successfully"
-          echo "Event: ${{ github.event_name }}"
-          echo "Timestamp: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-
-      - name: Deployment failed notification
-        if: failure()
-        run: |
-          echo "✗ Deployment failed"
-          exit 1
 
   preview:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository

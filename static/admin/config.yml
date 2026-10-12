@@ -250,8 +250,6 @@ collections:
             widget: object
             fields:
               - { label: Description, name: description, widget: string }
-              - { label: Slogan, name: tagline, widget: string }
-              - { label: Logo (chemin), name: logo, widget: string, required: false }
               - { label: Alt du logo, name: logoAlt, widget: string, required: false }
               - { label: Favicon, name: favicon, widget: string, required: false }
               - { label: Apple icon, name: appleIcon, widget: string, required: false }
@@ -273,12 +271,6 @@ collections:
                 fields:
                   - { label: Facebook (URL), name: facebook, widget: string, required: false }
                   - { label: Instagram (URL), name: instagram, widget: string, required: false }
-                  - label: Fédération
-                    name: federation
-                    widget: object
-                    fields:
-                      - { label: Nom, name: name, widget: string, required: false }
-                      - { label: URL, name: url, widget: string, required: false }
       - name: index
         label: Configuration de la page d'accueil
         file: content/_index.md
