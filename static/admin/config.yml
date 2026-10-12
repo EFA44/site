@@ -34,11 +34,6 @@ media_libraries:
         svg:
           optimize: true
 
-i18n:
-  structure: single_file
-  locales: [fr]
-  default_locale: fr
-
 collections:
   # Contenu du site
   - name: events
