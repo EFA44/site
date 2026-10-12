@@ -3,7 +3,8 @@
   {{ range index hugo.Data.medias (.Get "liste") }}
   {{ $embed := .embed }}
   {{ if and .lien (strings.Contains .lien "open.spotify.com/") }}{{ $embed = replace .lien "open.spotify.com/" "open.spotify.com/embed/" }}{{ end }}
-  {{ if .lien }}<a href="{{ .lien | safeURL }}" class="media-item" target="_blank" rel="noopener noreferrer"{{ with $embed }} data-embed="{{ . }}"{{ end }}>{{ else }}<div class="media-item">{{ end }}
+  {{ $ajout := "" }}{{ with .ajout }}{{ $ajout = printf ` data-ajout="%s"` (time.Format "2006-01-02" .) | safeHTMLAttr }}{{ end }}
+  {{ if .lien }}<a href="{{ .lien | safeURL }}" class="media-item" target="_blank" rel="noopener noreferrer"{{ with $embed }} data-embed="{{ . }}"{{ end }}{{ $ajout }}>{{ else }}<div class="media-item"{{ $ajout }}>{{ end }}
     {{ if .couleur }}
     {{/* Carte « story » Spotify dessinée en CSS : image = pochette carrée (scripts/spotify-story.py) */}}
     <div class="media-story" style="--c: {{ .couleur | safeCSS }}">
@@ -47,5 +48,42 @@
     dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
     dialog.addEventListener("close", () => { iframe.src = "about:blank"; });
   })();
+
+  // Nouveautés : éléments ajoutés (champ ajout) depuis la visite précédente de ce navigateur,
+  // ou depuis 30 jours à la première visite. La visite précédente est figée pour la session.
+  // ponytail: comparaison au jour près, un ajout le jour même d'une visite n'est pas signalé
+  document.addEventListener("DOMContentLoaded", () => {
+    const today = new Date().toISOString().slice(0, 10);
+    const prev = sessionStorage.getItem("medias-prev") || localStorage.getItem("medias-last")
+      || new Date(Date.now() - 30 * 864e5).toISOString().slice(0, 10);
+    sessionStorage.setItem("medias-prev", prev);
+    localStorage.setItem("medias-last", today);
+
+    const nouveaux = [...document.querySelectorAll(".media-item[data-ajout]")].filter((el) => el.dataset.ajout > prev);
+    if (!nouveaux.length) return;
+    nouveaux.forEach((el) => el.classList.add("is-new"));
+
+    const grids = [...document.querySelectorAll(".media-grid")];
+    const button = document.createElement("button");
+    button.className = "media-filter";
+    button.setAttribute("aria-pressed", "false");
+    const label = () => button.textContent = button.getAttribute("aria-pressed") === "true"
+      ? "Tout afficher" : `Voir les nouveautés depuis votre dernière visite (${nouveaux.length})`;
+    label();
+    button.addEventListener("click", () => {
+      const on = button.getAttribute("aria-pressed") !== "true";
+      button.setAttribute("aria-pressed", on);
+      label();
+      grids.forEach((grid) => {
+        grid.querySelectorAll(".media-item").forEach((el) => el.hidden = on && !el.classList.contains("is-new"));
+        // Masquer aussi l'intertitre des catégories sans nouveauté
+        const vide = on && !grid.querySelector(".media-item.is-new");
+        grid.hidden = vide;
+        if (grid.previousElementSibling?.tagName === "H2") grid.previousElementSibling.hidden = vide;
+      });
+    });
+    const first = grids[0].previousElementSibling?.tagName === "H2" ? grids[0].previousElementSibling : grids[0];
+    first.before(button);
+  });
 </script>
 {{ end }}

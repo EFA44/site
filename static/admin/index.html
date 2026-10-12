@@ -53,7 +53,7 @@
           const items = entry.toJS().data.items || [];
           const src = (path) => getAsset(path)?.url || path;
           const card = (m, i) =>
-            h(m.lien ? 'a' : 'div', { key: i, className: 'media-item', href: m.lien || undefined, target: m.lien ? '_blank' : undefined },
+            h(m.lien ? 'a' : 'div', { key: i, className: m.ajout && new Date() - new Date(m.ajout) < 30 * 864e5 ? 'media-item is-new' : 'media-item', href: m.lien || undefined, target: m.lien ? '_blank' : undefined },
               m.couleur
                 ? h('div', { className: 'media-story', style: { '--c': m.couleur } },
                     h('div', { className: 'media-story__card' },
