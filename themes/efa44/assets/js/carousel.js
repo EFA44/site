@@ -5,10 +5,9 @@
   'use strict';
 
   // --- Chargement unique de l'API YouTube IFrame ---
-  var ytApiReady = false;
   var ytCallbacks = [];
   function whenYTReady(cb) {
-    if (ytApiReady && window.YT && window.YT.Player) { cb(); return; }
+    if (window.YT && window.YT.Player) { cb(); return; }
     ytCallbacks.push(cb);
     if (document.getElementById('youtube-iframe-api')) return;
     var tag = document.createElement('script');
@@ -17,7 +16,6 @@
     document.head.appendChild(tag);
   }
   window.onYouTubeIframeAPIReady = function () {
-    ytApiReady = true;
     ytCallbacks.forEach(function (cb) { cb(); });
     ytCallbacks = [];
   };
@@ -49,7 +47,7 @@
       var slide = slides[index];
       var iframe = slide.querySelector('iframe[data-src]');
       if (!iframe) return;
-      if (!iframe.id) { iframe.id = 'carousel-yt-' + (++uid); }
+      iframe.id = 'carousel-yt-' + (++uid);
       iframe.src = iframe.getAttribute('data-src');
       iframe.removeAttribute('data-src');
       whenYTReady(function () {
@@ -119,7 +117,6 @@
     // Vidéos HTML5
     root.querySelectorAll('video.carousel__video').forEach(function (v) {
       v.addEventListener('play', onMediaPlay);
-      v.addEventListener('playing', onMediaPlay);
       v.addEventListener('pause', onMediaStop);
       v.addEventListener('ended', onMediaStop);
     });

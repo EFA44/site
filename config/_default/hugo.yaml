@@ -6,8 +6,6 @@ buildFuture: true
 
 params:
   description: Enfance & Familles d'Adoption de Loire-Atlantique
-  tagline: Accompagner les familles adoptives depuis 1958
-  logo: /images/efa44-logo-small.svg
   logoAlt: EFA 44 - Enfance & Familles d'Adoption Loire-Atlantique
   favicon: /images/favicon.jpg
   appleIcon: /images/efa44-logo.png
@@ -20,6 +18,3 @@ params:
   social:
     facebook: https://www.facebook.com/EnfanceetFamillesAdoption44
     instagram: https://www.instagram.com/efa.44loireatlantique/
-    federation:
-      name: Fédération EFA
-      url: https://www.adoptionefa.org/

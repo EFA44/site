@@ -4,7 +4,7 @@
   const iframe = dialog.querySelector("iframe");
   document.addEventListener("click", (e) => {
     const link = e.target.closest("a[data-embed]");
-    if (!link || !dialog.showModal) return;
+    if (!link) return;
     e.preventDefault();
     iframe.src = link.dataset.embed;
     dialog.showModal();

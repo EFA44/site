@@ -8,7 +8,3 @@ min_version = "0.80.0"
 [author]
   name = "EFA44"
   homepage = "https://efa44.org"
-
-[params]
-  primaryColor = "#345cac"
-  highlightColor = "#fbc32c"
