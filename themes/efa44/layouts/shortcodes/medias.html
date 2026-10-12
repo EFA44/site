@@ -67,8 +67,9 @@
     const button = document.createElement("button");
     button.className = "media-filter";
     button.setAttribute("aria-pressed", "false");
+    button.title = "Depuis votre dernière visite";
     const label = () => button.textContent = button.getAttribute("aria-pressed") === "true"
-      ? "Tout afficher" : `Voir les nouveautés depuis votre dernière visite (${nouveaux.length})`;
+      ? "Tout afficher" : `Nouveautés (${nouveaux.length})`;
     label();
     button.addEventListener("click", () => {
       const on = button.getAttribute("aria-pressed") !== "true";
